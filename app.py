@@ -29,7 +29,7 @@ if mode == str(Mode.PROF):
     vacancy_df = load_data(path="./data/vacancies.csv")
     selector, config = load_model(config_path="./config/config.yaml")
 else:
-    vacancy_df = load_data(path="./data_mass/vacancies.csv")
+    # vacancy_df = load_data(path="./data_mass/vacancies.csv")
     selector, config = load_model(config_path="./config/config_mass.yaml")
 
 # vacancies = vacancy_df["Должность"].to_list()
