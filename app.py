@@ -8,10 +8,17 @@ import streamlit as st
 
 from utils.hardcode_data import candidate_names, map_names
 from utils.utils import *
+import datetime
+from loguru import logger
 
 if "computed" not in st.session_state:
     st.session_state["computed"] = False
 
+if "vahta_mode" not in st.session_state:
+    st.session_state["vahta_mode"] = False # По умолчанию галочка
+
+if "distance_option" not in st.session_state:
+    st.session_state["distance_option"] = "Нет ограничений"
 
 st.title("Массовый подбор кандидатов 💼")
 
@@ -48,9 +55,55 @@ if "df_weights" not in st.session_state:
 if 'current_threshold' not in st.session_state:
     st.session_state['current_threshold'] = config["model"]["stage_2"]["score_threshold"]
 
+def update_address_weight_callback():
+    """Обновляет вес 'Адрес' в df_weights на основе галочки 'Вахта'."""
+    try:
+        df = st.session_state["df_weights"]
+        is_vahta = st.session_state["vahta_mode"] # Текущее состояние галочки
+
+        # Находим индекс строки 'Адрес'
+        address_index_list = df.index[df['Компонента'] == 'Адрес'].tolist()
+
+        if not address_index_list:
+            # Если строки 'Адрес' нет, ничего не делаем
+            return
+
+        address_index = address_index_list[0]
+        current_weight = df.loc[address_index, 'Вес']
+
+        if is_vahta:
+            # Галочка ВКЛЮЧЕНА
+            # Если вес еще не 0, сохраняем его как оригинальный и ставим 0
+            if current_weight != 0.0:
+                st.session_state.original_address_weight = current_weight
+                df.loc[address_index, 'Вес'] = 0.0
+                st.toast("Вес 'Адрес' установлен в 0 (Вахта).", icon="⚠️") # Уведомление
+        else:
+            # Галочка ВЫКЛЮЧЕНА
+            # Восстанавливаем оригинальный вес, если он был сохранен
+            if st.session_state.original_address_weight is not None:
+                # Восстанавливаем только если текущий вес 0 (чтобы не перезаписать ручные изменения)
+                if current_weight == 0.0:
+                     df.loc[address_index, 'Вес'] = st.session_state.original_address_weight
+                     st.toast(f"Вес 'Адрес' восстановлен: {st.session_state.original_address_weight}", icon="👍")
+            # Если оригинальный вес не сохранен (маловероятно), ничего не делаем
+
+        # Обновляем DataFrame в session_state, чтобы data_editor перерисовался
+        st.session_state["df_weights"] = df
+
+    except Exception as e:
+        st.error(f"Ошибка при обновлении веса 'Адрес': {e}")
+
 with st.sidebar:
     st.header("Информация ℹ️")
     st.write("Веса компонент скоринга.")
+
+    st.checkbox(
+        "Вахта",
+        key="vahta_mode",
+        on_change=update_address_weight_callback 
+        )
+
     st.session_state["df_weights"] = st.data_editor(
         st.session_state["df_weights"],
         disabled=["Компонента"],
@@ -58,10 +111,30 @@ with st.sidebar:
         # height=423,
         width=300,
     )
-    # st.markdown(df_info.to_html(escape=False), unsafe_allow_html=True)
+    st.divider() 
 
     # Add threshold controls
     st.header("Настройки подбора")
+
+    # Получаем дату по умолчанию из конфига
+    default_date_str = config["model"]["stage_1"]["date_threshold"]
+    try:
+        # Пытаемся преобразовать строку из конфига в объект даты
+        default_date = datetime.date.fromisoformat(default_date_str)
+    except ValueError:
+        # Если формат неверный, используем запасную дату
+        logger.warning(f"Invalid date format in config for date_threshold: '{default_date_str}'. Using 2025-02-01.")
+        default_date = datetime.date(2025, 2, 1)
+
+    # Создаем виджет для выбора даты
+    selected_date_threshold = st.date_input(
+        "Рассматривать резюме не старше:",
+        value=default_date,
+        min_value=datetime.date(2015, 1, 1),
+        max_value=datetime.date.today(),
+        help="Резюме, опубликованные или обновленные до этой даты, будут отфильтрованы."
+    )
+
     threshold = st.slider(
         "Минимальный процент соответствия",
         min_value=0.0,
@@ -71,17 +144,27 @@ with st.sidebar:
         help="Кандидаты с процентом соответствия ниже этого значения не будут показаны"
     )
 
-    # Add apply button for threshold
-    if st.button("Применить порог", key="apply_threshold"):
-        st.session_state['current_threshold'] = threshold
-        st.rerun()
+    # st.radio(
+    #     "Ограничение по расстоянию (км):",
+    #     options=["Нет ограничений", "100", "500", "1000", "5000"], # Доступные опции
+    #     key="distance_option", # Связываем с состоянием сессии
+    #     horizontal=True, # Отображаем горизонтально
+    #     help="Фильтрует кандидатов на 1-м этапе по расстоянию до вакансии."
+    # )
 
-# option = st.selectbox(
-#     "Вакансии",
-#     vacancies,
-#     index=None,
-#     placeholder="Выберете вакансию...",
-# )
+    st.selectbox(
+        label="Ограничение по расстоянию (км):",
+        options=["Нет ограничений", "100", "500", "1000", "5000"], # Список доступных опций
+        key="distance_option", # Связываем с состоянием сессии
+        # index=distance_options.index(st.session_state.distance_option), # Можно задать индекс по умолчанию, если нужно
+        help="Фильтрует кандидатов на 1-м этапе по расстоянию до вакансии."
+    )
+
+    # Add apply button for threshold
+    # if st.button("Применить порог", key="apply_threshold"):
+    #     st.session_state['current_threshold'] = threshold
+    #     st.rerun()
+
 vacancy = {}
 placeholder_position = "Введите название должности, например, «Горнорабочий»."
 vacancy["Должность"] = st.text_input(
@@ -134,10 +217,39 @@ if st.button("Подобрать", type="primary"):
                 or config["general"]["mode"] == "prod"
             ):
                 st.write(f"Первая фаза: анализ {df_cv.shape[0]} кандидатов..")
+                
+                ############### Ограничение по расстоянию ###############
+                selected_option = st.session_state.get("distance_option", "Нет ограничений")
+                max_distance_filter = None
+
+                if selected_option != "Нет ограничений":
+                    max_distance_filter = float(selected_option)
+
+                ############### Обработка плашки ВАХТЫ ###############
+                weights_to_use = st.session_state["df_weights"].copy()
+                # Состояние галочки "Вахта"
+                is_vahta = st.session_state.get("vahta_mode", False)
+
+                if is_vahta:
+                    # Если "Вахта", то "Адрес" ставим вес 0
+                    try:
+                        address_index = weights_to_use.index[weights_to_use['Компонента'] == 'Адрес'].tolist()
+                        if address_index:
+                            weights_to_use.loc[address_index[0], 'Вес'] = 0.0
+                            # st.sidebar.info("Режим 'Вахта': Вес 'Адрес' временно установлен в 0 для расчета.", icon="⚠️")
+                        else:
+                            st.sidebar.warning("Компонент 'Адрес' не найден в таблице весов.")
+                    except Exception as e:
+                         st.sidebar.error(f"Ошибка при обнулении веса 'Адрес': {e}")
+
+                #############################################
+
                 df_ranked_1st = selector.rank_first_stage(
-                    vacancy=vacancy, df_relevant=df_cv.copy()
+                    vacancy=vacancy, df_relevant=df_cv.copy(),
+                    date_threshold=selected_date_threshold, is_vahta=is_vahta, max_distance_filter=max_distance_filter
                 )
                 st.write(f"Вторая фаза: анализ {df_ranked_1st.shape[0]} кандидатов..")
+
                 df_ranked_2nd, vacancy_prep, nan_mask = selector.rank_second_stage(
                     vacancy=vacancy,
                     df_relevant=df_ranked_1st.copy(),
@@ -164,12 +276,9 @@ if st.button("Подобрать", type="primary"):
             st.subheader("Кандидаты", divider="blue")
             for key in data_cv:
                 col1_results, col2_cv = st.columns(2)
-                if mode == str(Mode.PROF):
-                    key_ = data_cv[key]["Должность"]
-                    if "(" in key and ")" not in key:
-                        key_ += ")"
-                else:
-                    key_ = ""
+                key_ = data_cv[key]["Должность"]
+                if "(" in key and ")" not in key:
+                    key_ += ")"
                 key_ += f" ({round(data_cv[key]['sim_score_second'] * 100)}% match)"
                 key_ = key + f" - {key_}"
                 with st.expander(key_):
@@ -308,16 +417,6 @@ if st.button("Подобрать", type="primary"):
                                     data_cv[key][feature], vacancy_prep[feature]
                                 )
                             container_vac.markdown(formated_text.capitalize())
-                        # if feature == "Должность":
-                        #     st.info(
-                        #         "Указано среднее значение 3 скоров для компонент, связанных с Должностью.",
-                        #         icon="ℹ️",
-                        #     )
-                        # if feature == "Адрес":
-                        #     st.info(
-                        #         "100% близость означает, что кандидат находится ближе всех других кандидатов",
-                        #         icon="ℹ️",
-                        #     )
                         if i < len(ranking_features) - 1:
                             st.divider()
     else:

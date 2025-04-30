@@ -2,7 +2,7 @@ general:
   mode: "prod"
 model:
   stage_1:
-    days_filter_threshold: 90
+    date_threshold: "2025-02-02"
     close_dist_threshold: 10
     text_features:
       - "Категория прав"

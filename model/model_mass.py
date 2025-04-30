@@ -4,7 +4,7 @@ import requests
 import re
 from ast import literal_eval
 from copy import deepcopy
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from typing import Dict, List, Union
 
 import nltk
@@ -46,7 +46,7 @@ class MassCvSelector(CvSelector):
             method=method,
         )
         self.stemmer = SnowballStemmer(language="russian")
-        self.days_filter_threshold = config["stage_1"]["days_filter_threshold"]
+        self.days_filter_threshold = (datetime.now().date() - date.fromisoformat(config["stage_1"]["date_threshold"]) ).days
         self.first_filter = config["stage_1"]["first_filter"]
         self.top_n_init = config["stage_1"]["top_n_init"]
         self.close_dist_threshold = config["stage_1"]["close_dist_threshold"]
@@ -67,7 +67,7 @@ class MassCvSelector(CvSelector):
         return (x - x.min()) / range_
 
     def __filter_1_stage(
-        self, date: datetime.date, availability: str, days_thresh: int = 60
+        self, date: date, availability: str, days_thresh: int
     ):
         if datetime.now().date() - timedelta(days=days_thresh) > date:
             return False
@@ -313,7 +313,8 @@ class MassCvSelector(CvSelector):
         result_scores = np.select(conditions, scores, default=default_score)
         return result_scores
 
-    def rank_first_stage(self, vacancy: Dict, df_relevant: pd.DataFrame):
+    def rank_first_stage(self, vacancy: Dict, df_relevant: pd.DataFrame,
+                         date_threshold: datetime.date, is_vahta: bool, max_distance_filter: float):
         """
         Первый этап ранжирования:
         1. Фильтрует дубликаты, обрабатывает даты/адреса.
@@ -326,6 +327,10 @@ class MassCvSelector(CvSelector):
         8. Считает итоговый балл sim_score_first.
         9. Возвращает top_n_first_stage лучших по sim_score_first.
         """
+
+        self.days_filter_threshold = (datetime.now().date() - date_threshold).days
+        print(f"days_filter_threshold: {self.days_filter_threshold}")
+
         ## 1. Начальная подготовка
         df_relevant = df_relevant.drop_duplicates(subset=["link"])
         logger.debug(f"Shape after drop_duplicates: {df_relevant.shape}")
@@ -344,6 +349,33 @@ class MassCvSelector(CvSelector):
         df_relevant[date_col] = pd.to_datetime(
             df_relevant[date_col], errors='coerce', yearfirst=True, format='mixed'
         )
+
+        ## 4. Фильтр по дате и доступности
+        logger.info("Filtering by date and availability...")
+
+        if 'Доступность' not in df_relevant.columns:
+             logger.warning("Column 'Доступность' not found. Skipping availability filter.")
+             df_relevant_filtered = df_relevant.copy()
+        else:
+             df_relevant.loc[:, "filter"] = df_relevant[
+                 [date_col, "Доступность"]
+             ].apply(
+                 lambda x: self.__filter_1_stage(
+                     x.iloc[0].date(), x.iloc[1], self.days_filter_threshold
+                 ),
+                 axis=1,
+             )
+             df_relevant_filtered = df_relevant[df_relevant["filter"]].copy()
+             logger.debug(f"Shape after date/availability filter: {df_relevant_filtered.shape}")
+
+        # Если после фильтров по дате/доступности никого не осталось
+        if df_relevant_filtered.empty:
+             logger.warning("No candidates left after date/availability filters. Returning empty DataFrame.")
+             expected_cols = df_relevant.columns.tolist() + ['sim_score_first']
+             return pd.DataFrame(columns=list(set(expected_cols)))
+        
+        df_relevant = df_relevant_filtered.copy()
+
         # Удаляем строки, где нет валидной даты или адреса для геокодинга
         cols_to_dropna = [date_col]
         if address_col in df_relevant.columns:
@@ -411,66 +443,41 @@ class MassCvSelector(CvSelector):
         logger.info("Calculating move similarity and filtering...")
 
         if move_col not in df_relevant.columns:
-             logger.warning(f"Move column '{move_col}' not found. Skipping move filter.")
+            logger.warning(f"Move column '{move_col}' not found. Skipping move filter.")
         else:
-             df_relevant.loc[:, f"{move_col}_sim"] = (
+            df_relevant.loc[:, f"{move_col}_sim"] = (
                  df_relevant[[move_col, "distance"]]
                  .apply(
-                     lambda x: self.__score_move(
-                         x.iloc[0], x.iloc[1], self.close_dist_threshold
-                     ),
-                     axis=1,
-                 )
-             )
-            #  initial_count_before_move = len(df_relevant)
-            #  df_relevant = df_relevant[df_relevant[f"{move_col}_sim"] > 0.0].copy()
-            #  logger.info(f"{initial_count_before_move - len(df_relevant)} candidates removed by move filter. {len(df_relevant)} remaining.")
-
-             # Если после фильтра по переезду никого не осталось
-             if df_relevant.empty:
-                  logger.warning("No candidates left after move filter.")
-                  return pd.DataFrame(columns=df_relevant.columns.tolist() + ['sim_score_first'])
-
-        ## 4. Фильтр по дате и доступности
-        logger.info("Filtering by date and availability...")
-
-        if 'Доступность' not in df_relevant.columns:
-             logger.warning("Column 'Доступность' not found. Skipping availability filter.")
-             df_relevant_filtered = df_relevant.copy()
-        else:
-             df_relevant.loc[:, "filter"] = df_relevant[
-                 [date_col, "Доступность"]
-             ].apply(
-                 lambda x: self.__filter_1_stage(
-                     x.iloc[0].date(), x.iloc[1], self.days_filter_threshold
-                 ),
-                 axis=1,
-             )
-            #  df_relevant_filtered = df_relevant[df_relevant["filter"]].copy()
-             df_relevant_filtered = df_relevant.copy()
-             logger.debug(f"Shape after date/availability filter: {df_relevant_filtered.shape}")
-
-        # Если после фильтров по дате/доступности никого не осталось
-        if df_relevant_filtered.empty:
-             logger.warning("No candidates left after date/availability filters. Returning empty DataFrame.")
-             expected_cols = df_relevant.columns.tolist() + ['sim_score_first']
-             return pd.DataFrame(columns=list(set(expected_cols)))
+                    lambda x: self.__score_move(
+                        x.iloc[0], x.iloc[1], self.close_dist_threshold
+                    ),
+                    axis=1,
+                )
+            )
+             
+        
+        df_relevant_filtered = df_relevant.copy()
 
         ## 5. Сортировка по расстоянию и выбор self.first_filter
         logger.debug("Sorting candidates by distance (ascending)...")
         df_relevant_filtered = df_relevant_filtered.sort_values("distance", ascending=True)
 
         ########################## ФИЛЬТР ПО РАССТОЯНИЮ ##########################
-
-        df_top_by_distance = df_relevant_filtered.head(self.first_filter).copy()
-        logger.info(f"Selected top {len(df_top_by_distance)} candidates based on distance (self.first_filter={self.first_filter}).")
+        if max_distance_filter is not None:
+            # Есть расстояние
+            df_relevant_filtered = df_relevant_filtered[df_relevant_filtered["distance"] <= max_distance_filter].copy()
+        
+        if not is_vahta:
+            df_relevant_filtered = df_relevant_filtered.head(self.first_filter).copy()
+            logger.info(f"Selected top {len(df_relevant_filtered)} candidates based on distance (self.first_filter={self.first_filter}).")
+        else:
+            logger.info("Vahta mode is enabled. Skipping distance filter.")
 
         ## 6. Фильтрация по должности (BM25 -> Embeddings)
         position_col_name = "Должность"
         vacancy_job_title = vacancy.get(position_col_name, "")
 
-        # Применяем фильтр к df_top_by_distance
-        df_relevant_for_position_filter = df_top_by_distance # Работаем с отобранными по расстоянию
+        df_relevant_for_position_filter = df_relevant_filtered # Работаем с отобранными по расстоянию
 
         if not vacancy_job_title:
             logger.warning(f"Vacancy job title ('{position_col_name}') is empty. Skipping position filtering.")
@@ -514,28 +521,28 @@ class MassCvSelector(CvSelector):
                  logger.warning("Candidate job title list for Embeddings is empty. Skipping Embedding step.")
                  df_filtered_final = df_top_bm25.drop(columns=["_tmp_bm25_sim"], errors='ignore') # Используем результат BM25
             else:
-                 try:
-                     embeddings_cand_list = self.embedder.embed_corpus(candidate_job_titles_emb)
-                     if not embeddings_cand_list: raise ValueError("Embeddings list (candidates) is empty.")
-                     embeddings_np = np.array(embeddings_cand_list)
+                try:
+                    embeddings_cand_list = self.embedder.embed_corpus(candidate_job_titles_emb)
+                    if not embeddings_cand_list: raise ValueError("Embeddings list (candidates) is empty.")
+                    embeddings_np = np.array(embeddings_cand_list)
 
-                     embedding_vac_list = self.embedder.embed_corpus([vacancy_job_title])
-                     if not embedding_vac_list: raise ValueError("Embeddings list (vacancy) is empty.")
-                     embedding_vac_np = np.array(embedding_vac_list)
+                    embedding_vac_list = self.embedder.embed_corpus([vacancy_job_title])
+                    if not embedding_vac_list: raise ValueError("Embeddings list (vacancy) is empty.")
+                    embedding_vac_np = np.array(embedding_vac_list)
 
-                     cos_sims = cosine_similarity(embedding_vac_np, embeddings_np)[0]
-                     df_top_bm25["embedding_sim"] = cos_sims
+                    cos_sims = cosine_similarity(embedding_vac_np, embeddings_np)[0]
+                    df_top_bm25["embedding_sim"] = cos_sims
 
-                     # Ограничиваем TOP_EMBED размером текущего DataFrame
+                    # Ограничиваем TOP_EMBED размером текущего DataFrame
                     #  current_top_embed = min(TOP_EMBED, len(df_top_bm25))
                     #  df_filtered_final = df_top_bm25.nlargest(current_top_embed, "embed_sim").copy()
                     #  logger.info(f"Selected top {len(df_filtered_final)} candidates based on embedding job title score.")
 
-                     df_filtered_final = df_top_bm25.drop(columns=["_tmp_bm25_sim"], errors='ignore')
+                    df_filtered_final = df_top_bm25.drop(columns=["_tmp_bm25_sim"], errors='ignore')
 
-                 except Exception as e:
-                     logger.error(f"Error during embedding similarity calculation for job titles: {e}. Skipping embedding filter.")
-                     df_filtered_final = df_top_bm25.drop(columns=["_tmp_bm25_sim"], errors='ignore') # Используем результат BM25
+                except Exception as e:
+                    logger.error(f"Error during embedding similarity calculation for job titles: {e}. Skipping embedding filter.")
+                    df_filtered_final = df_top_bm25.drop(columns=["_tmp_bm25_sim"], errors='ignore') # Используем результат BM25
 
         # Если после финальной фильтрации по должности никого не осталось
         if df_filtered_final.empty:
@@ -790,7 +797,7 @@ class MassCvSelector(CvSelector):
                  logger.error(f"Error calculating final sim_score_second: {e}. Setting score to 0.")
                  df_relevant["sim_score_second"] = 0.0
 
-        logger.info(f"Final sim_score_second values: {df_relevant['sim_score_second']}")
+        # logger.info(f"Final sim_score_second values: {df_relevant['sim_score_second']}")
         if score_threshold_stage_2 > 0.0: # Применяем фильтр, только если порог > 0
             initial_count_before_threshold = len(df_relevant)
             df_relevant = df_relevant[df_relevant["sim_score_second"] >= score_threshold_stage_2].copy()
