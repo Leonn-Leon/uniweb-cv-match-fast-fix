@@ -213,7 +213,7 @@ if __name__ == "__main__":
             file_name = os.path.basename(file_path)
             job_key = os.path.splitext(file_name)[0]
             # Определяем ЗАПАСНОЙ вариант должности на основе имени файла
-            fallback_job_title = JOB_TITLE_MAPPING.get(job_key, job_key.replace('_', ' ').capitalize())
+            fallback_job_title = JOB_TITLE_MAPPING.get(job_key, None)
             # Логируем только если не нашли в маппинге и пришлось использовать имя файла
             if job_key not in JOB_TITLE_MAPPING:
                  logger.warning(f"Не найдено соответствие для файла '{file_name}' в JOB_TITLE_MAPPING. Fallback должность: '{fallback_job_title}' (или будет взята из поля 'title').")
@@ -261,8 +261,10 @@ if __name__ == "__main__":
                             # При ошибке тоже присваиваем None, чтобы fillna сработал
                             flat_row[field_name] = None
 
-                # --- Определение и присвоение должности (НОВАЯ ЛОГИКА) ---
-                record_title = flat_row.get("title") # Получаем 'title' из текущей записи
+                if fallback_job_title is None:
+                    record_title = flat_row.get("title") # Получаем 'title' из текущей записи
+                else:
+                    record_title = fallback_job_title
 
                 # Проверяем, что title не None, является строкой и не пустой после strip()
                 if record_title and isinstance(record_title, str) and record_title.strip():
