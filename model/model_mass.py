@@ -31,7 +31,7 @@ from model import CvSelector
 from utils.enums import Method, ModeInfo
 from utils.request_api import process_corpus
 
-load_dotenv()
+load_dotenv(override=True)
 nltk.download("punkt_tab")
 
 
@@ -171,7 +171,7 @@ class MassCvSelector(CvSelector):
         }
 
         try:
-            response = requests.get(base_url, params=params, timeout=100)
+            response = requests.get(base_url, params=params, timeout=10)
             response.raise_for_status() # Проверка на HTTP ошибки (4xx, 5xx)
             data = response.json()
 
@@ -579,6 +579,7 @@ class MassCvSelector(CvSelector):
         if missing_sim_cols:
             logger.error(f"Missing similarity columns for final score calculation: {missing_sim_cols}")
             for col in missing_sim_cols:
+                logger.warning(f"Column '{col}' is missing.")
                 df_filtered_final[col] = 0.0 # Присваиваем 0, чтобы избежать ошибки
 
         logger.info(f"First stage weights: {first_stage_weights}")

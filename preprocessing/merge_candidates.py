@@ -27,12 +27,12 @@ if not YANDEX_API_KEY:
     # exit()
 
 # --- Константы ---
-# DATA_MASS_DIR = "preprocessing/data_mass/" # Убедитесь, что путь правильный
+# Убедитесь, что пути правильные
 DATA_MASS_DIR = "preprocessing/data_mass/" # Если папка лежит рядом со скриптом
 GORNO_CSV_PATH = os.path.join(DATA_MASS_DIR, "Горнорабочий очистного забоя (ученик).csv")
 BELAZ_CSV_PATH = os.path.join(DATA_MASS_DIR, "Водитель карьерного автосамосвала БелАЗ.csv")
-OUTPUT_CSV_PATH = os.path.join("data_mass/", "candidates_new.csv")
-GEOCODING_CACHE_CSV = os.path.join(DATA_MASS_DIR, "geocoding_cache.csv")
+OUTPUT_CSV_PATH = os.path.join("data_mass/", "candidates_new.csv") # Выходной файл будет в data_mass/
+GEOCODING_CACHE_CSV = os.path.join(DATA_MASS_DIR, "geocoding_cache.csv") # Кэш будет в preprocessing/data_mass/
 MAX_GEOCODING_WORKERS = 10
 LINK_COLUMN = "link"
 ID_COLUMN = "ID"
@@ -80,9 +80,9 @@ def parse_item_date(date_str: str) -> pd.Timestamp:
 
     try:
         if "сегодня" in cleaned_str:
-            return pd.Timestamp("2025-04-24") # <-- ИЗМЕНЕННАЯ СТРОКА
+            return pd.Timestamp("2025-05-03") # <-- ИЗМЕНЕННАЯ СТРОКА
         if "вчера" in cleaned_str:
-            return pd.Timestamp("2025-04-23") # <-- ИЗМЕНЕННАЯ СТРОКА
+            return pd.Timestamp("2025-05-02") # <-- ИЗМЕНЕННАЯ СТРОКА
 
         parts = cleaned_str.split()
         if len(parts) < 2: # Недостаточно частей для даты
@@ -160,7 +160,7 @@ def load_geocoding_cache(filename: str) -> dict:
                 if not addr_key: continue
                 try:
                     lat, lon = row.get('latitude'), row.get('longitude')
-                    coords = (float(lat), float(lon)) if lat and lon and lat != 'None' and lon != '' else None
+                    coords = (float(lat), float(lon)) if lat and lon and lat != 'None' and lat != '' and lon != 'None' and lon != '' else None # Усилена проверка на пустые строки
                     formatted = row.get('formatted_address', addr_key)
                     cache[addr_key] = (coords, formatted)
                 except (ValueError, TypeError): cache[addr_key] = (None, row.get('formatted_address', addr_key)) # Если координаты не парсятся
@@ -177,6 +177,7 @@ def save_geocoding_cache(filename: str, cache: dict):
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames, quoting=csv.QUOTE_MINIMAL)
             writer.writeheader()
             for addr, (coords, fmt) in cache.items():
+                 # Записываем пустую строку вместо None для совместимости при чтении
                 writer.writerow({'address': addr, 'latitude': coords[0] if coords else '', 'longitude': coords[1] if coords else '', 'formatted_address': fmt})
         os.replace(temp_filename, filename)
         logger.info(f"Сохранено {len(cache)} записей в кэш геокодирования '{filename}'")
@@ -212,95 +213,51 @@ if __name__ == "__main__":
             df_init = pd.DataFrame(raw_data)
             file_name = os.path.basename(file_path)
             job_key = os.path.splitext(file_name)[0]
-            # Определяем ЗАПАСНОЙ вариант должности на основе имени файла
             fallback_job_title = JOB_TITLE_MAPPING.get(job_key, None)
-            # Логируем только если не нашли в маппинге и пришлось использовать имя файла
             if job_key not in JOB_TITLE_MAPPING:
                  logger.warning(f"Не найдено соответствие для файла '{file_name}' в JOB_TITLE_MAPPING. Fallback должность: '{fallback_job_title}' (или будет взята из поля 'title').")
 
             processed_rows = []
-            # Используем enumerate для доступа к индексу в логах при необходимости
             for index, row in df_init.iterrows():
                 flat_row = row.to_dict()
-
-                # Распаковка вложенных словарей (mainParams, additionalParams, techInfo)
                 for key in ["mainParams", "additionalParams", "techInfo"]:
                     if key in flat_row and isinstance(flat_row[key], dict):
                         for sub_key, sub_value in flat_row[key].items():
-                            # Не перезаписывать поля верхнего уровня (например, 'title', 'address')
-                            if sub_key not in flat_row:
-                                flat_row[sub_key] = sub_value
-                        # Удаляем исходный вложенный словарь после распаковки
+                            if sub_key not in flat_row: flat_row[sub_key] = sub_value
                         del flat_row[key]
 
-                # Обработка полей-списков: объединение в строку
-                fields_potentially_list = [
-                    "Опыт работы",
-                    "Категория прав",
-                    "Учебные заведения",
-                    "Гражданство",
-                ]
+                fields_potentially_list = ["Опыт работы", "Категория прав", "Учебные заведения", "Гражданство"]
                 for field_name in fields_potentially_list:
                     if field_name in flat_row and isinstance(flat_row[field_name], list):
                         try:
-                            # Преобразуем все элементы списка в строки и фильтруем пустые/None
                             string_items = [str(item).strip() for item in flat_row[field_name] if item is not None and str(item).strip() != ""]
-
-                            # Проверяем, остались ли элементы после фильтрации
-                            if string_items:
-                                # flat_row[field_name] = "\n".join(string_items) # Вариант: объединить все
-                                flat_row[field_name] = "\n".join(string_items[:2]) # Вариант: объединить первые два
-                            else:
-                                # Если список изначально был пуст или содержал только пустые/None элементы,
-                                # присваиваем None. Это значение будет заменено на "Нет данных" на шаге fillna.
-                                # flat_row[field_name] = None
-                                flat_row[field_name] = "Нет данных"
-
+                            flat_row[field_name] = "\n".join(string_items[:2]) if string_items else "Нет данных" # Join first two or default
                         except Exception as e:
-                            logger.warning(f"Не удалось обработать список в поле '{field_name}' для строки {index} файла {file_path}: {e}. Присвоено None.")
-                            # При ошибке тоже присваиваем None, чтобы fillna сработал
-                            flat_row[field_name] = None
+                            logger.warning(f"Ошибка обработки списка '{field_name}' в {file_path}, строка {index}: {e}.")
+                            flat_row[field_name] = "Нет данных" # Assign default on error
 
-                if fallback_job_title is None:
-                    record_title = flat_row.get("title") # Получаем 'title' из текущей записи
-                else:
-                    record_title = fallback_job_title
-
-                # Проверяем, что title не None, является строкой и не пустой после strip()
+                # Определение должности (с проверкой title)
+                record_title = flat_row.get("title") if fallback_job_title is None else fallback_job_title
                 if record_title and isinstance(record_title, str) and record_title.strip():
-                    final_job_title = record_title.strip() # Используем title из записи
+                    final_job_title = record_title.strip()
                 else:
-                    # Если title некорректный, используем fallback из имени файла
-                    logger.debug(f"Поле 'title' отсутствует/пустое в строке {index} файла {file_path}. Используется fallback: '{fallback_job_title}'")
                     final_job_title = fallback_job_title
-                flat_row["Должность"] = final_job_title # Присваиваем итоговую должность
-                # --- Конец определения должности ---
+                flat_row["Должность"] = final_job_title
 
+                # Обработка описания
                 desc_col_json = 'description'
                 desc_col_target = 'Описание'
-
-                # Проверяем, есть ли поле 'description' в текущей строке JSON
                 if desc_col_json in flat_row:
-                    # Копируем значение из 'description' в 'Описание'
-                    # Если 'Описание' уже есть (маловероятно на этом этапе, но на всякий случай), оно будет перезаписано
                     flat_row[desc_col_target] = flat_row[desc_col_json]
-                    # Удаляем исходное поле 'description', чтобы избежать дублирования имен позже
                     del flat_row[desc_col_json]
-                # Если 'description' нет, поле 'Описание' для этой строки JSON останется отсутствующим
-                # и позже может быть заполнено значением по умолчанию (None или "Нет данных")
+                processed_rows.append(flat_row)
 
-                processed_rows.append(flat_row) # Добавляем обработанную строку
-
-            # Создаем DataFrame для текущего файла
             df_processed = pd.DataFrame(processed_rows)
             all_json_dfs.append(df_processed)
             logger.info(f"Обработан {file_path}, строк: {len(df_processed)}")
 
-        # Обработка ошибок на уровне файла
-        except json.JSONDecodeError:
-             logger.error(f"Ошибка декодирования JSON из файла: {file_path}")
-        except Exception as e:
-             logger.error(f"Не удалось обработать файл {file_path}: {e}")
+        except json.JSONDecodeError: logger.error(f"Ошибка декодирования JSON: {file_path}")
+        except Exception as e: logger.error(f"Не удалось обработать файл {file_path}: {e}")
 
     if not all_json_dfs: logger.error("Не обработано ни одного JSON файла. Выход."); exit()
     df_json_combined = pd.concat(all_json_dfs, ignore_index=True, sort=False)
@@ -308,38 +265,58 @@ if __name__ == "__main__":
 
     # --- 1.1 Переименование itemId -> ID для JSON ---
     if 'itemId' in df_json_combined.columns:
-        logger.info(f"Переименование 'itemId' в '{ID_COLUMN}' для JSON...")
         df_json_combined.rename(columns={'itemId': ID_COLUMN}, inplace=True)
-        # Опциональная очистка префикса "№ "
-        # df_json_combined[ID_COLUMN] = df_json_combined[ID_COLUMN].astype(str).str.replace(r'^№\s*', '', regex=True)
+        logger.info(f"Переименована колонка 'itemId' в '{ID_COLUMN}'.")
     else:
-        logger.warning("Колонка 'itemId' не найдена в JSON для переименования в 'ID'.")
+        logger.warning(f"Колонка 'itemId' не найдена в JSON для переименования в '{ID_COLUMN}'.")
 
     # --- 1.2 Парсинг дат из JSON ---
     if JSON_DATE_SOURCE_COLUMN in df_json_combined.columns:
-        logger.info(f"Парсинг дат из колонки '{JSON_DATE_SOURCE_COLUMN}'...")
-        # Применяем функцию парсинга
         parsed_dates = df_json_combined[JSON_DATE_SOURCE_COLUMN].apply(parse_item_date)
-        # Форматируем результат в 'YYYY-MM-DD', NaT станут пустыми строками или NaN
-        df_json_combined[DATE_COLUMN] = parsed_dates.dt.strftime('%Y-%m-%d')
-
-        # Логирование статистики парсинга
-        total_dates_to_parse = df_json_combined[JSON_DATE_SOURCE_COLUMN].notna().sum()
-        successfully_parsed_count = df_json_combined[DATE_COLUMN].notna().sum()
-        failed_count = total_dates_to_parse - successfully_parsed_count
-        logger.info(f"Дат для парсинга: {total_dates_to_parse}. Успешно: {successfully_parsed_count}. Не удалось: {failed_count}")
-        # Можно удалить исходную колонку, если она больше не нужна
-        # df_json_combined = df_json_combined.drop(columns=[JSON_DATE_SOURCE_COLUMN])
+        df_json_combined[DATE_COLUMN] = parsed_dates.dt.strftime('%Y-%m-%d') # NaT станут NaN/пустотами
+        total_dates = df_json_combined[JSON_DATE_SOURCE_COLUMN].notna().sum()
+        success_dates = df_json_combined[DATE_COLUMN].notna().sum()
+        logger.info(f"Парсинг дат из '{JSON_DATE_SOURCE_COLUMN}': Успешно {success_dates}/{total_dates}")
     else:
-        logger.warning(f"Колонка '{JSON_DATE_SOURCE_COLUMN}' не найдена в JSON для парсинга даты.")
-        df_json_combined[DATE_COLUMN] = None # Создаем колонку с None для совместимости
+        logger.warning(f"Колонка '{JSON_DATE_SOURCE_COLUMN}' не найдена в JSON. Колонка '{DATE_COLUMN}' будет пустой для JSON.")
+        df_json_combined[DATE_COLUMN] = None
 
-    # --- 2. Очистка адресов и Параллельное геокодирование ---
-    if "address" in df_json_combined.columns:
-        logger.info("Очистка адресов и геокодирование...")
-        df_json_combined['address'] = df_json_combined['address'].apply(clean_address)
-        unique_addresses = df_json_combined['address'].dropna().unique()
-        # Геокодируем новые адреса или те, для которых в кэше нет координат
+    # --- 2. Загрузка и подготовка CSV файлов ---  (Перенесено ДО объединения)
+    all_csv_dfs = []
+    for csv_path in [GORNO_CSV_PATH, BELAZ_CSV_PATH]:
+        try:
+            df_csv = pd.read_csv(csv_path)
+            logger.info(f"Загружен {csv_path}, строк: {len(df_csv)}")
+            # Проверяем наличие необходимых колонок, добавляем с None если отсутствуют
+            if "Должность" not in df_csv.columns:
+                logger.warning(f"В {csv_path} отсутствует 'Должность'. Будет None.")
+                df_csv["Должность"] = None
+            # !!! Удалена строка добавления coords=None !!!
+            if DATE_COLUMN not in df_csv.columns:
+                logger.warning(f"В {csv_path} отсутствует '{DATE_COLUMN}'. Будет None.")
+                df_csv[DATE_COLUMN] = None
+            # Опциональный парсинг даты для CSV, если формат отличается
+            # if DATE_COLUMN in df_csv.columns:
+            #      df_csv[DATE_COLUMN] = pd.to_datetime(df_csv[DATE_COLUMN], errors='coerce').dt.strftime('%Y-%m-%d')
+            all_csv_dfs.append(df_csv)
+        except FileNotFoundError: logger.warning(f"Файл не найден: {csv_path}. Пропуск.")
+        except Exception as e: logger.error(f"Ошибка загрузки {csv_path}: {e}. Пропуск.")
+
+    # --- 3. Объединение всех данных --- (Перенесено ДО геокодирования)
+    all_dfs_to_combine = [df_json_combined] + all_csv_dfs
+    # !!! Удалена очистка адресов CSV здесь !!!
+
+    df_combined = pd.concat(all_dfs_to_combine, ignore_index=True, sort=False)
+    logger.info(f"Все данные объединены: строк={len(df_combined)}, колонок={len(df_combined.columns)}")
+
+    # --- 4. Очистка адресов и Параллельное геокодирование --- (Перенесено ПОСЛЕ объединения)
+    # Теперь применяется к df_combined
+    if "address" in df_combined.columns:
+        logger.info("Очистка адресов и геокодирование для ВСЕХ данных...")
+        # Очищаем адреса для всего датафрейма
+        df_combined['address'] = df_combined['address'].apply(clean_address)
+
+        unique_addresses = df_combined['address'].dropna().unique()
         addresses_to_geocode = [addr for addr in unique_addresses if addr not in geocoding_cache or geocoding_cache[addr][0] is None]
         cached_ok_count = len(unique_addresses) - len(addresses_to_geocode)
         logger.info(f"Уникальных адресов: {len(unique_addresses)}. Успешно в кэше: {cached_ok_count}. К обработке: {len(addresses_to_geocode)}")
@@ -360,63 +337,34 @@ if __name__ == "__main__":
                         newly_geocoded[address] = (None, address)
                         failed_addresses += 1
             logger.info(f"Геокодирование завершено. Результатов: {len(newly_geocoded)}. Ошибок координат: {failed_addresses}.")
-            logger.info("Обновление кэша...")
-            geocoding_cache.update(newly_geocoded)
-            save_geocoding_cache(GEOCODING_CACHE_CSV, geocoding_cache)
+            if newly_geocoded: # Сохраняем кэш только если были новые попытки
+                logger.info("Обновление кэша...")
+                geocoding_cache.update(newly_geocoded)
+                save_geocoding_cache(GEOCODING_CACHE_CSV, geocoding_cache)
         elif not geocoder.api_key and addresses_to_geocode:
              logger.error("Пропуск геокодирования: отсутствует API ключ.")
         else: logger.info("Нет новых адресов для геокодирования.")
 
-        # Применение координат из кэша
+        # Применение координат из ПОЛНОГО кэша к df_combined
         logger.info("Применение координат к DataFrame...")
         def get_coords_from_cache(addr, cache): return cache.get(addr, (None, None))[0]
-        df_json_combined['coords'] = df_json_combined['address'].map(lambda x: get_coords_from_cache(x, geocoding_cache))
-        logger.info(f"Строк без координат в JSON: {df_json_combined['coords'].isna().sum()}/{len(df_json_combined)}")
+        # Создаем колонку coords для ВСЕХ данных
+        df_combined['coords'] = df_combined['address'].map(lambda x: get_coords_from_cache(x, geocoding_cache))
+        logger.info(f"Строк без координат в объединенных данных: {df_combined['coords'].isna().sum()}/{len(df_combined)}")
     else:
-        logger.warning("Колонка 'address' не найдена в JSON. Геокодирование пропущено.")
-        df_json_combined['coords'] = None
+        logger.warning("Колонка 'address' не найдена в объединенных данных. Геокодирование пропущено.")
+        df_combined['coords'] = None # Добавляем пустую колонку для совместимости
 
-    # --- 3. Загрузка и подготовка CSV файлов ---
-    all_csv_dfs = []
-    for csv_path in [GORNO_CSV_PATH, BELAZ_CSV_PATH]:
-        try:
-            df_csv = pd.read_csv(csv_path)
-            logger.info(f"Загружен {csv_path}, строк: {len(df_csv)}")
-            # Проверяем и добавляем недостающие стандартные колонки для совместимости
-            if "Должность" not in df_csv.columns: df_csv["Должность"] = None
-            if 'coords' not in df_csv.columns: df_csv['coords'] = None
-            if DATE_COLUMN not in df_csv.columns: df_csv[DATE_COLUMN] = None # Добавляем колонку даты
-            # Опционально: Можно добавить парсинг даты для CSV, если она там в другом формате
-            # if DATE_COLUMN in df_csv.columns:
-                 # df_csv[DATE_COLUMN] = pd.to_datetime(df_csv[DATE_COLUMN], errors='coerce').dt.strftime('%Y-%m-%d')
-            all_csv_dfs.append(df_csv)
-        except FileNotFoundError: logger.warning(f"Файл не найден: {csv_path}. Пропуск.")
-        except Exception as e: logger.error(f"Ошибка загрузки {csv_path}: {e}. Пропуск.")
-
-    # --- 4. Объединение всех данных ---
-    all_dfs_to_combine = [df_json_combined] + all_csv_dfs
-    # Очистка адресов в CSV перед объединением
-    for i, df in enumerate(all_dfs_to_combine):
-        if i > 0 and 'address' in df.columns: df['address'] = df['address'].apply(clean_address)
-
-    df_combined = pd.concat(all_dfs_to_combine, ignore_index=True, sort=False)
-    logger.info(f"Все данные объединены: строк={len(df_combined)}, колонок={len(df_combined.columns)}")
+    # --- 5. Удаление дубликатов --- (Теперь после геокодирования)
     rows_before_dedup = len(df_combined)
-
-    # --- 4.1 Удаление дубликатов по 'link' и 'ID' (опционально) ---
-    # Приоритет удаления по LINK, затем можно по ID для оставшихся
     if LINK_COLUMN in df_combined.columns:
-        logger.info(f"Удаление дубликатов по '{LINK_COLUMN}' (оставляем первое вхождение)...")
-        # Сначала обработаем NaN в link, чтобы они не считались дубликатами друг друга
-        link_na = df_combined[LINK_COLUMN].isna()
-        df_combined.drop_duplicates(subset=[LINK_COLUMN], keep='first', inplace=True)
-        # df_combined = pd.concat([df_combined[~link_na].drop_duplicates(subset=[LINK_COLUMN], keep='first'), df_combined[link_na]]) # Более сложный вариант для сохранения всех NaN
+        logger.info(f"Удаление дубликатов по '{LINK_COLUMN}'...")
+        df_combined.drop_duplicates(subset=[LINK_COLUMN], keep='first', inplace=True, ignore_index=True) # ignore_index для перестройки индекса
         logger.info(f"Строк после удаления дубликатов по '{LINK_COLUMN}': {len(df_combined)}")
 
-    # Опционально: дополнительное удаление дубликатов по ID для тех, у кого link мог быть одинаковым или отсутствовать
     if ID_COLUMN in df_combined.columns:
-         logger.info(f"Дополнительное удаление дубликатов по '{ID_COLUMN}' (оставляем первое вхождение)...")
-         id_na = df_combined[ID_COLUMN].isna() | (df_combined[ID_COLUMN] == '') | (df_combined[ID_COLUMN] == 'ID отсутствует') # Не удаляем дубликаты отсутствующих ID
+         logger.info(f"Дополнительное удаление дубликатов по '{ID_COLUMN}'...")
+         id_na = df_combined[ID_COLUMN].isna() | (df_combined[ID_COLUMN] == '') | (df_combined[ID_COLUMN] == 'ID отсутствует')
          df_combined_valid_id = df_combined[~id_na]
          df_combined_invalid_id = df_combined[id_na]
          df_combined_valid_id.drop_duplicates(subset=[ID_COLUMN], keep='first', inplace=True)
@@ -424,9 +372,10 @@ if __name__ == "__main__":
          logger.info(f"Строк после дополнительного удаления дубликатов по '{ID_COLUMN}': {len(df_combined)}")
 
     rows_after_dedup = len(df_combined)
-    logger.info(f"Всего удалено дубликатов: {rows_before_dedup - rows_after_dedup}")
-    
-    # --- 5. Формирование итогового DataFrame ---
+    if rows_before_dedup > rows_after_dedup:
+        logger.info(f"Всего удалено дубликатов: {rows_before_dedup - rows_after_dedup}")
+
+    # --- 6. Формирование итогового DataFrame ---
     df_final = pd.DataFrame()
     logger.info("Формирование итогового DataFrame...")
     missing_cols = []
@@ -437,47 +386,48 @@ if __name__ == "__main__":
 
     df_final = df_final[FINAL_COLUMNS] # Гарантируем порядок
 
+    # --- 7. Финальная обработка и очистка ---
+    # Удаление строк с невалидными датами
     if DATE_COLUMN in df_final.columns:
         rows_before_dropna = len(df_final)
-        # .notna() вернет False для pd.NaT и np.nan
-        df_final = df_final[df_final[DATE_COLUMN].notna()].copy() # Используем .copy() чтобы избежать SettingWithCopyWarning
+        df_final = df_final[df_final[DATE_COLUMN].notna()].copy()
         rows_after_dropna = len(df_final)
         if rows_before_dropna > rows_after_dropna:
-             logger.info(f"Удалено {rows_before_dropna - rows_after_dropna} строк с отсутствующими/нераспарсенными датами (NaT/NaN в колонке '{DATE_COLUMN}').")
-        else:
-             logger.info(f"Не найдено строк с отсутствующими/нераспарсенными датами для удаления.")
+             logger.info(f"Удалено {rows_before_dropna - rows_after_dropna} строк с отсутствующими датами.")
     else:
         logger.warning(f"Колонка '{DATE_COLUMN}' не найдена, пропуск удаления строк по дате.")
 
-    # --- 5.1 Замена отсутствующих ID ---
+    # Замена пропусков ID
     if ID_COLUMN in df_final.columns:
-         logger.info(f"Замена пропусков в '{ID_COLUMN}' на 'ID отсутствует'...")
-         # Заменяем NaN, None и пустые строки
          condition = df_final[ID_COLUMN].isna() | (df_final[ID_COLUMN] == '')
          replaced_count = condition.sum()
          df_final.loc[condition, ID_COLUMN] = "ID отсутствует"
          logger.info(f"Заменено {replaced_count} пропусков в '{ID_COLUMN}'.")
 
-    # --- 5.2 Общая замена остальных пропущенных значений ---
-    # Включая NaT в колонке 'date', которые станут "Нет данных"
+    # Общая замена остальных пропусков
     logger.info("Замена остальных пропусков (NaN/NaT/None) на 'Нет данных'...")
     df_final = df_final.fillna("Нет данных")
 
+    # Приведение к строковому типу
     cols_to_stringify = ['Описание', 'Опыт работы']
     for col in cols_to_stringify:
         if col in df_final.columns:
-            logger.info(f"Принудительное преобразование колонки '{col}' в строковый тип (str)...")
             df_final[col] = df_final[col].astype(str)
-        else:
-            logger.warning(f"Колонка '{col}' для преобразования в строку не найдена.")
+            logger.info(f"Колонка '{col}' преобразована в строку.")
 
     logger.info(f"Итоговый DataFrame: строк={len(df_final)}, колонок={len(df_final.columns)}")
     logger.info(f"Колонки: {df_final.columns.tolist()}")
     print("\nПредпросмотр итогового DataFrame (первые 5 строк):")
-    print(df_final.head().to_markdown(index=False)) # Вывод в формате Markdown для лучшей читаемости
+    print(df_final.head().to_markdown(index=False)) # Вывод в формате Markdown
 
-    # --- 6. Сохранение результата ---
+    # --- 8. Сохранение результата ---
     try:
+        # Создаем директорию для выходного файла, если ее нет
+        output_dir = os.path.dirname(OUTPUT_CSV_PATH)
+        if output_dir and not os.path.exists(output_dir):
+            os.makedirs(output_dir)
+            logger.info(f"Создана директория для вывода: {output_dir}")
+
         df_final.to_csv(OUTPUT_CSV_PATH, index=False, encoding='utf-8-sig')
         logger.info(f"Итоговый DataFrame успешно сохранен в {OUTPUT_CSV_PATH}")
     except Exception as e:
