@@ -55,6 +55,7 @@ if "df_weights" not in st.session_state:
 if 'current_threshold' not in st.session_state:
     st.session_state['current_threshold'] = config["model"]["stage_2"]["score_threshold"]
 
+
 def update_address_weight_callback():
     """Обновляет вес 'Адрес' в df_weights на основе галочки 'Вахта'."""
     try:
@@ -78,6 +79,7 @@ def update_address_weight_callback():
                 st.session_state.original_address_weight = current_weight
                 df.loc[address_index, 'Вес'] = 0.0
                 st.toast("Вес 'Адрес' установлен в 0 (Вахта).", icon="⚠️") # Уведомление
+
         else:
             # Галочка ВЫКЛЮЧЕНА
             # Восстанавливаем оригинальный вес, если он был сохранен
@@ -86,6 +88,7 @@ def update_address_weight_callback():
                 if current_weight == 0.0:
                      df.loc[address_index, 'Вес'] = st.session_state.original_address_weight
                      st.toast(f"Вес 'Адрес' восстановлен: {st.session_state.original_address_weight}", icon="👍")
+
             # Если оригинальный вес не сохранен (маловероятно), ничего не делаем
 
         # Обновляем DataFrame в session_state, чтобы data_editor перерисовался
@@ -207,7 +210,7 @@ if st.button("Подобрать", type="primary"):
         if mode == str(Mode.PROF):
             pass
         else:
-            df_cv = load_data(f"./data_mass/candidates.csv")
+            df_cv = load_data(f"./data_mass/candidates_new.csv")
             df_cv = df_cv.rename(columns={"address": "Адрес"})
         with st.status("Подготовка вакансии..."):
             vacancy = selector.preprocess_vacancy(vacancy)
@@ -226,27 +229,18 @@ if st.button("Подобрать", type="primary"):
                     max_distance_filter = float(selected_option)
 
                 ############### Обработка плашки ВАХТЫ ###############
-                weights_to_use = st.session_state["df_weights"].copy()
                 # Состояние галочки "Вахта"
                 is_vahta = st.session_state.get("vahta_mode", False)
-
+                
+                save_first_stage_weights = config["model"]["stage_1"]["weights"]
                 if is_vahta:
-                    # Если "Вахта", то "Адрес" ставим вес 0
-                    try:
-                        address_index = weights_to_use.index[weights_to_use['Компонента'] == 'Адрес'].tolist()
-                        if address_index:
-                            weights_to_use.loc[address_index[0], 'Вес'] = 0.0
-                            # st.sidebar.info("Режим 'Вахта': Вес 'Адрес' временно установлен в 0 для расчета.", icon="⚠️")
-                        else:
-                            st.sidebar.warning("Компонент 'Адрес' не найден в таблице весов.")
-                    except Exception as e:
-                         st.sidebar.error(f"Ошибка при обнулении веса 'Адрес': {e}")
-
-                #############################################
+                    # Если галочка включена, устанавливаем вес "Адрес" в 0
+                    save_first_stage_weights[1] = 0.0
 
                 df_ranked_1st = selector.rank_first_stage(
                     vacancy=vacancy, df_relevant=df_cv.copy(),
-                    date_threshold=selected_date_threshold, is_vahta=is_vahta, max_distance_filter=max_distance_filter
+                    date_threshold=selected_date_threshold, is_vahta=is_vahta, max_distance_filter=max_distance_filter,
+                    first_stage_weights=np.array(save_first_stage_weights),
                 )
                 st.write(f"Вторая фаза: анализ {df_ranked_1st.shape[0]} кандидатов..")
 

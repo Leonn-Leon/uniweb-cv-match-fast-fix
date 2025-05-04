@@ -69,11 +69,15 @@ class MassCvSelector(CvSelector):
     def __filter_1_stage(
         self, date: date, availability: str, days_thresh: int
     ):
-        if datetime.now().date() - timedelta(days=days_thresh) > date:
+        try:
+            if datetime.now().date() - timedelta(days=days_thresh) > date:
+                return False
+            if availability == "Нет":
+                return False
+            return True
+        except Exception as e:
+            logger.error(f"Error in __filter_1_stage: {e}, date: {date}")
             return False
-        if availability == "Нет":
-            return False
-        return True
 
     def __score_move(self, move: str, dist: float, dist_thresh: float = 50):
         if dist < dist_thresh:
@@ -222,9 +226,9 @@ class MassCvSelector(CvSelector):
         for cat in tqdm(
             [
                 "Навыки",
-                "опыт работы",
-                "образование",
-                "категория прав",
+                "Опыт работы",
+                "Образование",
+                "Категория прав",
             ]
         ):
             info = "[SEP]".join(
@@ -314,7 +318,8 @@ class MassCvSelector(CvSelector):
         return result_scores
 
     def rank_first_stage(self, vacancy: Dict, df_relevant: pd.DataFrame,
-                         date_threshold: datetime.date, is_vahta: bool, max_distance_filter: float):
+                         date_threshold: datetime.date, is_vahta: bool, max_distance_filter: float,
+                         first_stage_weights: np.ndarray) -> pd.DataFrame:
         """
         Первый этап ранжирования:
         1. Фильтрует дубликаты, обрабатывает даты/адреса.
@@ -341,7 +346,7 @@ class MassCvSelector(CvSelector):
 
         # Имена колонок из конфига для читаемости
         date_col = self.cluster_match_features[2]
-        address_col = self.text_features[1] # address_short
+        address_col = self.text_features[1] # address
         move_col = self.cluster_match_features[0] # Переезд
         distance_sim_col = self.cluster_match_features[1] # Схожесть по расстоянию
 
@@ -576,7 +581,8 @@ class MassCvSelector(CvSelector):
             for col in missing_sim_cols:
                 df_filtered_final[col] = 0.0 # Присваиваем 0, чтобы избежать ошибки
 
-        total_weight = self.first_stage_weights.sum()
+        logger.info(f"First stage weights: {first_stage_weights}")
+        total_weight = first_stage_weights.sum()
         if total_weight == 0:
             logger.warning("Total weight for first stage score is zero.")
             df_filtered_final["sim_score_first"] = 0.0
@@ -584,7 +590,7 @@ class MassCvSelector(CvSelector):
             try:
                  sim_matrix = df_filtered_final[features_rank].values
                  df_filtered_final["sim_score_first"] = (
-                     np.dot(sim_matrix, self.first_stage_weights)
+                     np.dot(sim_matrix, first_stage_weights)
                      / total_weight
                  )
                  logger.info("Calculated final sim_score_first.")
@@ -663,20 +669,27 @@ class MassCvSelector(CvSelector):
         df_relevant["Описание"] = df_relevant["Описание"].fillna("Нет данных").replace("\n\n", "\n")
         new_cats = {}
         for cat in self.cats_find_cv:
-            corpus = [
-                "[SEP]".join(
-                    [
-                        df_relevant.iloc[i]["Описание"] + "\n" + df_relevant.iloc[i]["Опыт работы"]
-                            + "\n" + df_relevant.iloc[i]["Категория прав"]
-                            + "\n" + df_relevant.iloc[i]["Образование"],
-                        ModeInfo.CV,
-                        cat,
-                        self.category_desc.get(cat, "None"),
-                        "None"
+            corpus = []
+            for i in range(df_relevant.shape[0]):
+                try:
+                    corpus += [
+                        "[SEP]".join(
+                            [
+                                df_relevant.iloc[i]["Описание"] + "\n" + df_relevant.iloc[i]["Опыт работы"]
+                                    + "\n" + df_relevant.iloc[i]["Категория прав"]
+                                    + "\n" + df_relevant.iloc[i]["Образование"],
+                                ModeInfo.CV,
+                                cat,
+                                self.category_desc.get(cat, "None"),
+                                "None"
+                            ]
+                        )
                     ]
-                )
-                for i in range(df_relevant.shape[0])
-            ]
+                except Exception as e:
+                    logger.error(f"Error creating corpus for category '{cat}': {e}")
+                    logger.debug(f"DataFrame columns: {df_relevant.columns.tolist()}")
+                    logger.debug(f"Row data: {df_relevant.iloc[i].to_dict()}")
+                    continue
             new_cats[cat] = process_corpus(corpus=corpus, func=self.find_info)
             found_values = []
             for i in range(df_relevant.shape[0]):

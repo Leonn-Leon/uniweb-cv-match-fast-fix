@@ -1,0 +1,4531 @@
+[
+  {
+    "title": "Администратор",
+    "salary": "не указана",
+    "phone": "8 995 XXX-XX-XX",
+    "address": "ул. Комбайностроителей, 8А, р-н Железнодорожный",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "",
+      "Стаж работы": "1 год",
+      "Пол": "Женский",
+      "Возраст": "20 лет",
+      "Сфера деятельности": "Административная работа",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [
+        "Красноярский колледж сферы услуг и предпринимательства, Красноярск (ККСУиП) Менеджер"
+      ],
+      "Опыт работы": [
+        "2 месяца  Февраль 2025 — Март 2025 | \"Ветлаб\", Администратор  Опыт работы включает работу с программами 1С и МПоиск, а также взаимодействие с курьерами и клиниками. Задачи включали принятие звонков от ветеринарных клиник с просьбой отправить курьера для забора анализов на обследование, а затем постановку задачи курьеру в программе.",
+        "5 месяцев  Август 2024 — Декабрь 2024 | ООО \"Яндекс. Еда\", Оператор контакного центра логистики  Опыт работы в поддержке бизнеса на удаленной основе.",
+        "3 месяца  Май 2024 — Июль 2024 | Детский бассейн \"Облака сити\", Администратор  Запись клиентов на занятия, продажа абонементов, работа в программе СРМ, обзвон потенциальных клиентов для приглашения на пробное занятие.",
+        "7 месяцев  Июль 2023 — Январь 2024 | ИП МОИСЕЕВ М.Д \"Элюсити\", Продавец-кассир  Опыт работы включает обслуживание клиентов, выкладку товара, работу с денежными средствами и использование программы 1С."
+      ]
+    },
+    "source": "avito",
+    "link": "/krasnoyarsk/rezume/administrator_7319727788",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7319727788",
+      "itemDate": " · 18 апреля в 16:51"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:16:01.510421"
+      }
+    ]
+  },
+  {
+    "title": "Кассиром",
+    "salary": "не указана",
+    "phone": "8 950 XXX-XX-XX",
+    "address": "Красноярск, проспект 60 лет Образования СССР, 62",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "",
+      "Стаж работы": "Без опыта",
+      "Пол": "Женский",
+      "Возраст": "23 года",
+      "Сфера деятельности": "Без опыта, студенты",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [
+        "Есть"
+      ],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [
+        "Среднее"
+      ],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/krasnoyarsk/rezume/kassirom_7269031259",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7269031259",
+      "itemDate": " · 27 апреля в 20:13"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:16:01.652392"
+      }
+    ]
+  },
+  {
+    "title": "Продавец-консультант",
+    "salary": "Зарплата не указана",
+    "phone": "8 983 XXX-XX-XX",
+    "address": "Красноярский край, Сосновоборск",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "Да",
+      "Стаж работы": "Без опыта",
+      "Пол": "Мужской",
+      "Возраст": "26 лет",
+      "Сфера деятельности": "Продажи",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [
+        "Есть"
+      ],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/krasnoyarskiy_kray_sosnovoborsk/rezume/prodavets-konsultant_7331202413",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7331202413",
+      "itemDate": " · 24 апреля в 19:04"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:16:01.794943"
+      }
+    ]
+  },
+  {
+    "title": "Сотрудник торгового зала С",
+    "salary": "не указана",
+    "phone": "8 961 XXX-XX-XX",
+    "address": "Красноярск, Свердловская улица, 15Б",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "Да",
+      "Стаж работы": "Без опыта",
+      "Пол": "Женский",
+      "Возраст": "21 год",
+      "Сфера деятельности": "Продажи",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [
+        "Нет"
+      ],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/krasnoyarsk/rezume/sotrudnik_torgovogo_zala_s_7316451658",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7316451658",
+      "itemDate": " · 23 апреля в 17:37"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:16:01.933222"
+      }
+    ]
+  },
+  {
+    "title": "Монтаж ворота лестницы сваи пилорамы навесы опыт",
+    "salary": "3 333 ₽",
+    "phone": "8 904 XXX-XX-XX",
+    "address": "Красноярский край, г.о. Красноярск, Центральный район, пл. Революции",
+    "description": "сварщик сборщик монтажник опыт.ангары навесы касоуры лестницы воротам Откатные распашные. читаю чертежи. работаю всем электроинструментом. ЗП каждый день. любой район края. работаю только с русскими.",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "",
+      "Стаж работы": "9 лет",
+      "Пол": "Мужской",
+      "Возраст": "44 года",
+      "Сфера деятельности": "Строительство",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Гражданство — Россия"
+      ],
+      "Медкнижка": [],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [
+        "Год окончания: 2016, Ксмт  Монтаж"
+      ],
+      "Опыт работы": [
+        "9 лет и 1 месяц  Апрель 2016 — Апрель 2025, АО стал конструкция, Монтажник мк  сварка монаж"
+      ]
+    },
+    "source": "avito",
+    "link": "/krasnoyarsk/rezume/montazh_vorota_lestnitsy_svai_piloramy_navesy_opyt_7338599468",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7338599468",
+      "itemDate": " · 25 апреля в 07:25"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:16:02.076541"
+      }
+    ]
+  },
+  {
+    "title": "Оделчик",
+    "salary": "Зарплата не указана",
+    "phone": "8 901 XXX-XX-XX",
+    "address": "Красноярск, микрорайон Северо-Западный, улица Тотмина, 21",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "",
+      "Стаж работы": "Без опыта",
+      "Пол": "Мужской",
+      "Возраст": "33 года",
+      "Сфера деятельности": "Строительство",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Гражданство — Таджикистан",
+        "Разрешение на работу в России — Да"
+      ],
+      "Медкнижка": [],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [
+        "Среднее"
+      ],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/krasnoyarsk/rezume/odelchik_7263864448",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7263864448",
+      "itemDate": " · 27 апреля в 21:24"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:16:02.217790"
+      }
+    ]
+  },
+  {
+    "title": "Повар холодного цеха",
+    "salary": "",
+    "phone": "8 983 XXX-XX-XX",
+    "address": "Норильск",
+    "description": "Я работала в холодном цеху\nТак же хорошо стою на линии раздачи\nТак же заготовки .",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "Да",
+      "Стаж работы": "Без опыта",
+      "Пол": "Женский",
+      "Возраст": "40 лет",
+      "Сфера деятельности": "Туризм, рестораны",
+      "График работы": "Вахтовый метод"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [
+        "Есть"
+      ],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [
+        "Среднее специальное"
+      ],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/norilsk/rezume/povar_holodnogo_tseha_7352288791",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7352288791",
+      "itemDate": " · 24 апреля в 05:24"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:16:02.361251"
+      }
+    ]
+  },
+  {
+    "title": "Кладовщик",
+    "salary": "не указана",
+    "phone": "8 923 XXX-XX-XX",
+    "address": "Красноярский край, Канск, улица 40 лет Октября, 1/6",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "Нет",
+      "Стаж работы": "Без опыта",
+      "Пол": "Мужской",
+      "Возраст": "35 лет",
+      "Сфера деятельности": "Транспорт, логистика",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [
+        "Нет"
+      ],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [
+        "Высшее"
+      ],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/kansk/rezume/kladovschik_7353270828",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7353270828",
+      "itemDate": " · 29 апреля в 13:55"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:16:02.503190"
+      }
+    ]
+  },
+  {
+    "title": "Стропальщик",
+    "salary": "не указана",
+    "phone": "8 933 XXX-XX-XX",
+    "address": "Красноярский край, Назарово, 9-й микрорайон",
+    "description": "Стропальщик 4 разряда все документы есть , вредных превычек нет .",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "",
+      "Стаж работы": "Без опыта",
+      "Пол": "Мужской",
+      "Возраст": "22 года",
+      "Сфера деятельности": "Строительство",
+      "График работы": "Вахтовый метод"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Гражданство — Россия"
+      ],
+      "Медкнижка": [],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [
+        "Среднее специальное"
+      ],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/nazarovo/rezume/stropalschik_7249704026",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7249704026",
+      "itemDate": " · 27 апреля в 20:17"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:16:02.643267"
+      }
+    ]
+  },
+  {
+    "title": "Пожарный",
+    "salary": "Зарплата не указана",
+    "phone": "8 913 XXX-XX-XX",
+    "address": "Красноярский край, Таймырский Долгано-Ненецкий район, сельское поселение Караул",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "Нет",
+      "Стаж работы": "Без опыта",
+      "Пол": "Мужской",
+      "Возраст": "35 лет",
+      "Сфера деятельности": "Госслужба, НКО",
+      "График работы": "Вахтовый метод"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [
+        "Санкт-Петербургский университет Государственной противопожарной службы МЧС Российской Федерации, Санкт-Петербург (СПб УГПС МЧС РФ)  Пожарная безопасность"
+      ],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/norilsk/rezume/pozharnyy_7292421374",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7292421374",
+      "itemDate": " · 22 апреля в 00:51"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:16:02.781545"
+      }
+    ]
+  },
+  {
+    "title": "Монтажник",
+    "salary": "не указана",
+    "phone": "8 967 XXX-XX-XX",
+    "address": "Красноярский край, Шарыпово",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "Да",
+      "Стаж работы": "Без опыта",
+      "Пол": "Мужской",
+      "Возраст": "43 года",
+      "Сфера деятельности": "Строительство",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/sharypovo/rezume/montazhnik_7316632254",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7316632254",
+      "itemDate": " · 20 апреля в 15:05"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:16:02.925077"
+      }
+    ]
+  },
+  {
+    "title": "Резюме на вакансию Продавец в Саянском",
+    "salary": "Зарплата не указана",
+    "phone": "8 983 XXX-XX-XX",
+    "address": "Красноярский край, Рыбинский район, городское поселение Саянский, посёлок городского типа Саянский, Комсомольская улица",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа, Подработка",
+      "Может выйти завтра": "Да",
+      "Стаж работы": "Без опыта",
+      "Пол": "Женский",
+      "Возраст": "20 лет",
+      "Сфера деятельности": "Продажи",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [
+        "Есть"
+      ],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [
+        "Среднее"
+      ],
+      "Опыт работы": [
+        "Я не работала"
+      ]
+    },
+    "source": "avito",
+    "link": "/sayanskiy/rezume/prodavets_7337461885",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7337461885",
+      "itemDate": " · 22 апреля в 13:30"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:16:03.065217"
+      }
+    ]
+  },
+  {
+    "title": "Психолог, помощник психоло",
+    "salary": "Зарплата не указана",
+    "phone": "8 902 XXX-XX-XX",
+    "address": "Красноярский край, Эвенкийский район",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа, Подработка",
+      "Может выйти завтра": "Да",
+      "Стаж работы": "Без опыта",
+      "Пол": "Женский",
+      "Возраст": "34 года",
+      "Сфера деятельности": "Консультирование",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Гражданство — Россия"
+      ],
+      "Медкнижка": [],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/baykit/rezume/psiholog_pomoschnik_psiholo_7314065988",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7314065988",
+      "itemDate": " · 29 апреля в 17:33"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:16:03.282665"
+      }
+    ]
+  },
+  {
+    "title": "Грузчик",
+    "salary": "не указана",
+    "phone": "8 902 XXX-XX-XX",
+    "address": "Красноярск, улица Лесников, 31",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "",
+      "Стаж работы": "Без опыта",
+      "Пол": "Женский",
+      "Возраст": "22 года",
+      "Сфера деятельности": "Без опыта, студенты",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [
+        "Нет"
+      ],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [
+        "Среднее"
+      ],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/krasnoyarsk/rezume/gruzchik_7284495636",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7284495636",
+      "itemDate": " · 27 апреля в 20:25"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:16:03.422800"
+      }
+    ]
+  },
+  {
+    "title": "Упаковщик",
+    "salary": "не указана",
+    "phone": "8 913 XXX-XX-XX",
+    "address": "Красноярск, улица Светлова, 40",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "",
+      "Стаж работы": "Без опыта",
+      "Пол": "Женский",
+      "Возраст": "42 года",
+      "Сфера деятельности": "Без опыта, студенты",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [
+        "Нет"
+      ],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [
+        "Профучилище  Швея"
+      ],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/krasnoyarsk/rezume/upakovschik_7264479854",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7264479854",
+      "itemDate": " · 27 апреля в 20:54"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:16:03.564159"
+      }
+    ]
+  },
+  {
+    "title": "Социальный работник, прода",
+    "salary": "Зарплата не указана",
+    "phone": "8 983 XXX-XX-XX",
+    "address": "Красноярский край, Минусинский район, Новотроицкий сельсовет, деревня Быстрая, улица Гагарина, 2",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "Нет",
+      "Стаж работы": "Без опыта",
+      "Пол": "Женский",
+      "Возраст": "35 лет",
+      "Сфера деятельности": "Продажи",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [
+        "Есть"
+      ],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/minusinsk/rezume/sotsialnyy_rabotnik_proda_7347373987",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7347373987",
+      "itemDate": " · 28 апреля в 17:04"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:16:03.703946"
+      }
+    ]
+  },
+  {
+    "title": "Монтажник технологических трубопроводов",
+    "salary": "не указана",
+    "phone": "8 913 XXX-XX-XX",
+    "address": "Красноярский край, Шушенский р-н, пгт. Шушенское, ул. Пушкина",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "",
+      "Стаж работы": "5 лет",
+      "Пол": "Мужской",
+      "Возраст": "29 лет",
+      "Сфера деятельности": "Строительство",
+      "График работы": "Вахтовый метод"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [
+        "Среднее"
+      ],
+      "Опыт работы": [
+        "5 лет и 2 месяца  Апрель 2020 — настоящее время | Монтажник ТТ 5р, Монтажник ТТ 5р  Монтаж ТТ, стропальщик, газорезчик, официально,записи в трудовой книжке."
+      ]
+    },
+    "source": "avito",
+    "link": "/shushenskoe/rezume/montazhnik_tehnologicheskih_truboprovodov_7300454548",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7300454548",
+      "itemDate": " · 24 апреля в 11:16"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:16:03.843627"
+      }
+    ]
+  },
+  {
+    "title": "Детейлер",
+    "salary": "75 000 ₽",
+    "phone": "8 950 XXX-XX-XX",
+    "address": "Краснодарская ул., 40/3, р-н Советский",
+    "description": "Готов учиться новому, большой интерес к автомобилям, развиваюсь",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "",
+      "Стаж работы": "2 года",
+      "Пол": "Мужской",
+      "Возраст": "20 лет",
+      "Сфера деятельности": "Автомобильный бизнес",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [
+        "Среднее"
+      ],
+      "Опыт работы": [
+        "1 год и 3 месяца  Март 2024 — настоящее время | Вираж, Кладовщик  Выдача товара ЮР лицам",
+        "3 месяца  Сентябрь 2023 — Ноябрь 2023 | Автотрейд, Кладовщик  Выдача товара",
+        "1 год и 6 месяцев  Январь 2022 — Июнь 2023 | Ведомсвенная охрана, Стрелок  Сопровождал груз"
+      ]
+    },
+    "source": "avito",
+    "link": "/krasnoyarsk/rezume/deteyler_7266140420",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7266140420",
+      "itemDate": " · 26 апреля в 00:21"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:16:03.987070"
+      }
+    ]
+  },
+  {
+    "title": "Водитель",
+    "salary": "120 000 ₽",
+    "phone": "8 923 XXX-XX-XX",
+    "address": "Красноярский край, Красноярск, ул. Рокоссовского, 22",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа, Подработка",
+      "Может выйти завтра": "Да",
+      "Стаж работы": "1 год",
+      "Пол": "Мужской",
+      "Возраст": "26 лет",
+      "Сфера деятельности": "Транспорт, логистика",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Таджикистан",
+        "Разрешение на работу в России — Да"
+      ],
+      "Медкнижка": [],
+      "Свой транспорт": [
+        "Нет"
+      ],
+      "Категория прав": [
+        "B",
+        "C"
+      ],
+      "Водительское удостоверение": [
+        "Есть"
+      ],
+      "Учебные заведения": [
+        "Среднее"
+      ],
+      "Опыт работы": [
+        "1 год и 10 месяцев  Январь 2023 — Октябрь 2024 | Яндекс такси, Водитель  работал такси"
+      ]
+    },
+    "source": "avito",
+    "link": "/krasnoyarsk/rezume/voditel_7329628733",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7329628733",
+      "itemDate": " · 24 апреля в 20:37"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:16:04.131343"
+      }
+    ]
+  },
+  {
+    "title": "Машинист тепловоза",
+    "salary": "не указана",
+    "phone": "8 912 XXX-XX-XX",
+    "address": "Байкит",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "",
+      "Стаж работы": "Без опыта",
+      "Пол": "Мужской",
+      "Возраст": "42 года",
+      "Сфера деятельности": "Транспорт, логистика",
+      "График работы": "Вахтовый метод"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [],
+      "Свой транспорт": [
+        "Нет"
+      ],
+      "Категория прав": [
+        "B"
+      ],
+      "Водительское удостоверение": [
+        "Есть"
+      ],
+      "Учебные заведения": [],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/baykit/rezume/mashinist_teplovoza_7265367712",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7265367712",
+      "itemDate": " · 27 апреля в 21:27"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:16:04.271825"
+      }
+    ]
+  },
+  {
+    "title": "Водитель-экспедитор",
+    "salary": "не указана",
+    "phone": "8 928 XXX-XX-XX",
+    "address": "Красноярский край, Дудинка",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "",
+      "Стаж работы": "От 3 лет",
+      "Пол": "Мужской",
+      "Возраст": "43 года",
+      "Сфера деятельности": "Транспорт, логистика",
+      "График работы": "Вахтовый метод"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [],
+      "Свой транспорт": [],
+      "Категория прав": [
+        "CE"
+      ],
+      "Водительское удостоверение": [
+        "Есть"
+      ],
+      "Учебные заведения": [],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/dudinka/rezume/voditel-ekspeditor_7279248932",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7279248932",
+      "itemDate": " · 18 апреля в 00:23"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:16:04.411588"
+      }
+    ]
+  },
+  {
+    "title": "Охранник вахта 45/45, коменда",
+    "salary": "не указана",
+    "phone": "8 923 XXX-XX-XX",
+    "address": "Красноярский край, городской посёлок Северо-Енисейский, улица Ленина",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "Нет",
+      "Стаж работы": "Без опыта",
+      "Пол": "Женский",
+      "Возраст": "37 лет",
+      "Сфера деятельности": "Охрана, безопасность",
+      "График работы": "Вахтовый метод"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Гражданство — Россия"
+      ],
+      "Медкнижка": [],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/severo-eniseyskiy/rezume/ohrannik_vahta_4545_komenda_7285024951",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7285024951",
+      "itemDate": " · 13 апреля в 02:11"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:16:04.550559"
+      }
+    ]
+  },
+  {
+    "title": "Повар",
+    "salary": "Зарплата не указана",
+    "phone": "8 950 XXX-XX-XX",
+    "address": "Красноярск, р-н Центральный",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "",
+      "Стаж работы": "Без опыта",
+      "Пол": "Женский",
+      "Возраст": "32 года",
+      "Сфера деятельности": "Туризм, рестораны",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [
+        "Есть"
+      ],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/krasnoyarsk/rezume/povar_7285728556",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7285728556",
+      "itemDate": " · 27 апреля в 21:28"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:16:04.689243"
+      }
+    ]
+  },
+  {
+    "title": "Упаковщиком",
+    "salary": "не указана",
+    "phone": "8 950 XXX-XX-XX",
+    "address": "городской округ Красноярск, Ленинский район, р-н Ленинский",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "",
+      "Стаж работы": "Без опыта",
+      "Пол": "Мужской",
+      "Возраст": "19 лет",
+      "Сфера деятельности": "Без опыта, студенты",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Гражданство — Россия"
+      ],
+      "Медкнижка": [],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/krasnoyarsk/rezume/upakovschikom_7280556659",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7280556659",
+      "itemDate": " · 27 апреля в 20:52"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:16:04.829478"
+      }
+    ]
+  },
+  {
+    "title": "Грузчик разнорабочий охранник",
+    "salary": "не указана",
+    "phone": "8 983 XXX-XX-XX",
+    "address": "Красноярский край, Минусинск, ул. Ванеева, 6",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "",
+      "Стаж работы": "2 года",
+      "Пол": "Мужской",
+      "Возраст": "37 лет",
+      "Сфера деятельности": "Без опыта, студенты",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [
+        "Нет"
+      ],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [
+        "Ру 36  Газоэлектросварщик"
+      ],
+      "Опыт работы": [
+        "2 года и 1 месяц  Апрель 2019 — Апрель 2021 | Ооо старт, Мантажник  монтажник"
+      ]
+    },
+    "source": "avito",
+    "link": "/minusinsk/rezume/gruzchik_raznorabochiy_ohrannik_7289923362",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7289923362",
+      "itemDate": " · 9 апреля в 11:54"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:16:04.970373"
+      }
+    ]
+  },
+  {
+    "title": "Торговый представитель",
+    "salary": "Зарплата не указана",
+    "phone": "8 923 XXX-XX-XX",
+    "address": "Красноярск, микрорайон Черёмушки, Тобольская улица, 35А",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "",
+      "Стаж работы": "Без опыта",
+      "Пол": "Женский",
+      "Возраст": "41 год",
+      "Сфера деятельности": "Продажи",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [
+        "Нет"
+      ],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/krasnoyarsk/rezume/torgovyy_predstavitel_7278714444",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7278714444",
+      "itemDate": " · 11 апреля в 06:50"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:16:05.108012"
+      }
+    ]
+  },
+  {
+    "title": "Начинающий специалист",
+    "salary": "40 000 ₽",
+    "phone": "8 913 XXX-XX-XX",
+    "address": "Красноярский край, Красноярск, ул. Ладо Кецховели, 58Б",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "",
+      "Стаж работы": "1 год",
+      "Пол": "Женский",
+      "Возраст": "23 года",
+      "Сфера деятельности": "Консультирование",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [
+        "Сосновоборский механико-технологический техникум, Сосновоборск (СМТТ) Экономика и бухучёт"
+      ],
+      "Опыт работы": [
+        "3 месяца  Ноябрь 2024 — Январь 2025 | АО АльфаСтрахование, Специалист прямых продаж  Обязанности: - Консультирование клиентов по условиям страхования - Заключение и продление договоров, внесение изменений в действующие, расторжение при необходимости - Выявление потребностей клиентов - Подбор программы страхования с учетом запросов клиента - Отработка возражений - Регулярная работа с ежедневной отчетностью",
+        "8 месяцев  Январь 2024 — Август 2024 | ПАО Мегафон, Менеджер по продажам  Обязанности: - Консультирование клиентов по товарам, тарифам и текущим акциям - Подбор индивидуальных условий тарифов - Отработка возражений - Оформление кредитов и рассрочек - Выполнение административных задач",
+        "10 месяцев  Март 2023 — Декабрь 2023 | ФГП ВО ЖДТ России, Стрелок  Обязанности: - Работа с внутренней документацией - Осмотр поездов с целью проверки безопасности и соответствия документации - Осуществление видеонаблюдения за объектами транспортной инфраструктуры"
+      ]
+    },
+    "source": "avito",
+    "link": "/krasnoyarsk/rezume/nachinayuschiy_spetsialist_7263135987",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7263135987",
+      "itemDate": " · 31 марта в 14:22"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:16:05.250800"
+      }
+    ]
+  },
+  {
+    "title": "Монтажник стальных и железобетонных конструкций",
+    "salary": "не указана",
+    "phone": "8 967 XXX-XX-XX",
+    "address": "Красноярский край, Эвенкийский р-н",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "Нет",
+      "Стаж работы": "12 лет",
+      "Пол": "Мужской",
+      "Возраст": "37 лет",
+      "Сфера деятельности": "Строительство",
+      "График работы": "Вахтовый метод"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [
+        "Среднее"
+      ],
+      "Опыт работы": [
+        "10 лет монтажник стальных и железобетонных конструкций, строительство мостов",
+        "2 года  Июнь 2023 — настоящее время | АО \"центрально-кольская экспедиция\", Помощник машиниста буровой установки  Геолого-разведка",
+        "5 лет и 6 месяцев  Январь 2018 — Июнь 2023 | ООО \"виадук-м\", Монтажник стальных и железобетонных конструкций  Строительство мостов",
+        "5 лет и 1 месяц  Июнь 2009 — Июнь 2014 | ЗАО \" строй мост монтаж, Монтажник стальных и железобетонных конструкций  Строительство мостов"
+      ]
+    },
+    "source": "avito",
+    "link": "/baykit/rezume/montazhnik_stalnyh_i_zhelezobetonnyh_konstruktsiy_7315122304",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7315122304",
+      "itemDate": " · 21 апреля в 12:49"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:16:05.471753"
+      }
+    ]
+  },
+  {
+    "title": "Любая должность",
+    "salary": "не указана",
+    "phone": "8 999 XXX-XX-XX",
+    "address": "Красноярский край, г.о. Красноярск, Центральный район",
+    "description": "Мама в декрете! Ребенку 2.5, ходит в садик, поэтому ищу для себя подходящую вакансию с графиком до 18:00",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "Нет",
+      "Стаж работы": "2 года",
+      "Пол": "Женский",
+      "Возраст": "24 года",
+      "Сфера деятельности": "Без опыта, студенты",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [
+        "Ачинский педагогический колледж"
+      ],
+      "Опыт работы": [
+        "Г.Ачинск, д/с26, Педагог-организатор  Работала по программе. Проводила спортивные игры с детьми"
+      ]
+    },
+    "source": "avito",
+    "link": "/krasnoyarsk/rezume/lyubaya_dolzhnost_7344978642",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7344978642",
+      "itemDate": " · 27 апреля в 08:40"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:16:05.614481"
+      }
+    ]
+  },
+  {
+    "title": "Оператор на телефон",
+    "salary": "не указана",
+    "phone": "8 963 XXX-XX-XX",
+    "address": "городской округ Красноярск, Центральный район, площадь Революции",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа, Подработка",
+      "Может выйти завтра": "Да",
+      "Стаж работы": "Без опыта",
+      "Пол": "Женский",
+      "Возраст": "28 лет",
+      "Сфера деятельности": "Без опыта, студенты",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [
+        "Нет"
+      ],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/krasnoyarsk/rezume/operator_na_telefon_7298391929",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7298391929",
+      "itemDate": " · 22 апреля в 18:49"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:16:05.753716"
+      }
+    ]
+  },
+  {
+    "title": "Помощник бухгалтера, юриста, руководителя",
+    "salary": "70 000 ₽",
+    "phone": "8 950 XXX-XX-XX",
+    "address": "Красноярск, Судостроительная улица, 33",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "Готов",
+      "Стаж работы": "7 лет",
+      "Пол": "Женский",
+      "Возраст": "45 лет",
+      "Сфера деятельности": "Бухгалтерия, финансы",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [
+        "Нет"
+      ],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [
+        "НГИ Юриспруденция"
+      ],
+      "Опыт работы": [
+        "6 лет и 11 месяцев  Июнь 2018 — Апрель 2025 | ООО ЧОО \"Авалон-СБ\", Генеральный директор  Обязанности: - Участие в подготовке и заключении договоров и тендеров. - Проведение деловых переговоров с партнерами и клиентами. Результаты: - Успешное заключение договоров и тендеров, приводящих к увеличению объемов продаж и расширению клиентской базы. - Установление и поддержание продуктивных деловых отношений с партнерами и клиентами, что способствовало укреплению позиции компании на рынке.",
+        "1 год и 2 месяца  Март 2016 — Апрель 2017 | ИП \"Хлестунов \", Офис-менеджер  Обязанности: - Составление графиков выходов сотрудников - Начисление заработной платы - Заключение договоров - Работа с кассой - Ведение первичной бухгалтерии - Работа в программах - Консультирование клиентов по новым продуктам Результаты: - Эффективное управление графиками выходов сотрудников, что способствовало оптимизации рабочего процесса и повышению производительности. - Точное начисление заработной платы, что обеспечивало справедливое вознаграждение сотрудников и улучшало их мотивацию. - Успешное заключение договоров, что способствовало развитию бизнеса и укреплению партнерских отношений. - Эффективное управление кассой, что обеспечивало финансовую стабильность и предотвращало возможные финансовые риски. - Качественное ведение первичной бухгалтерии, что обеспечивало точность финансовой отчетности и соблюдение законодательства. - Умение работать в программах, что позволяло автоматизировать процессы и повышать эффективность работы. - Квалифицированное консультирование клиентов по новым продуктам, что способствовало увеличению продаж и удовлетворенности клиентов."
+      ]
+    },
+    "source": "avito",
+    "link": "/krasnoyarsk/rezume/pomoschnik_buhgaltera_yurista_rukovoditelya_7277372048",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7277372048",
+      "itemDate": " · 27 апреля в 20:56"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:16:05.898126"
+      }
+    ]
+  },
+  {
+    "title": "Администратор",
+    "salary": "50 000 ₽",
+    "phone": "8 923 XXX-XX-XX",
+    "address": "Красноярский край, г.о. Красноярск, Кировский район",
+    "description": "Работала администратором,обязанности были ведение документов,сбор заявок,входящие звонки с клиентами",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "Нет",
+      "Стаж работы": "Без опыта",
+      "Пол": "Женский",
+      "Возраст": "24 года",
+      "Сфера деятельности": "Административная работа",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Гражданство — Россия"
+      ],
+      "Медкнижка": [],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [
+        "Среднее"
+      ],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/krasnoyarsk/rezume/administrator_7290870231",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7290870231",
+      "itemDate": " · 22 апреля в 07:36"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:16:06.040590"
+      }
+    ]
+  },
+  {
+    "title": "Продавец",
+    "salary": "не указана",
+    "phone": "8 991 XXX-XX-XX",
+    "address": "Красноярский край, Канск, Московская улица, 76",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "",
+      "Стаж работы": "Без опыта",
+      "Пол": "Женский",
+      "Возраст": "28 лет",
+      "Сфера деятельности": "Продажи",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [
+        "Нет"
+      ],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/kansk/rezume/prodavets_7282694861",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7282694861",
+      "itemDate": " · 27 апреля в 21:24"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:16:06.179720"
+      }
+    ]
+  },
+  {
+    "title": "Посудомойка уборка помощни",
+    "salary": "не указана",
+    "phone": "8 995 XXX-XX-XX",
+    "address": "Красноярск, Регатная улица, 4",
+    "description": "Работаю посудоиойщицей помощницей повара 'уборка ' час 220р не предл вы гатт",
+    "mainParams": {
+      "Тип занятости": "Основная работа, Подработка",
+      "Может выйти завтра": "Да",
+      "Стаж работы": "Без опыта",
+      "Пол": "Женский",
+      "Возраст": "44 года",
+      "Сфера деятельности": "Туризм, рестораны",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [
+        "Есть"
+      ],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [
+        "Высшее"
+      ],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/krasnoyarsk/rezume/posudomoyka_uborka_pomoschni_7293176184",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7293176184",
+      "itemDate": " · 20 апреля в 15:48"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:16:06.324683"
+      }
+    ]
+  },
+  {
+    "title": "Руководитель проекта",
+    "salary": "не указана",
+    "phone": "8 923 XXX-XX-XX",
+    "address": "Красноярский край, Сосновоборск, ул. 9-й Пятилетки",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "",
+      "Стаж работы": "9 лет",
+      "Пол": "Мужской",
+      "Возраст": "32 года",
+      "Сфера деятельности": "Строительство",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [
+        "Канский технологический техникум"
+      ],
+      "Опыт работы": [
+        "1 год и 6 месяцев  Декабрь 2023 — настоящее время | ООО \"Чистый Двор\", Менеджер проекта  Организация работы: - Планирование и распределение задач среди сотрудников участка. - Установление производственных планов и контроль за их выполнением. Управление персоналом: - Набор, обучение и мотивация работников. - Оценка работы подчиненных, проведение аттестаций. Контроль за процессами: - Обеспечение выполнения стандартов качества и безопасности. - Мониторинг производственных процессов и соблюдение технологий. Взаимодействие с другими подразделениями: - Координация действий с другими участками и службами (снабжение, логистика, охрана труда и т. д. ). - Участие в планировании совместных проектов. Отчетность: - Ведение отчетности по производственной деятельности. - Подготовка отчетов для руководства о выполнении планов и достижениях. Устранение проблем: - Анализ производственных сбоев и разработка мероприятий по их устранению. - Взаимодействие с поставщиками и подрядчиками для решения возникающих проблем. Обеспечение безопасности: - Следить за соблюдением правил охраны труда и техники безопасности. - Организация проведения инструктажей для сотрудников. Оптимизация процессов: - Выявление путей повышения эффективности работы участка. - Внедрение новых технологий и методов.",
+        "2 года и 4 месяца  Август 2021 — Ноябрь 2023 | Индивидуальное предпринимательство / частная практика / фриланс, Водитель-экспедитор  Грузоперевозки на личном грузовом автомобиле, работая от личного ИП, работа с оформлением документов на груз, автомобиль, выставление счетов. Приобретен опыт в логистике, планирование маршрутов, своевременное обеспечение и заказ запасных запчастей,для автомобиля. Привлечение других водителей, для обеспечения бесперебойной подачи автомобилей для клиентов.",
+        "2 года и 5 месяцев  Март 2019 — Июль 2021 | ООО \"СТР сервис\", Менеджер проекта  Управление персоналом. Обеспечение снабжения. Проведение деловых встреч и переговоров. Выявление недостатков, и обеспечение быстрого решения. Знание норм и требований по охране труда. Внедрение новый технологий. Разработка плана и технологический карт. Разработка плана бюджета, контроль за их выполнением и минимизирование расходов.",
+        "3 года и 11 месяцев  Июль 2014 — Май 2018 | Министерство Внутренних Дел Российской Федерации, Полицейский  Наведение и контроль общественного порядка, конвоирование и содержание под стражей. опыт работы в области законодательства (административной, уголовной практики)"
+      ]
+    },
+    "source": "avito",
+    "link": "/krasnoyarskiy_kray_sosnovoborsk/rezume/rukovoditel_proekta_7302131488",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7302131488",
+      "itemDate": " · 23 апреля в 11:03"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:16:06.469510"
+      }
+    ]
+  },
+  {
+    "title": "Любая работа, подработка",
+    "salary": "Зарплата не указана",
+    "phone": "8 905 XXX-XX-XX",
+    "address": "Красноярский край, Ачинск, 5-й микрорайон, 1",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "",
+      "Стаж работы": "Без опыта",
+      "Пол": "Женский",
+      "Возраст": "20 лет",
+      "Сфера деятельности": "Без опыта, студенты",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [
+        "Нет"
+      ],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/achinsk/rezume/lyubaya_rabota_podrabotka_7273299772",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7273299772",
+      "itemDate": " · 27 апреля в 21:01"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:16:06.609183"
+      }
+    ]
+  },
+  {
+    "title": "Водитель на личном авто",
+    "salary": "не указана",
+    "phone": "8 950 XXX-XX-XX",
+    "address": "Красноярский край, Канск, улица 40 лет Октября",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа, Подработка",
+      "Может выйти завтра": "Да",
+      "Стаж работы": "Без опыта",
+      "Пол": "Мужской",
+      "Возраст": "24 года",
+      "Сфера деятельности": "Транспорт, логистика",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [],
+      "Свой транспорт": [
+        "Легковое авто"
+      ],
+      "Категория прав": [
+        "B",
+        "C"
+      ],
+      "Водительское удостоверение": [
+        "Есть"
+      ],
+      "Учебные заведения": [],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/kansk/rezume/voditel_na_lichnom_avto_7299219806",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7299219806",
+      "itemDate": " · 19 апреля в 04:08"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:16:06.752967"
+      }
+    ]
+  },
+  {
+    "title": "Продавец администратор",
+    "salary": "не указана",
+    "phone": "8 913 XXX-XX-XX",
+    "address": "Красноярский край, Красноярск, Линейная ул.",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "",
+      "Стаж работы": "9 месяцев",
+      "Пол": "Мужской",
+      "Возраст": "28 лет",
+      "Сфера деятельности": "Продажи",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [
+        "Среднее"
+      ],
+      "Опыт работы": [
+        "10 месяцев  Июнь 2024 — Март 2025 | ООО\"РОДНЫЕ МАСЛА\", Продавец-подборщик  Обязанности: - Подбор и продажа технических жидкостей и материалов для обслуживания автомобиля Результаты: - Успешное подбор и продажа широкого ассортимента технических жидкостей и материалов для обслуживания автомобилей, удовлетворяющих потребности клиентов. - Установление и поддержание долгосрочных отношений с клиентами, обеспечивая высокий уровень обслуживания и удовлетворенности. - Активное участие в продвижении новых продуктов и услуг, что привело к увеличению объема продаж и расширению клиентской базы. - Эффективное управление запасами и контроль над сроками годности продукции, что способствовало минимизации потерь и обеспечению наличия необходимых товаров. - Проведение консультаций и обучение клиентов по правильному использованию и применению технических жидкостей и материалов, что способствовало повышению их эффективности и продлению срока службы автомобилей."
+      ]
+    },
+    "source": "avito",
+    "link": "/krasnoyarsk/rezume/prodavets_administrator_7313695579",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7313695579",
+      "itemDate": " · 23 апреля в 04:24"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:16:06.893718"
+      }
+    ]
+  },
+  {
+    "title": "Стропальщик",
+    "salary": "Зарплата не указана",
+    "phone": "8 908 XXX-XX-XX",
+    "address": "Красноярск, Новосибирская улица, 41",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "Да",
+      "Стаж работы": "Без опыта",
+      "Пол": "Мужской",
+      "Возраст": "19 лет",
+      "Сфера деятельности": "Строительство",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Гражданство — Узбекистан",
+        "Разрешение на работу в России — Да"
+      ],
+      "Медкнижка": [],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/krasnoyarsk/rezume/stropalschik_7355125810",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7355125810",
+      "itemDate": " · 27 апреля в 16:47"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:16:07.031607"
+      }
+    ]
+  },
+  {
+    "title": "Любая работа, подработка",
+    "salary": "Зарплата не указана",
+    "phone": "8 996 XXX-XX-XX",
+    "address": "Красноярск, Комсомольский проспект, 1А",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа, Подработка",
+      "Может выйти завтра": "Да",
+      "Стаж работы": "Без опыта",
+      "Пол": "Мужской",
+      "Возраст": "20 лет",
+      "Сфера деятельности": "Без опыта, студенты",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [
+        "Нет"
+      ],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/krasnoyarsk/rezume/lyubaya_rabota_podrabotka_7352710869",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7352710869",
+      "itemDate": " · 29 апреля в 17:27"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:16:07.172248"
+      }
+    ]
+  },
+  {
+    "title": "Водитель",
+    "salary": "не указана",
+    "phone": "8 902 XXX-XX-XX",
+    "address": "Красноярский край, Минусинск, Красноармейская улица, 18Б",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "Да",
+      "Стаж работы": "Без опыта",
+      "Пол": "Мужской",
+      "Возраст": "37 лет",
+      "Сфера деятельности": "Транспорт, логистика",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [],
+      "Свой транспорт": [
+        "Легковое авто"
+      ],
+      "Категория прав": [
+        "B",
+        "M"
+      ],
+      "Водительское удостоверение": [
+        "Есть"
+      ],
+      "Учебные заведения": [],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/minusinsk/rezume/voditel_7341897896",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7341897896",
+      "itemDate": " · 28 апреля в 18:49"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:16:07.312688"
+      }
+    ]
+  },
+  {
+    "title": "Менеджер по продажам",
+    "salary": "не указана",
+    "phone": "8 905 XXX-XX-XX",
+    "address": "Красноярский край, Норильск, улица Лауреатов, 71",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "",
+      "Стаж работы": "Без опыта",
+      "Пол": "Мужской",
+      "Возраст": "24 года",
+      "Сфера деятельности": "Без опыта, студенты",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [
+        "Нет"
+      ],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [
+        "Нтптис 17  Токарь"
+      ],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/norilsk/rezume/menedzher_po_prodazham_7315931897",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7315931897",
+      "itemDate": " · 22 апреля в 13:33"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:16:07.526980"
+      }
+    ]
+  },
+  {
+    "title": "Супервайзер, Управляющая",
+    "salary": "120 000 ₽",
+    "phone": "8 953 XXX-XX-XX",
+    "address": "Красноярский край, Красноярск, жилой район Солнечный",
+    "description": "Я очень ответственный, трудолюбивый и целеустремленный человек.Работаю на результат не боясь трудностей. В настоящее время ищу новую возможность использовать свои навыки и опыт . Знание 1С , saleswork",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "Готов",
+      "Стаж работы": "17 лет",
+      "Пол": "Женский",
+      "Возраст": "42 года",
+      "Сфера деятельности": "Управление персоналом",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Гражданство — Россия"
+      ],
+      "Медкнижка": [],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [
+        "АМТТ  Технолог"
+      ],
+      "Опыт работы": [
+        "13 лет и 4 месяца  Февраль 2012 — настоящее время | ПКФ ООО ВиАС, Супервайзер  Обязанности: - Организация и контроль работы команды торговых представителей. - Переговоры с ключевыми клиентами. - Расчет зарплаты. - Аудиты и обучение в полях. - Подбор кандидатов и проведение собеседований. - Выставление планов и задач. - Аналитика. Результаты: - Эффективное управление командой торговых представителей. - Установление и поддержание продуктивных отношений с ключевыми клиентами. - Точный расчет заработной платы для сотрудников. - Проведение аудитов и обучение в полях для повышения профессиональных навыков команды. - Успешный подбор и найм новых сотрудников. - Разработка и выставление планов и задач для достижения поставленных целей. - Анализ данных для принятия обоснованных решений и оптимизации рабочих процессов.",
+        "4 года и 1 месяц  Февраль 2008 — Февраль 2012 | ООО Форт -Нокс, Торговый представитель  Обязанности: - Сбор заявок и дебиторской задолженности на выделенной территории. - Развитие продукта компании в торговых точках. - Контроль товарного запаса. - Мерчандайзинг. Результаты: - Эффективное сбор заявок и дебиторской задолженности на выделенной территории, что способствовало улучшению финансовых показателей компании. - Успешное развитие продукта компании в торговых точках, что привело к увеличению объемов продаж и укреплению позиций на рынке. - Обеспечение контроля товарного запаса, что позволило минимизировать потери и оптимизировать затраты на складирование. - Профессиональное выполнение мерчандайзинга, что способствовало улучшению визуального представления продукта в торговых точках и повышению привлекательности для потребителей."
+      ]
+    },
+    "source": "avito",
+    "link": "/krasnoyarsk/rezume/supervayzer_upravlyayuschaya_7349568108",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7349568108",
+      "itemDate": " · 28 апреля в 15:17"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:16:07.670189"
+      }
+    ]
+  },
+  {
+    "title": "Электрогазосварщик",
+    "salary": "не указана",
+    "phone": "8 923 XXX-XX-XX",
+    "address": "Красноярск, р-н Центральный",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "Да",
+      "Стаж работы": "Без опыта",
+      "Пол": "Мужской",
+      "Возраст": "43 года",
+      "Сфера деятельности": "Строительство",
+      "График работы": "Вахтовый метод"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Гражданство — Россия"
+      ],
+      "Медкнижка": [],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/krasnoyarsk/rezume/elektrogazosvarschik_7351511047",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7351511047",
+      "itemDate": " · 1 мая в 20:37"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:16:07.809621"
+      }
+    ]
+  },
+  {
+    "title": "Помощник воспитателя няня",
+    "salary": "не указана",
+    "phone": "8 963 XXX-XX-XX",
+    "address": "ул. Мирошниченко, 22, р-н Октябрьский",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "",
+      "Стаж работы": "5 лет",
+      "Пол": "Женский",
+      "Возраст": "30 лет",
+      "Сфера деятельности": "Образование, наука",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [
+        "Есть"
+      ],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [
+        "Профессиональный лицей √19 имени В. П. Аставьева, Проводник на ж/д транспорте"
+      ],
+      "Опыт работы": [
+        "5 лет и 4 месяца  Сентябрь 2017 — Декабрь 2022, Детский центр Совенок, Няня  Помощь воспитателю, уборка в группе, накрывание на стол и мытью посуды"
+      ]
+    },
+    "source": "avito",
+    "link": "/krasnoyarsk/rezume/pomoschnik_vospitatelya_nyanya_7282285447",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7282285447",
+      "itemDate": " · 21 апреля в 00:21"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:16:07.952005"
+      }
+    ]
+  },
+  {
+    "title": "Укладка-упаковка",
+    "salary": "Зарплата не указана",
+    "phone": "8 960 XXX-XX-XX",
+    "address": "Красноярск, р-н Центральный",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "Нет",
+      "Стаж работы": "Без опыта",
+      "Пол": "Женский",
+      "Возраст": "31 год",
+      "Сфера деятельности": "Строительство",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Гражданство — Киргизия",
+        "Разрешение на работу в России — Да"
+      ],
+      "Медкнижка": [],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/krasnoyarsk/rezume/ukladka-upakovka_7316396846",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7316396846",
+      "itemDate": " · 23 апреля в 22:56"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:16:08.091070"
+      }
+    ]
+  },
+  {
+    "title": "Ремонт и отделка квартир под ключ с гарантией",
+    "salary": "Зарплата не указана",
+    "phone": "8 913 XXX-XX-XX",
+    "address": "жилой район Солнечный, р-н Советский",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "",
+      "Стаж работы": "14 лет",
+      "Пол": "Мужской",
+      "Возраст": "41 год",
+      "Сфера деятельности": "Строительство",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Гражданство — Россия"
+      ],
+      "Медкнижка": [],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [
+        "Среднее"
+      ],
+      "Опыт работы": [
+        "14 лет и 11 месяцев  Июнь 2010 — Апрель 2025 | Частный, Маляр  Обязанности: - Выполнение ремонтных работ в квартирах - Оценка состояния помещений и определение необходимых ремонтных мероприятий - Планирование и координация работ по ремонту - Закупка материалов и инструментов для ремонта - Выполнение различных видов ремонтных работ, включая покраску, штукатурку, укладку плитки и т.д. - Соблюдение сроков выполнения работ Результаты: - Успешное завершение ремонтных проектов в срок - Повышение качества жизни клиентов благодаря качественному выполнению ремонтных работ - Улучшение внешнего вида и функциональности квартир - Удовлетворенность клиентов результатами работы"
+      ]
+    },
+    "source": "avito",
+    "link": "/krasnoyarsk/rezume/remont_i_otdelka_kvartir_pod_klyuch_s_garantiey_7284947666",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7284947666",
+      "itemDate": " · 25 апреля в 00:20"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:16:08.233426"
+      }
+    ]
+  },
+  {
+    "title": "Водитель категории \"б",
+    "salary": "Зарплата не указана",
+    "phone": "8 913 XXX-XX-XX",
+    "address": "Красноярский край, Дзержинский сельсовет, село Дзержинское, улица Горького",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "Да",
+      "Стаж работы": "Без опыта",
+      "Пол": "Мужской",
+      "Возраст": "23 года",
+      "Сфера деятельности": "Транспорт, логистика",
+      "График работы": "Вахтовый метод"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [],
+      "Свой транспорт": [
+        "Нет"
+      ],
+      "Категория прав": [
+        "B"
+      ],
+      "Водительское удостоверение": [
+        "Есть"
+      ],
+      "Учебные заведения": [
+        "Среднее специальное"
+      ],
+      "Опыт работы": [
+        "Работал автослесарем"
+      ]
+    },
+    "source": "avito",
+    "link": "/dzerzhinskoe/rezume/voditel_kategorii_b_7337086555",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7337086555",
+      "itemDate": " · 1 мая в 15:07"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:16:08.375125"
+      }
+    ]
+  },
+  {
+    "title": "Любая работа, подработка",
+    "salary": "Зарплата не указана",
+    "phone": "8 903 XXX-XX-XX",
+    "address": "Красноярск, Молодёжный проспект, 31",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "Да",
+      "Стаж работы": "Без опыта",
+      "Пол": "Мужской",
+      "Возраст": "28 лет",
+      "Сфера деятельности": "Без опыта, студенты",
+      "График работы": "Вахтовый метод"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [
+        "Нет"
+      ],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/krasnoyarsk/rezume/lyubaya_rabota_podrabotka_7281012532",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7281012532",
+      "itemDate": " · 23 апреля в 20:50"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:16:08.518627"
+      }
+    ]
+  },
+  {
+    "title": "Продавец",
+    "salary": "не указана",
+    "phone": "8 913 XXX-XX-XX",
+    "address": "Красноярск, Волжская улица, 7",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "Да",
+      "Стаж работы": "Без опыта",
+      "Пол": "Мужской",
+      "Возраст": "20 лет",
+      "Сфера деятельности": "Продажи",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [
+        "Нет"
+      ],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/krasnoyarsk/rezume/prodavets_7339732902",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7339732902",
+      "itemDate": " · 28 апреля в 22:28"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:16:08.657982"
+      }
+    ]
+  },
+  {
+    "title": "Любая работа",
+    "salary": "Зарплата не указана",
+    "phone": "8 933 XXX-XX-XX",
+    "address": "Красноярский край, Железногорск, Северная улица, 21/28",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "Да",
+      "Стаж работы": "Без опыта",
+      "Пол": "Мужской",
+      "Возраст": "33 года",
+      "Сфера деятельности": "Без опыта, студенты",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [
+        "Нет"
+      ],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/krasnoyarskiy_kray_zheleznogorsk/rezume/lyubaya_rabota_7330516523",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7330516523",
+      "itemDate": " · 25 апреля в 23:20"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:16:08.800179"
+      }
+    ]
+  },
+  {
+    "title": "Курьер",
+    "salary": "не указана",
+    "phone": "8 929 XXX-XX-XX",
+    "address": "Красноярский край, Канск",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "",
+      "Стаж работы": "Без опыта",
+      "Пол": "Мужской",
+      "Возраст": "38 лет",
+      "Сфера деятельности": "Без опыта, студенты",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [
+        "Нет"
+      ],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/kansk/rezume/kurer_7321093791",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7321093791",
+      "itemDate": " · 15 апреля в 04:13"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:16:08.938711"
+      }
+    ]
+  },
+  {
+    "title": "Любая работа, подработка",
+    "salary": "",
+    "phone": "8 995 XXX-XX-XX",
+    "address": "городской округ Красноярск, Центральный район, площадь Революции",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа, Подработка",
+      "Может выйти завтра": "",
+      "Стаж работы": "Без опыта",
+      "Пол": "Мужской",
+      "Возраст": "24 года",
+      "Сфера деятельности": "Без опыта, студенты",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [
+        "Есть"
+      ],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/krasnoyarsk/rezume/lyubaya_rabota_podrabotka_7307169515",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7307169515",
+      "itemDate": " · 16 апреля в 08:09"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:17:09.718725"
+      }
+    ]
+  },
+  {
+    "title": "Курьер",
+    "salary": "не указана",
+    "phone": "8 950 XXX-XX-XX",
+    "address": "Красноярский край, Канск, микрорайон Северо-Западный, 55",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "Да",
+      "Стаж работы": "Без опыта",
+      "Пол": "Мужской",
+      "Возраст": "20 лет",
+      "Сфера деятельности": "Без опыта, студенты",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [
+        "Есть"
+      ],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/kansk/rezume/kurer_7328080734",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7328080734",
+      "itemDate": " · 30 апреля в 19:01"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:17:10.285022"
+      }
+    ]
+  },
+  {
+    "title": "Специалист",
+    "salary": "не указана",
+    "phone": "8 906 XXX-XX-XX",
+    "address": "ул. Строителей, 11А",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа, Подработка",
+      "Может выйти завтра": "",
+      "Стаж работы": "2 года",
+      "Пол": "Женский",
+      "Возраст": "28 лет",
+      "Сфера деятельности": "Административная работа",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [
+        "Среднее"
+      ],
+      "Опыт работы": [
+        "2 года и 2 месяца  Апрель 2016 — Май 2018 | Фотосалон, Индивидуальный предприниматель  Работа с людьми, работа с документами, ведение отчетности"
+      ]
+    },
+    "source": "avito",
+    "link": "/norilsk/rezume/spetsialist_7313362046",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7313362046",
+      "itemDate": " · 20 апреля в 07:37"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:17:10.708624"
+      }
+    ]
+  },
+  {
+    "title": "Лепщица",
+    "salary": "",
+    "phone": "8 950 XXX-XX-XX",
+    "address": "Красноярск, Свободный проспект, р-н Октябрьский",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "Нет",
+      "Стаж работы": "Без опыта",
+      "Пол": "Женский",
+      "Возраст": "45 лет",
+      "Сфера деятельности": "Производство, сырьё, с/х",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [
+        "Есть"
+      ],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/krasnoyarsk/rezume/lepschitsa_7268090613",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7268090613",
+      "itemDate": " · 24 апреля в 00:13"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:17:10.988710"
+      }
+    ]
+  },
+  {
+    "title": "Администратор, оператор",
+    "salary": "Зарплата не указана",
+    "phone": "8 906 XXX-XX-XX",
+    "address": "Норильск, радиус",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа, Подработка",
+      "Может выйти завтра": "",
+      "Стаж работы": "3 года",
+      "Пол": "Женский",
+      "Возраст": "26 лет",
+      "Сфера деятельности": "Административная работа",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Гражданство — Россия"
+      ],
+      "Медкнижка": [],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [
+        "Политехнический колледж"
+      ],
+      "Опыт работы": [
+        "ЮНИРОН, Оператор  обработка входящих звонков и сообщений, регистрация обращений в системе, предоставление клиентам информации о компании, вести записи, грамотная речь."
+      ]
+    },
+    "source": "avito",
+    "link": "/norilsk/rezume/administrator_operator_7321900056",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7321900056",
+      "itemDate": " · 27 апреля в 01:52"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:17:11.630538"
+      }
+    ]
+  },
+  {
+    "title": "Машинист экскаватора",
+    "salary": "не указана",
+    "phone": "8 922 XXX-XX-XX",
+    "address": "Красноярский край, Эвенкийский район",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "",
+      "Стаж работы": "Без опыта",
+      "Пол": "Мужской",
+      "Возраст": "44 года",
+      "Сфера деятельности": "Транспорт, логистика",
+      "График работы": "Вахтовый метод"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [],
+      "Свой транспорт": [
+        "Нет"
+      ],
+      "Категория прав": [
+        "B"
+      ],
+      "Водительское удостоверение": [
+        "Есть"
+      ],
+      "Учебные заведения": [
+        "Среднее специальное"
+      ],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/baykit/rezume/mashinist_ekskavatora_7290801793",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7290801793",
+      "itemDate": " · 27 апреля в 21:29"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:17:11.771146"
+      }
+    ]
+  },
+  {
+    "title": "Ремонт и отделка квартир, уборка квартир",
+    "salary": "не указана",
+    "phone": "8 903 XXX-XX-XX",
+    "address": "ул. Нансена, 32",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "",
+      "Стаж работы": "26 лет",
+      "Пол": "Женский",
+      "Возраст": "38 лет",
+      "Сфера деятельности": "Строительство",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [
+        "Среднее"
+      ],
+      "Опыт работы": [
+        "26 лет и 10 месяцев  Май 1998 — Февраль 2025 | Ооо полярная звезда, Штукатурка маляр  Опыт работы включает поклейку обоев, покраску, шпаклевку, штукатурку и другие связанные задачи."
+      ]
+    },
+    "source": "avito",
+    "link": "/norilsk/rezume/remont_i_otdelka_kvartir_uborka_kvartir_7269949148",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7269949148",
+      "itemDate": " · 26 апреля в 00:22"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:17:13.267294"
+      }
+    ]
+  },
+  {
+    "title": "Разнорабочий, грузчик",
+    "salary": "Зарплата не указана",
+    "phone": "8 906 XXX-XX-XX",
+    "address": "Красноярский край, Норильск, улица Орджоникидзе",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "Да",
+      "Стаж работы": "Без опыта",
+      "Пол": "Мужской",
+      "Возраст": "34 года",
+      "Сфера деятельности": "Без опыта, студенты",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [
+        "Есть"
+      ],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/norilsk/rezume/raznorabochiy_gruzchik_7354950720",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7354950720",
+      "itemDate": " · 1 мая в 07:34"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:17:14.544691"
+      }
+    ]
+  },
+  {
+    "title": "Продавец консультант",
+    "salary": "не указана",
+    "phone": "8 950 XXX-XX-XX",
+    "address": "Красноярск, улица Вильского, 7А",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "Да",
+      "Стаж работы": "Без опыта",
+      "Пол": "Мужской",
+      "Возраст": "34 года",
+      "Сфера деятельности": "Продажи",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [
+        "Нет"
+      ],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/krasnoyarsk/rezume/prodavets_konsultant_7313952526",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7313952526",
+      "itemDate": " · 21 апреля в 09:23"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:17:14.686046"
+      }
+    ]
+  },
+  {
+    "title": "Кладовщик",
+    "salary": "Зарплата не указана",
+    "phone": "8 923 XXX-XX-XX",
+    "address": "Красноярский край, Сосновоборск, улица Новосёлов, 4",
+    "description": "Много где. Электромонтёр, сварщик, по стройке все короче!",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "Да",
+      "Стаж работы": "Без опыта",
+      "Пол": "Мужской",
+      "Возраст": "37 лет",
+      "Сфера деятельности": "Транспорт, логистика",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [
+        "Нет"
+      ],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [
+        "Среднее специальное"
+      ],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/krasnoyarskiy_kray_sosnovoborsk/rezume/kladovschik_7339500937",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7339500937",
+      "itemDate": " · 28 апреля в 05:33"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:17:15.244702"
+      }
+    ]
+  },
+  {
+    "title": "Сборщик заказов",
+    "salary": "не указана",
+    "phone": "8 983 XXX-XX-XX",
+    "address": "Красноярск, проспект 60 лет Образования СССР, 50А",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "Да",
+      "Стаж работы": "Без опыта",
+      "Пол": "Женский",
+      "Возраст": "29 лет",
+      "Сфера деятельности": "Без опыта, студенты",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [
+        "Нет"
+      ],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/krasnoyarsk/rezume/sborschik_zakazov_7327758337",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7327758337",
+      "itemDate": " · 21 апреля в 15:22"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:17:15.908409"
+      }
+    ]
+  },
+  {
+    "title": "На складе",
+    "salary": "Зарплата не указана",
+    "phone": "8 983 XXX-XX-XX",
+    "address": "Красноярский край, Железногорск",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "Да",
+      "Стаж работы": "Без опыта",
+      "Пол": "Мужской",
+      "Возраст": "21 год",
+      "Сфера деятельности": "Без опыта, студенты",
+      "График работы": "Вахтовый метод"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [
+        "Нет"
+      ],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [
+        "Среднее"
+      ],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/krasnoyarskiy_kray_zheleznogorsk/rezume/na_sklade_7312323925",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7312323925",
+      "itemDate": " · 25 апреля в 16:08"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:17:16.193893"
+      }
+    ]
+  },
+  {
+    "title": "Младший воспитатель",
+    "salary": "не указана",
+    "phone": "8 960 XXX-XX-XX",
+    "address": "Красноярск, проспект Машиностроителей, 35",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "",
+      "Стаж работы": "Без опыта",
+      "Пол": "Женский",
+      "Возраст": "23 года",
+      "Сфера деятельности": "Образование, наука",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Гражданство — Россия"
+      ],
+      "Медкнижка": [],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/krasnoyarsk/rezume/mladshiy_vospitatel_7316031136",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7316031136",
+      "itemDate": " · 27 апреля в 10:37"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:17:16.333287"
+      }
+    ]
+  },
+  {
+    "title": "Машинист гидравлических эк",
+    "salary": "не указана",
+    "phone": "8 908 XXX-XX-XX",
+    "address": "Красноярский край, Канск",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "Нет",
+      "Стаж работы": "Без опыта",
+      "Пол": "Мужской",
+      "Возраст": "42 года",
+      "Сфера деятельности": "Строительство",
+      "График работы": "Вахтовый метод"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/kansk/rezume/mashinist_gidravlicheskih_ek_7348572471",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7348572471",
+      "itemDate": " · 1 мая в 13:11"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:17:16.470837"
+      }
+    ]
+  },
+  {
+    "title": "Водитель",
+    "salary": "100 000 ₽",
+    "phone": "8 995 XXX-XX-XX",
+    "address": "Красноярск, микрорайон Мясокомбинат, жилой комплекс Школьный, р-н Октябрьский",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "Готов",
+      "Стаж работы": "9 лет",
+      "Пол": "Мужской",
+      "Возраст": "29 лет",
+      "Сфера деятельности": "Транспорт, логистика",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [],
+      "Свой транспорт": [
+        "Легковое авто"
+      ],
+      "Категория прав": [
+        "B CE M"
+      ],
+      "Водительское удостоверение": [
+        "Есть"
+      ],
+      "Учебные заведения": [
+        "Пу81  Сварщик"
+      ],
+      "Опыт работы": [
+        "5 лет и 2 месяца  Январь 2020 — Февраль 2025 | Вахта, Водитель  категория Е Водитель",
+        "4 года и 4 месяца  Август 2015 — Ноябрь 2019 | ИП Живнеров, Водитель  развоз продукции"
+      ]
+    },
+    "source": "avito",
+    "link": "/krasnoyarsk/rezume/voditel_7280552787",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7280552787",
+      "itemDate": " · 16 апреля в 13:16"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:17:17.321095"
+      }
+    ]
+  },
+  {
+    "title": "Разнорабочий",
+    "salary": "не указана",
+    "phone": "8 993 XXX-XX-XX",
+    "address": "Красноярский край, Дивногорск, улица Бочкина, 10А/2",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа, Подработка",
+      "Может выйти завтра": "",
+      "Стаж работы": "Без опыта",
+      "Пол": "Мужской",
+      "Возраст": "36 лет",
+      "Сфера деятельности": "Без опыта, студенты",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [
+        "Нет"
+      ],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/divnogorsk/rezume/raznorabochiy_7289374236",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7289374236",
+      "itemDate": " · 27 апреля в 21:22"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:17:18.675000"
+      }
+    ]
+  },
+  {
+    "title": "Повар",
+    "salary": "не указана",
+    "phone": "8 906 XXX-XX-XX",
+    "address": "городской округ Красноярск, Ленинский район",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "Да",
+      "Стаж работы": "Без опыта",
+      "Пол": "Женский",
+      "Возраст": "29 лет",
+      "Сфера деятельности": "Туризм, рестораны",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [
+        "Есть"
+      ],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/krasnoyarsk/rezume/povar_7332564365",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7332564365",
+      "itemDate": " · 29 апреля в 06:46"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:17:19.093929"
+      }
+    ]
+  },
+  {
+    "title": "Упаковщик,сборщик.комплек",
+    "salary": "",
+    "phone": "8 977 XXX-XX-XX",
+    "address": "городской округ Красноярск, деревня Песчанка, улица Сергея Лазо, 68",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "Нет",
+      "Стаж работы": "Без опыта",
+      "Пол": "Мужской",
+      "Возраст": "23 года",
+      "Сфера деятельности": "Без опыта, студенты",
+      "График работы": "Вахтовый метод"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [
+        "Нет"
+      ],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/krasnoyarsk/rezume/upakovschiksborschik.komplek_7314634445",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7314634445",
+      "itemDate": " · 22 апреля в 16:19"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:17:19.375313"
+      }
+    ]
+  },
+  {
+    "title": "Установщик доп оборудования",
+    "salary": "100 000 ₽",
+    "phone": "8 902 XXX-XX-XX",
+    "address": "Красноярский край, Красноярск, ул. Лесников, 37Б",
+    "description": "Быстро обучаюсь в незнакомой для меня сфере",
+    "mainParams": {
+      "Тип занятости": "Основная работа, Подработка",
+      "Может выйти завтра": "Да",
+      "Стаж работы": "2 года",
+      "Пол": "Мужской",
+      "Возраст": "22 года",
+      "Сфера деятельности": "Строительство",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Гражданство — Россия"
+      ],
+      "Медкнижка": [],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [
+        "Емельяновский дорожно-строительный техникум, Емельяново (ЕДСТ) Тракторист"
+      ],
+      "Опыт работы": [
+        "Автоазарт, Установщик доп оборудований Установка автосигнализаций Установка автозвука Шумоизоляция авто Установка авто света"
+      ]
+    },
+    "source": "avito",
+    "link": "/krasnoyarsk/rezume/ustanovschik_dop_oborudovaniya_7355823581",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7355823581",
+      "itemDate": " · 21 апреля в 18:14"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:17:19.739715"
+      }
+    ]
+  },
+  {
+    "title": "Водитель",
+    "salary": "не указана",
+    "phone": "8 962 XXX-XX-XX",
+    "address": "Красноярский край, Норильск, Талнахская улица",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "",
+      "Стаж работы": "Без опыта",
+      "Пол": "Мужской",
+      "Возраст": "34 года",
+      "Сфера деятельности": "Транспорт, логистика",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [],
+      "Свой транспорт": [
+        "Нет"
+      ],
+      "Категория прав": [
+        "B",
+        "C"
+      ],
+      "Водительское удостоверение": [
+        "Есть"
+      ],
+      "Учебные заведения": [],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/norilsk/rezume/voditel_7351163606",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7351163606",
+      "itemDate": " · 25 апреля в 12:06"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:17:19.881551"
+      }
+    ]
+  },
+  {
+    "title": "Администратор",
+    "salary": "не указана",
+    "phone": "8 905 XXX-XX-XX",
+    "address": "Красноярский край, Норильск, улица Лауреатов, 69А",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "Да",
+      "Стаж работы": "Без опыта",
+      "Пол": "Женский",
+      "Возраст": "20 лет",
+      "Сфера деятельности": "Административная работа",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/norilsk/rezume/administrator_7355388301",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7355388301",
+      "itemDate": " · 24 апреля в 09:28"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:17:20.444926"
+      }
+    ]
+  },
+  {
+    "title": "Монтаж вентилируемых фасадов керамогранит, бригфор",
+    "salary": "Зарплата не указана",
+    "phone": "8 983 XXX-XX-XX",
+    "address": "Красноярский край, Красноярск, Норильская ул.",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "Нет",
+      "Стаж работы": "3 года",
+      "Пол": "Мужской",
+      "Возраст": "38 лет",
+      "Сфера деятельности": "Строительство",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [
+        "ПК 62  Повар"
+      ],
+      "Опыт работы": [
+        "4 года  Май 2021 — Апрель 2025 | руфас, спутник, монтажник  монтаж фасада, парапет, керама , бригформ, композит."
+      ]
+    },
+    "source": "avito",
+    "link": "/krasnoyarsk/rezume/montazh_ventiliruemyh_fasadov_keramogranit_brigfor_7356482323",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7356482323",
+      "itemDate": " · 23 апреля в 21:14"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:17:21.152231"
+      }
+    ]
+  },
+  {
+    "title": "Стропольщик",
+    "salary": "не указана",
+    "phone": "8 950 XXX-XX-XX",
+    "address": "Красноярск, улица Пограничников, 129",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "Да",
+      "Стаж работы": "Без опыта",
+      "Пол": "Мужской",
+      "Возраст": "38 лет",
+      "Сфера деятельности": "Производство, сырьё, с/х",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [
+        "Нет"
+      ],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/krasnoyarsk/rezume/stropolschik_7370437510",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7370437510",
+      "itemDate": " · вчера в 14:14"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:17:21.429273"
+      }
+    ]
+  },
+  {
+    "title": "Повар,кухонный работник,оф",
+    "salary": "не указана",
+    "phone": "8 995 XXX-XX-XX",
+    "address": "Красноярский край, Ачинск, 3-й микрорайон, 39",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа, Подработка",
+      "Может выйти завтра": "",
+      "Стаж работы": "Без опыта",
+      "Пол": "Женский",
+      "Возраст": "43 года",
+      "Сфера деятельности": "Туризм, рестораны",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [
+        "Нет"
+      ],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/achinsk/rezume/povarkuhonnyy_rabotnikof_7268742299",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7268742299",
+      "itemDate": " · 27 апреля в 21:29"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:17:21.794733"
+      }
+    ]
+  },
+  {
+    "title": "Разнорабочий",
+    "salary": "",
+    "phone": "8 989 XXX-XX-XX",
+    "address": "Красноярский край, городской округ Норильск",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "Да",
+      "Стаж работы": "Без опыта",
+      "Пол": "Мужской",
+      "Возраст": "42 года",
+      "Сфера деятельности": "Без опыта, студенты",
+      "График работы": "Вахтовый метод"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [
+        "Есть"
+      ],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/norilsk/rezume/raznorabochiy_7338955248",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7338955248",
+      "itemDate": " · 30 апреля в 16:36"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:17:22.072944"
+      }
+    ]
+  },
+  {
+    "title": "Любая работа, подработка",
+    "salary": "Зарплата не указана",
+    "phone": "8 967 XXX-XX-XX",
+    "address": "Красноярск, Волгоградская улица, 19А",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа, Подработка",
+      "Может выйти завтра": "",
+      "Стаж работы": "Без опыта",
+      "Пол": "Мужской",
+      "Возраст": "38 лет",
+      "Сфера деятельности": "Без опыта, студенты",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Гражданство — Россия"
+      ],
+      "Медкнижка": [],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [
+        "Среднее"
+      ],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/krasnoyarsk/rezume/lyubaya_rabota_podrabotka_7270124354",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7270124354",
+      "itemDate": " · 27 апреля в 21:25"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:17:22.915541"
+      }
+    ]
+  },
+  {
+    "title": "Слесарь мк",
+    "salary": "",
+    "phone": "8 904 XXX-XX-XX",
+    "address": "Красноярский край, Берёзовский район, Зыковский сельсовет",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "Нет",
+      "Стаж работы": "Без опыта",
+      "Пол": "Мужской",
+      "Возраст": "38 лет",
+      "Сфера деятельности": "Производство, сырьё, с/х",
+      "График работы": "Вахтовый метод"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [
+        "Нет"
+      ],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/krasnoyarsk/rezume/slesar_mk_7305263107",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7305263107",
+      "itemDate": " · 20 апреля в 23:24"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:17:23.055991"
+      }
+    ]
+  },
+  {
+    "title": "Кладовщик",
+    "salary": "не указана",
+    "phone": "8 983 XXX-XX-XX",
+    "address": "Красноярск, улица Калинина, 31Б",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "",
+      "Стаж работы": "Без опыта",
+      "Пол": "Женский",
+      "Возраст": "21 год",
+      "Сфера деятельности": "Транспорт, логистика",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [
+        "Нет"
+      ],
+      "Свой транспорт": [
+        "Легковое авто"
+      ],
+      "Категория прав": [
+        "B"
+      ],
+      "Водительское удостоверение": [
+        "Есть"
+      ],
+      "Учебные заведения": [],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/krasnoyarsk/rezume/kladovschik_7298237457",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7298237457",
+      "itemDate": " · 23 апреля в 04:47"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:17:23.196492"
+      }
+    ]
+  },
+  {
+    "title": "Водитель",
+    "salary": "не указана",
+    "phone": "8 983 XXX-XX-XX",
+    "address": "Красноярск, микрорайон Нанжуль-Солнечный, Ольховая улица, 12",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "",
+      "Стаж работы": "Без опыта",
+      "Пол": "Мужской",
+      "Возраст": "24 года",
+      "Сфера деятельности": "Транспорт, логистика",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [],
+      "Свой транспорт": [
+        "Нет"
+      ],
+      "Категория прав": [
+        "B"
+      ],
+      "Водительское удостоверение": [
+        "Есть"
+      ],
+      "Учебные заведения": [
+        "Среднее"
+      ],
+      "Опыт работы": [
+        "2 года работал в компании Глобал , водителем"
+      ]
+    },
+    "source": "avito",
+    "link": "/krasnoyarsk/rezume/voditel_7296403847",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7296403847",
+      "itemDate": " · 15 апреля в 18:09"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:17:23.343904"
+      }
+    ]
+  },
+  {
+    "title": "Вахтенный матрос",
+    "salary": "",
+    "phone": "8 913 XXX-XX-XX",
+    "address": "Красноярский край, Норильск, Комсомольская улица, 12",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "Да",
+      "Стаж работы": "Без опыта",
+      "Пол": "Мужской",
+      "Возраст": "43 года",
+      "Сфера деятельности": "Охрана, безопасность",
+      "График работы": "Вахтовый метод"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Гражданство — Россия"
+      ],
+      "Медкнижка": [],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/norilsk/rezume/vahtennyy_matros_7317751715",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7317751715",
+      "itemDate": " · 22 апреля в 12:07"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:17:23.485649"
+      }
+    ]
+  },
+  {
+    "title": "Охранник",
+    "salary": "не указана",
+    "phone": "8 902 XXX-XX-XX",
+    "address": "Красноярск, Караульная улица, 39А",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "",
+      "Стаж работы": "Без опыта",
+      "Пол": "Мужской",
+      "Возраст": "23 года",
+      "Сфера деятельности": "Охрана, безопасность",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Гражданство — Россия"
+      ],
+      "Медкнижка": [],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/krasnoyarsk/rezume/ohrannik_7266521422",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7266521422",
+      "itemDate": " · 27 апреля в 22:00"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:17:23.681468"
+      }
+    ]
+  },
+  {
+    "title": "Водитель на личном грузовом авто",
+    "salary": "не указана",
+    "phone": "8 929 XXX-XX-XX",
+    "address": "мкр-н Северо-Западный, 55",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "",
+      "Стаж работы": "4 года",
+      "Пол": "Мужской",
+      "Возраст": "22 года",
+      "Сфера деятельности": "Транспорт, логистика",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [],
+      "Свой транспорт": [
+        "Грузовое авто"
+      ],
+      "Категория прав": [
+        "B"
+      ],
+      "Водительское удостоверение": [
+        "Есть"
+      ],
+      "Учебные заведения": [
+        "Канский политехнический колледж, Канск (КПК) Юрист"
+      ],
+      "Опыт работы": [
+        "4 года и 6 месяцев Июль 2020 — Декабрь 2024 | Транс сервис, Водитель Грузоперевозки"
+      ]
+    },
+    "source": "avito",
+    "link": "/kansk/rezume/voditel_na_lichnom_gruzovom_avto_7288397962",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7288397962",
+      "itemDate": " · 24 апреля в 00:20"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:17:23.824231"
+      }
+    ]
+  },
+  {
+    "title": "Ремонт оборудования",
+    "salary": "не указана",
+    "phone": "8 905 XXX-XX-XX",
+    "address": "Красноярский край, Норильск, Комсомольская улица, 9",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "",
+      "Стаж работы": "Без опыта",
+      "Пол": "Мужской",
+      "Возраст": "24 года",
+      "Сфера деятельности": "Производство, сырьё, с/х",
+      "График работы": "Вахтовый метод"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [
+        "Есть"
+      ],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/norilsk/rezume/remont_oborudovaniya_7264736930",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7264736930",
+      "itemDate": " · 27 апреля в 21:58"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:17:24.188563"
+      }
+    ]
+  },
+  {
+    "title": "Подработка",
+    "salary": "не указана",
+    "phone": "8 963 XXX-XX-XX",
+    "address": "Красноярск, садоводческое некоммерческое товарищество Судостроитель, 309",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа, Подработка",
+      "Может выйти завтра": "Нет",
+      "Стаж работы": "Без опыта",
+      "Пол": "Мужской",
+      "Возраст": "28 лет",
+      "Сфера деятельности": "Без опыта, студенты",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [
+        "Нет"
+      ],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/krasnoyarsk/rezume/podrabotka_7309489473",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7309489473",
+      "itemDate": " · 25 апреля в 00:22"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:17:24.329245"
+      }
+    ]
+  },
+  {
+    "title": "Любая работа, подработка",
+    "salary": "Зарплата не указана",
+    "phone": "8 913 XXX-XX-XX",
+    "address": "городской округ Красноярск, Ленинский район",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа, Подработка",
+      "Может выйти завтра": "",
+      "Стаж работы": "Без опыта",
+      "Пол": "Мужской",
+      "Возраст": "45 лет",
+      "Сфера деятельности": "Без опыта, студенты",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [
+        "Нет"
+      ],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/krasnoyarsk/rezume/lyubaya_rabota_podrabotka_7289734608",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7289734608",
+      "itemDate": " · 27 апреля в 00:53"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:17:24.473267"
+      }
+    ]
+  },
+  {
+    "title": "Любая удаленная работа",
+    "salary": "50 000 ₽",
+    "phone": "8 953 XXX-XX-XX",
+    "address": "Красноярск, улица Шевченко, р-н Ленинский",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа, Подработка",
+      "Может выйти завтра": "Да",
+      "Стаж работы": "8 лет",
+      "Пол": "Женский",
+      "Возраст": "32 года",
+      "Сфера деятельности": "Банки, инвестиции",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [
+        "Нет"
+      ],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [
+        "Красноярский строительный техникум"
+      ],
+      "Опыт работы": [
+        "5 месяцев  Декабрь 2024 — Апрель 2025 | Т-Банк, Оператор  Прием входящих звонков. Помощь и консультирование клиентов. Оформление банковских продуктов.",
+        "5 месяцев  Июнь 2024 — Октябрь 2024 | ОАО \"КРАСЦВЕТМЕТ\", Приемщик драгоценных металлов и сырья  Взвешивание, пломбировка готовых ювелирных изделий, их проверка и печать бирок.",
+        "3 месяца  Февраль 2024 — Апрель 2024 | ООО \"СибМед\", Администратор  Консультация пациентов, в том числе по телефону. Запись пациентов, введение отчетности, заполнение документов. Расчет по кассе.",
+        "7 лет и 6 месяцев  Сентябрь 2015 — Февраль 2023 | КГАУЗ \"КМБ №5\", Оператор  Работа в программе GMS, введение данных, заполнение таблиц, печать документов, прикрепление пациентов."
+      ]
+    },
+    "source": "avito",
+    "link": "/krasnoyarsk/rezume/lyubaya_udalennaya_rabota_7331205310",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7331205310",
+      "itemDate": " · 23 апреля в 18:18"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:17:24.618969"
+      }
+    ]
+  },
+  {
+    "title": "Водитель категория В",
+    "salary": "не указана",
+    "phone": "8 933 XXX-XX-XX",
+    "address": "Красноярск, микрорайон Северо-Западный, р-н Октябрьский",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "",
+      "Стаж работы": "Без опыта",
+      "Пол": "Мужской",
+      "Возраст": "42 года",
+      "Сфера деятельности": "Транспорт, логистика",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [],
+      "Свой транспорт": [
+        "Нет"
+      ],
+      "Категория прав": [
+        "B"
+      ],
+      "Водительское удостоверение": [
+        "Есть"
+      ],
+      "Учебные заведения": [],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/krasnoyarsk/rezume/voditel_kategoriya_v_7272998701",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7272998701",
+      "itemDate": " · 27 апреля в 20:18"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:17:24.762019"
+      }
+    ]
+  },
+  {
+    "title": "Любая работа, подработка",
+    "salary": "Зарплата не указана",
+    "phone": "8 914 XXX-XX-XX",
+    "address": "Красноярский край, Эвенкийский район",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "Да",
+      "Стаж работы": "Без опыта",
+      "Пол": "Женский",
+      "Возраст": "25 лет",
+      "Сфера деятельности": "Без опыта, студенты",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [
+        "Нет"
+      ],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [
+        "Среднее"
+      ],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/baykit/rezume/lyubaya_rabota_podrabotka_7333520489",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7333520489",
+      "itemDate": " · 21 апреля в 05:02"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:17:24.905554"
+      }
+    ]
+  },
+  {
+    "title": "Юрист начального уровня",
+    "salary": "",
+    "phone": "8 902 XXX-XX-XX",
+    "address": "Красноярск, жилой микрорайон Чистый, р-н Октябрьский",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "",
+      "Стаж работы": "14 лет",
+      "Пол": "Женский",
+      "Возраст": "42 года",
+      "Сфера деятельности": "Юриспруденция",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Гражданство — Россия"
+      ],
+      "Медкнижка": [],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [
+        "Московский государственный социальный университет Министерства труда и социального развития РФ, Год окончания: 2005"
+      ],
+      "Опыт работы": [
+        "12 лет и 1 месяц  Февраль 2013 — Февраль 2025 | ПАО Сбербанк, Ведущий специалист отдела судебного и исполнительного производства  взыскание/урегулирование задолженности физический лиц на судебной стадии и стадии исполнительного производства, проведение телефонных переговоров с должниками банка, осуществление выездных мероприятий с целью взаимодействия с должником на предмет урегулирования/ погашения задолженности, представление интересов банка в государственных органах и организациях, участие в исполнительных действиях совместно с Федеральной службой судебных приставов",
+        "1 год и 3 месяца  Ноябрь 2011 — Январь 2013 | ООО \" Стандарт-Ресурс, Инсектор  Работа с входящей, исходящей корреспонденцией, ведение делопроизводства",
+        "1 год и 4 месяца  Июль 2010 — Октябрь 2011 | ГУ ФССП России по Красноярскому краю, Старший специалист 2 разрада  Взыскание задолженности. Присвоен классный чин юрист 3 класса"
+      ]
+    },
+    "source": "avito",
+    "link": "/krasnoyarsk/rezume/yurist_nachalnogo_urovnya_7250083220",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7250083220",
+      "itemDate": " · 22 апреля в 00:12"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:17:25.050263"
+      }
+    ]
+  },
+  {
+    "title": "Разнорабочий",
+    "salary": "Зарплата не указана",
+    "phone": "8 978 XXX-XX-XX",
+    "address": "Байкит",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "Нет",
+      "Стаж работы": "Без опыта",
+      "Пол": "Мужской",
+      "Возраст": "39 лет",
+      "Сфера деятельности": "Без опыта, студенты",
+      "График работы": "Вахтовый метод"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [
+        "Есть"
+      ],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [
+        "Среднее специальное"
+      ],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/baykit/rezume/raznorabochiy_7285408537",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7285408537",
+      "itemDate": " · 31 марта в 12:28"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:17:25.190242"
+      }
+    ]
+  },
+  {
+    "title": "Водитель болотохода",
+    "salary": "207 000 ₽",
+    "phone": "8 923 XXX-XX-XX",
+    "address": "Красноярский край, Лесосибирск, квартал Центр",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "",
+      "Стаж работы": "Без опыта",
+      "Пол": "Мужской",
+      "Возраст": "35 лет",
+      "Сфера деятельности": "Транспорт, логистика",
+      "График работы": "Вахтовый метод"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Гражданство — Россия"
+      ],
+      "Медкнижка": [],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [
+        "Год окончания: 2008",
+        "Пту 14 лесосибирск  Мастер общестроительных работ КМС"
+      ],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/lesosibirsk/rezume/voditel_bolotohoda_7294652615",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7294652615",
+      "itemDate": " · 16 апреля в 22:09"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:17:25.329916"
+      }
+    ]
+  },
+  {
+    "title": "Помощник руководителя резюме",
+    "salary": "не указана",
+    "phone": "8 913 XXX-XX-XX",
+    "address": "Красноярский край, г.о. Красноярск, Центральный район, пл. Революции",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "",
+      "Стаж работы": "Без опыта",
+      "Пол": "Женский",
+      "Возраст": "41 год",
+      "Сфера деятельности": "Юриспруденция",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [
+        "Сфу  Юридический институт",
+        "Сфу  Триботехника инженер"
+      ],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/krasnoyarsk/rezume/pomoschnik_rukovoditelya_rezyume_7300628404",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7300628404",
+      "itemDate": " · 24 апреля в 11:31"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:17:25.471605"
+      }
+    ]
+  },
+  {
+    "title": "Любая работа, подработка",
+    "salary": "Зарплата не указана",
+    "phone": "8 950 XXX-XX-XX",
+    "address": "Красноярск, проспект 60 лет Образования СССР, 38К",
+    "description": "",
+    "mainParams": {
+      "Тип занятости": "Основная работа",
+      "Может выйти завтра": "Нет",
+      "Стаж работы": "Без опыта",
+      "Пол": "Женский",
+      "Возраст": "42 года",
+      "Сфера деятельности": "Без опыта, студенты",
+      "График работы": "Полный день"
+    },
+    "additionalParams": {
+      "Гражданство": [
+        "Россия"
+      ],
+      "Медкнижка": [
+        "Нет"
+      ],
+      "Свой транспорт": [],
+      "Категория прав": [],
+      "Водительское удостоверение": [],
+      "Учебные заведения": [
+        "Незаконченное высшее"
+      ],
+      "Опыт работы": []
+    },
+    "source": "avito",
+    "link": "/krasnoyarsk/rezume/lyubaya_rabota_podrabotka_7268630979",
+    "photoUrl": "",
+    "techInfo": {
+      "itemId": "№ 7268630979",
+      "itemDate": " · 23 апреля в 00:51"
+    },
+    "scrapingMeta": [
+      {
+        "searchSource": "avito",
+        "searchKeyword": "",
+        "searchParams": {
+          "listing_url": "https://www.avito.ru/krasnoyarskiy_kray/rezume?f=ASgBAQECAkSs3hGAiooPstsSiKmNAwFAlgskgJ8B~vcBAUXyDBl7ImZyb20iOjExOTczLCJ0byI6MTIwMDB9&s=104"
+        },
+        "searchTimestamp": "2025-05-03T12:17:26.109116"
+      }
+    ]
+  }
+]
