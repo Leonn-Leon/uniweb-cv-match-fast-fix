@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 
 from model import CvSelector, MassCvSelector
 
-load_dotenv()
+load_dotenv(override=True)
 
 
 def df2dict(df: pd.DataFrame):

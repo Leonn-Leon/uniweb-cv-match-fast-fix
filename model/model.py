@@ -19,7 +19,7 @@ sys.path.append(str(project_root))
 from utils.enums import Method, ModeInfo
 from utils.request_api import OpenAIEmbedder, process_corpus
 
-load_dotenv()
+load_dotenv(override=True)
 
 
 class CvSelector:

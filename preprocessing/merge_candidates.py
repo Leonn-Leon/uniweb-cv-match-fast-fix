@@ -19,7 +19,7 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 logger = logging.getLogger(__name__)
 
 # --- Загрузка переменных окружения (.env файл) ---
-load_dotenv()
+load_dotenv(override=True)
 YANDEX_API_KEY = os.getenv("YANDEX_GEOCODER_API_KEY")
 if not YANDEX_API_KEY:
     logger.warning("Ключ YANDEX_GEOCODER_API_KEY не найден в .env файле! Геокодирование будет невозможно или ограничено.")
@@ -355,7 +355,7 @@ if __name__ == "__main__":
         logger.warning("Колонка 'address' не найдена в объединенных данных. Геокодирование пропущено.")
         df_combined['coords'] = None # Добавляем пустую колонку для совместимости
 
-    # --- 5. Удаление дубликатов --- (Теперь после геокодирования)
+    # --- 5. Удаление дубликатов ---
     rows_before_dedup = len(df_combined)
     if LINK_COLUMN in df_combined.columns:
         logger.info(f"Удаление дубликатов по '{LINK_COLUMN}'...")
