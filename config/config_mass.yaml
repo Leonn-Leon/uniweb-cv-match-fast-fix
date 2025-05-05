@@ -12,7 +12,7 @@ model:
       - "Адрес"
       - "date"
       - "embedding"
-    weights: [1, 0.5, 1, 1]
+    weights: [0.0, 0.5, 1, 1]
     first_filter: 300
     top_n_init: 100
     top_n: 30
