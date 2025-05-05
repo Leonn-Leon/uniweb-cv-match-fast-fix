@@ -30,7 +30,7 @@ model:
       - "Условия работы"
       - "Зарплата"
       - "Описание"
-    model_name: "gpt-4o-mini-2024-07-18"
+    model_name: "gpt-4o-2024-11-20"
     model_name_embed: "text-embedding-3-large"
     category_desc:
       Навыки: |
