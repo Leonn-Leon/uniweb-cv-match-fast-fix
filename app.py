@@ -210,7 +210,7 @@ if st.button("Подобрать", type="primary"):
         if mode == str(Mode.PROF):
             pass
         else:
-            df_cv = load_data(f"./data_mass/candidates_new.csv")
+            df_cv = load_data(f"./data_mass/candidates_new_big.csv")
             df_cv = df_cv.rename(columns={"address": "Адрес"})
         with st.status("Подготовка вакансии..."):
             vacancy = selector.preprocess_vacancy(vacancy)
