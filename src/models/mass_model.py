@@ -1,72 +1,35 @@
 import os
-import random
-import requests
-import re
-from ast import literal_eval
 from copy import deepcopy
 from datetime import datetime, timedelta, date
-from typing import Dict, List, Union
+from typing import Dict
 
-import nltk
 import numpy as np
 import pandas as pd
-import simplemma
-import yaml
-from dotenv import load_dotenv
-from geopy.distance import geodesic
-# from geopy.geocoders import Nominatim
-# from geopy.location import Location
 from loguru import logger
-from nltk.stem.snowball import SnowballStemmer
-from nltk.tokenize import word_tokenize
-from openai import OpenAI
-from rank_bm25 import BM25Okapi
-from rapidfuzz import fuzz
 from sklearn.metrics.pairwise import cosine_similarity
-from tenacity import retry, stop_after_attempt, wait_fixed
 from tqdm import tqdm
 import functools
 
-from model import CvSelector
+from src.models.base_model import BaseSelector
 from utils.enums import Method, ModeInfo
 from utils.request_api import process_corpus
 
-load_dotenv(override=True)
-nltk.download("punkt_tab")
-
-
-class MassCvSelector(CvSelector):
+class MassSelector(BaseSelector):
     def __init__(
         self, config: Dict, api_token: str, method: Method = Method.EMBEDDINGS
     ):
-        CvSelector.__init__(
+        BaseSelector.__init__(
             self,
             config=config,
             api_token=api_token,
             method=method,
         )
-        self.stemmer = SnowballStemmer(language="russian")
         self.days_filter_threshold = (datetime.now().date() - date.fromisoformat(config["stage_1"]["date_threshold"]) ).days
         self.first_filter = config["stage_1"]["first_filter"]
         self.top_n_init = config["stage_1"]["top_n_init"]
         self.close_dist_threshold = config["stage_1"]["close_dist_threshold"]
-        # self.score_threshold_stage_2 = config["stage_2"]["score_threshold"]
 
-    def __normalize_text(self, text: str):
-        text = text.lower().replace("\n", " ")
-        text = re.sub(r"[^\w\s]", "", text)
-        text = re.sub(r"\d+", "", text)
-        text = re.sub(r"\s+", " ", text).strip()
-        text = " ".join(sorted(text.split(" ")))
-        return text
-
-    def __minmax_scale(self, x: np.ndarray):
-        range_ = x.max() - x.min()
-        if range_ == 0:
-            return np.zeros_like(x)
-        return (x - x.min()) / range_
-
-    def __filter_1_stage(
+    def _filter_1_stage(
         self, date: date, availability: str, days_thresh: int
     ):
         try:
@@ -76,136 +39,8 @@ class MassCvSelector(CvSelector):
                 return False
             return True
         except Exception as e:
-            logger.error(f"Error in __filter_1_stage: {e}, date: {date}")
+            logger.error(f"Error in _filter_1_stage: {e}, date: {date}")
             return False
-
-    def __score_move(self, move: str, dist: float, dist_thresh: float = 50):
-        if dist < dist_thresh:
-            return 1.0
-        value_array = np.array(["Невозможен", "Нет данных", "Возможен"])
-        return float(np.where(value_array == move)[0][0]) / 2
-
-    def __shorten_address(self, address: str):
-        split_ = address.split(", ")
-        split_ = split_[:3]
-        result = []
-        for item in split_:
-            norm = True
-            key_words = ["ул.", "улиц", "пер.", "переулок", "пл.", "площ"]
-            for key in key_words:
-                if key in item:
-                    norm = False
-                    break
-            if norm:
-                result.append(item)
-        return ", ".join(result)
-
-    def match_job(self, position_vac: str, positions_condidates: List[str]):
-        client = OpenAI(api_key=os.getenv("OPENAI_TOKEN"))
-        prompt = f"Выберите подходящую должность.\nДолжность из вакансии: '{position_vac}'\nДолжности кандидатов: {str(positions_condidates)}"
-        system_prompt = """Вы эксперт в найме персонала. Ваша задача для должности из вакансии выбрать
-        самую подходящую должность из списка должностей кандидатов. Верните в ответ только выбранную должность из списка. Не нужно
-        выводить никаких объяснений. Должность из списка нужно вернуть точно, без каких-либо изменений.
-        """
-        completion = client.chat.completions.create(
-            model=self.model_name,
-            messages=[
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": prompt},
-            ], temperature=0.01
-        )
-        return completion.choices[0].message.content
-
-    def find_info(self, info: str):
-        client = OpenAI(api_key=os.getenv("OPENAI_TOKEN"))
-        description, mode, query, query_desc, delete_data = info.split("[SEP]")
-        # logger.info(f"find_info: {info}")
-
-        # 1. Формируем базовый системный промпт
-        system_prompt = f"""Ты - ассистент по извлечению информации из текста. Твоя задача - найти в предоставленном тексте ('Описание') ответ на вопрос пользователя.
-            Верни результат в формате JSON с одним ключом '{query}'.
-            Если информация найдена, помести ее в значение ключа '{query}'.
-            Если информация не найдена, используй значение "Нет данных". Не придумывай информацию."""
-
-        # 2. Добавляем инструкцию про удаление данных, ТОЛЬКО если delete_data передан
-        # if delete_data is not None and delete_data != "None":
-        #     system_prompt += f"\nВАЖНО: Из найденной информации исключи любые данные, которые пересекаются с этим списком для удаления: {delete_data}"
-
-        # 3. Формируем пользовательский промпт: Описание + Вопрос из query_desc
-        # Используем query_desc как основной вопрос. Если его нет, используем query как запасной вариант.
-        question = query_desc if query_desc is not None and query_desc != "None" else f"Извлеки данные для категории '{query}'."
-
-        # Собираем пользовательский промпт
-        user_prompt = f"Описание:\n{description}\n\nВопрос:\n{question}\n\nОтвет (в формате JSON):"
-
-        completion = client.chat.completions.create(
-            model=self.model_name,
-            messages=[
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": user_prompt},
-            ],temperature=0.01,
-            response_format={"type": "json_object"},
-        )
-        return completion.choices[0].message.content
-
-    @retry(stop=stop_after_attempt(3), wait=wait_fixed(1.1))
-    def get_coords(self, address_search: str):
-        """
-        Получает координаты и уточненный адрес с помощью API Яндекс Геокодера.
-        """
-        api_key = os.getenv("YANDEX_GEOCODER_API_KEY")
-        if not api_key:
-            logger.error("Yandex Geocoder API key not found in environment variables.")
-            return None, address_search # Возвращаем None и исходный адрес при ошибке
-
-        if not address_search or pd.isna(address_search): # Проверка на пустой или NaN адрес
-            logger.warning(f"Attempted to geocode empty or NaN address.")
-            return None, address_search
-
-        base_url = "https://geocode-maps.yandex.ru/v1/"
-        params = {
-            "apikey": api_key,
-            "geocode": address_search,
-            "format": "json",
-            "results": 1 # Запрашиваем только один, самый релевантный результат
-        }
-
-        try:
-            response = requests.get(base_url, params=params, timeout=10)
-            response.raise_for_status() # Проверка на HTTP ошибки (4xx, 5xx)
-            data = response.json()
-
-            feature_member = data.get("response", {}).get("GeoObjectCollection", {}).get("featureMember", [])
-            if not feature_member:
-                logger.warning(f"No geocode result found for address: {address_search}")
-                return None, address_search
-
-            # Извлекаем координаты и адрес
-            geo_object = feature_member[0].get("GeoObject", {})
-            point_str = geo_object.get("Point", {}).get("pos")
-            formatted_address = geo_object.get("metaDataProperty", {}).get("GeocoderMetaData", {}).get("Address", {}).get("formatted", address_search)
-            precision = geo_object.get("metaDataProperty", {}).get("GeocoderMetaData", {}).get("precision", "unknown")
-
-            if point_str:
-                # Яндекс возвращает "долгота широта"
-                lon, lat = map(float, point_str.split())
-                logger.info(f"Geocoded '{address_search}' to ({lat}, {lon}) with precision '{precision}'. Formatted: '{formatted_address}'")
-                # Возвращаем в формате (широта, долгота) как ожидает geopy
-                return (lat, lon), formatted_address
-            else:
-                logger.warning(f"Could not extract coordinates for address: {address_search}")
-                return None, formatted_address # Возвращаем None для координат, но уточненный адрес
-
-        except requests.exceptions.RequestException as e:
-            logger.error(f"Yandex Geocoder request failed for '{address_search}': {e}")
-            return None, address_search
-        except (KeyError, IndexError, ValueError, TypeError) as e:
-            logger.error(f"Failed to parse Yandex Geocoder response for '{address_search}': {e}")
-            return None, address_search
-        except Exception as e:
-            logger.error(f"An unexpected error occurred during geocoding for '{address_search}': {e}")
-            return None, address_search
-
 
     def preprocess_vacancy(self, vacancy: Dict):
         for cat in tqdm(["Адрес", "График работы", "Тип занятости", "Переезд"]):
@@ -255,7 +90,7 @@ class MassCvSelector(CvSelector):
         vacancy["Full_description"] = self.get_desc(
             vacancy=vacancy, keys=self.keys_vacancy
         )
-        vacancy["Адрес"] = self.__shorten_address(vacancy["Адрес"])
+        vacancy["Адрес"] = self._shorten_address(vacancy["Адрес"])
         logger.info(f"Geo search failed: {vacancy['Адрес']}")
         try:
             vacancy["coords"], vacancy["Адрес"] = self.get_coords(vacancy["Адрес"])
@@ -263,44 +98,6 @@ class MassCvSelector(CvSelector):
             vacancy["coords"] = None
         logger.info(f"Coords: {vacancy['coords']}")
         return vacancy
-
-    def normalize_address(self, address: str):
-        address = address.lower()
-        address = re.sub(r"[^\w\s]", "", address)
-        address = re.sub(r"\d+", "", address)
-        address = re.sub(r"\s+", " ", address).strip()
-        address = " ".join(sorted(address.split(" ")))
-        return address
-
-    def compare_addresses(self, addr1, addr2):
-        similarity = fuzz.ratio(addr1, addr2, processor=self.normalize_address)
-        return 100 - similarity
-
-    def __tokenize_feat(self, text: str):
-        norm_text = self.__normalize_text(text)
-        words = word_tokenize(norm_text, language="russian")
-        prep_words = []
-        for word in words:
-            word_lemm = simplemma.lemmatize(word, lang="ru")
-            word_stemm = self.stemmer.stem(word_lemm)
-            prep_words.append(word_stemm)
-        return prep_words
-
-    def __bm25_score(self, feature_list: List[str], query: str):
-        tokenized_corpus = [self.__tokenize_feat(x) for x in feature_list]
-        bm25 = BM25Okapi(tokenized_corpus)
-        tokenized_query = self.__tokenize_feat(query)
-        scores = np.abs(bm25.get_scores(tokenized_query))
-        return self.__minmax_scale(scores)
-
-    def find_geo_distance(
-        self, coords_vac: Union[str, tuple], coords_cand: Union[str, tuple]
-    ):
-        if type(coords_vac) == str:
-            coords_vac = literal_eval(coords_vac)
-        if type(coords_cand) == str:
-            coords_cand = literal_eval(coords_cand)
-        return geodesic(coords_vac, coords_cand).kilometers
 
     def distance_score(self, distances: np.ndarray) -> np.ndarray:
         conditions = [
@@ -365,7 +162,7 @@ class MassCvSelector(CvSelector):
              df_relevant.loc[:, "filter"] = df_relevant[
                  [date_col, "Доступность"]
              ].apply(
-                 lambda x: self.__filter_1_stage(
+                 lambda x: self._filter_1_stage(
                      x.iloc[0].date(), x.iloc[1], self.days_filter_threshold
                  ),
                  axis=1,
@@ -453,13 +250,12 @@ class MassCvSelector(CvSelector):
             df_relevant.loc[:, f"{move_col}_sim"] = (
                  df_relevant[[move_col, "distance"]]
                  .apply(
-                    lambda x: self.__score_move(
+                    lambda x: self._score_move(
                         x.iloc[0], x.iloc[1], self.close_dist_threshold
                     ),
                     axis=1,
                 )
             )
-             
         
         df_relevant_filtered = df_relevant.copy()
 
@@ -500,7 +296,7 @@ class MassCvSelector(CvSelector):
                  logger.warning("Candidate job title list for BM25 is empty. Skipping BM25 step.")
                  df_top_bm25 = df_relevant_for_position_filter.copy() # Пропускаем BM25
             else:
-                 bm25_scores = self.__bm25_score(
+                 bm25_scores = self._bm25_score(
                      feature_list=candidate_job_titles_bm25,
                      query=vacancy_job_title,
                  )
@@ -537,11 +333,6 @@ class MassCvSelector(CvSelector):
 
                     cos_sims = cosine_similarity(embedding_vac_np, embeddings_np)[0]
                     df_top_bm25["embedding_sim"] = cos_sims
-
-                    # Ограничиваем TOP_EMBED размером текущего DataFrame
-                    #  current_top_embed = min(TOP_EMBED, len(df_top_bm25))
-                    #  df_filtered_final = df_top_bm25.nlargest(current_top_embed, "embed_sim").copy()
-                    #  logger.info(f"Selected top {len(df_filtered_final)} candidates based on embedding job title score.")
 
                     df_filtered_final = df_top_bm25.drop(columns=["_tmp_bm25_sim"], errors='ignore')
 
@@ -604,69 +395,7 @@ class MassCvSelector(CvSelector):
         logger.info(f"Returning top {self.top_n_first_stage} candidates from stage 1.")
         return df_ranked.head(self.top_n_first_stage)
 
-    def _process_coords_and_distance(self, candidate_data, vacancy_coords, vacancy_address):
-        """
-        Определяет координаты кандидата и считает расстояние до вакансии.
-
-        Args:
-            candidate_data (tuple): Данные кандидата (coords_input, candidate_address).
-            vacancy_coords (tuple or None): Координаты вакансии.
-            vacancy_address (str): Адрес вакансии для сравнения строк.
-
-        Returns:
-            tuple: (координаты_кандидата, адрес_кандидата, расстояние_до_вакансии).
-        """
-        coords_input, candidate_address = candidate_data # Распаковываем входные данные
-        processed_coords = None
-
-        # 1. Пытаемся получить координаты из входных данных (строка или готовый кортеж)
-        if isinstance(coords_input, str) and coords_input.strip():
-            # Пробуем распарсить строку типа "(lat, lon)"
-            try:
-                potential_coords = literal_eval(coords_input)
-                if isinstance(potential_coords, (tuple, list)) and len(potential_coords) == 2:
-                    lat = float(potential_coords[0])
-                    lon = float(potential_coords[1])
-                    processed_coords = (lat, lon)
-            except Exception: pass # Ошибки парсинга игнорируем, перейдем к геокодингу
-        elif isinstance(coords_input, (tuple, list)) and len(coords_input) == 2:
-            # Проверяем, если на входе уже был кортеж/список с числами
-            try:
-                lat = float(coords_input[0])
-                lon = float(coords_input[1])
-                processed_coords = (lat, lon)
-            except (ValueError, TypeError): pass # Не числа, перейдем к геокодингу
-
-        # 2. Если координаты не найдены, пробуем геокодировать по адресу
-        if processed_coords is None:
-            # Используем адрес кандидата для геокодинга
-            if pd.notna(candidate_address) and str(candidate_address).strip():
-                try:
-                    # Вызываем наш метод геокодинга через Яндекс API
-                    cand_coords, _ = self.get_coords(candidate_address) # Форматированный адрес нам тут не нужен
-                    if cand_coords:
-                        processed_coords = cand_coords # Сохраняем найденные координаты
-                except Exception as e:
-                    # Ошибка при вызове геокодера
-                    logger.debug(f"Geocoding failed for '{candidate_address}' in worker: {e}")
-            # Если адреса нет или геокодинг не удался, processed_coords останется None
-
-        # 3. Считаем расстояние до вакансии
-        distance = np.nan # По умолчанию расстояние не известно
-        if vacancy_coords is not None:
-            # Если есть координаты вакансии, приоритет у гео-расстояния
-            if isinstance(processed_coords, (tuple, list)) and len(processed_coords) == 2:
-                try:
-                    # Считаем расстояние между точками
-                    distance = self.find_geo_distance(vacancy_coords, processed_coords)
-                except Exception as e:
-                    logger.debug(f"Geodesic distance failed in worker: {e}")
-
-
-        # Возвращаем кортеж: (найденные_координаты, исходный_адрес_кандидата, расстояние)
-        return processed_coords, candidate_address, distance
-
-    def __preprocess_cvs(self, df_relevant: pd.DataFrame):
+    def preprocess_cvs(self, df_relevant: pd.DataFrame):
         df_relevant["Описание"] = df_relevant["Описание"].fillna("Нет данных").replace("\n\n", "\n")
         new_cats = {}
         for cat in self.cats_find_cv:
@@ -715,7 +444,7 @@ class MassCvSelector(CvSelector):
         
         vac_desc = vacancy_prep["Описание"]
         
-        df_relevant = self.__preprocess_cvs(df_relevant=df_relevant)
+        df_relevant = self.preprocess_cvs(df_relevant=df_relevant)
 
         if self.method == Method.EMBEDDINGS:
             logger.info("Computing embeddings")
@@ -773,10 +502,6 @@ class MassCvSelector(CvSelector):
                 df_relevant[col] = 0.0 # Заполняем нулями, чтобы избежать ошибки
 
         try:
-            # ВВЕРХ перенёс
-            #  logger.debug(f"Vacancy for vacancy mask: {vacancy_prep}")
-            #  nan_mask = self.vacancy_mask(vacancy_dict=vacancy_prep)
-            #  logger.info(f"Vacancy NaN mask: {nan_mask}")
              # Создаем словарь маски для удобного доступа по имени фичи из конфига
              mask_dict = {feat: mask_val for feat, mask_val in zip(self.ranking_features, nan_mask)}
         except Exception as e:
@@ -823,45 +548,3 @@ class MassCvSelector(CvSelector):
 
         df_ranked = df_relevant.sort_values("sim_score_second", ascending=False)
         return df_ranked.head(self.top_n_second_stage), vacancy_prep, nan_mask
-
-if __name__ == "__main__":
-    config_path = "./config/config_mass.yaml"
-    data_path = "./data_mass/Водитель белаза.csv"
-    vac_path = "./data_mass/vacancies.csv"
-
-    ## Load test data
-    with open(config_path, "r") as f:
-        config = yaml.safe_load(f)
-
-    logger.info("Loading test data")
-    df_relevant = pd.read_csv(data_path)
-    vacancy = pd.read_csv(vac_path).iloc[0].to_dict()
-
-    ## Init model
-    logger.info("Init model")
-    config_model = config["model"]
-    selector = MassCvSelector(config=config_model, api_token=os.getenv("OPENAI_TOKEN"))
-
-    ## Make 1st stage ranking
-    logger.info("1st stage ranking..")
-    df_ranked_1st = selector.rank_first_stage(
-        vacancy=vacancy, df_relevant=df_relevant.copy()
-    )
-
-    assert df_ranked_1st.shape[0] == config_model["stage_1"]["top_n"], "Wrong size"
-    assert (
-        df_ranked_1st.iloc[0]["id"] == "№ 2880355971"
-    ), "First stage ranking is wrong!"
-    logger.info("Finished successfully")
-
-    # logger.info("2nd stage ranking..")
-    df_ranked_2nd, vacancy_prep, nan_mask = selector.rank_second_stage(
-        vacancy=vacancy, df_relevant=df_ranked_1st.copy()
-    )
-
-    assert df_ranked_2nd.shape[0] == config_model["stage_2"]["top_n"], "Wrong size"
-    df_ranked_2nd.to_csv("./test_results.csv", index=False)
-    assert (
-        df_ranked_2nd.iloc[1]["id"] == "№ 2880355971"
-    ), "Second stage ranking is wrong!"
-    logger.info("Finished successfully")

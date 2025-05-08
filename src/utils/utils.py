@@ -7,7 +7,7 @@ import streamlit as st
 import yaml
 from dotenv import load_dotenv
 
-from model import CvSelector, MassCvSelector
+from src.models import MassSelector, ProfSelector
 
 load_dotenv(override=True)
 
@@ -42,11 +42,11 @@ def load_model(config_path: st):
         config = yaml.safe_load(f)
     config_model = config["model"]
     if "mass" in config_path:
-        selector = MassCvSelector(
+        selector = MassSelector(
             config=config_model, api_token=os.getenv("OPENAI_TOKEN")
         )
     else:
-        selector = CvSelector(config=config_model, api_token=os.getenv("OPENAI_TOKEN"))
+        selector = ProfSelector(config=config_model, api_token=os.getenv("OPENAI_TOKEN"))
     return selector, config
 
 

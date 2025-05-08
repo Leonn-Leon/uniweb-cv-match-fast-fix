@@ -16,69 +16,26 @@ from sklearn.metrics.pairwise import cosine_similarity
 project_root = Path(__file__).parent.parent
 sys.path.append(str(project_root))
 
+from src.models.base_model import BaseSelector
 from utils.enums import Method, ModeInfo
 from utils.request_api import OpenAIEmbedder, process_corpus
 
 load_dotenv(override=True)
 
 
-class CvSelector:
+class ProfSelector(BaseSelector):
     def __init__(
         self, config: Dict, api_token: str, method: Method = Method.EMBEDDINGS
     ):
-        ## stage 1 config
-        self.text_features = config["stage_1"]["text_features"]
-        self.cluster_match_features = config["stage_1"]["cluster_match_features"]
-        self.first_stage_weights = np.array(config["stage_1"]["weights"])
-        self.top_n_first_stage = config["stage_1"]["top_n"]
-        self.ranking_features_first_stage = None
-        ## stage 2 config
-        self.keys_vacancy = config["stage_2"]["keys_vacancy"]
-        self.model_name = config["stage_2"]["model_name"]
-
-        self.prompt_experience = config["stage_2"]["prompt_experience"]
-        # self.system_prompt_experience = config["stage_2"]["system_prompt_experience"]
-
-        self.prompt_info = config["stage_2"]["prompt_info"]
-        self.system_prompt_info = config["stage_2"]["system_prompt_info"]
-        self.question_vac = config["stage_2"]["question_vac"]
-        self.question_cv = config["stage_2"]["question_cv"]
-        self.category_desc = config["stage_2"]["category_desc"]
-        self.cats_find_vacancy = config["stage_2"]["cats_find_vacancy"]
-        self.cats_find_cv = config["stage_2"]["cats_find_cv"]
-
-        self.request_num_workers = config["stage_2"]["request_num_workers"]
-        self.keys_cv = config["stage_2"]["keys_cv"]
-        self.feats_match = config["stage_2"]["feats_match"]
-        self.feats_match_prompt = config["stage_2"]["feats_match_prompt"]
-        self.ranking_features = config["stage_2"]["ranking_features"]
+        super().__init__(config=config, api_token=api_token, method=method)
         self.sim_scores_names = config["stage_2"]["sim_scores_names"]
-        self.second_stage_weights = np.array(config["stage_2"]["weights"])
-        self.top_n_second_stage = config["stage_2"]["top_n"]
 
-        self.embedder = OpenAIEmbedder(
-            api_key=api_token, model_name=config["stage_2"]["model_name_embed"]
-        )
-        self.api_token = api_token
-        self.method = method
-        if method not in [Method.EMBEDDINGS, Method.PROMPT]:
-            self.method = str(Method.EMBEDDINGS)
-        self.prompt_matching = config["stage_2"]["prompt_matching"]
-        self.system_prompt_matching = config["stage_2"]["system_prompt_matching"]
-
-    def __text_features_intersection(self, str_feats_ref: str, str_feats_match: str):
+    def _text_features_intersection(self, str_feats_ref: str, str_feats_match: str):
         set1 = set(str_feats_ref.lower().split(", "))
         set2 = set(str_feats_match.lower().split(", "))
         return len(set1.intersection(set2)) / len(set1)
 
-    def get_desc(self, vacancy: Dict, keys: List[str]):
-        description_items = []
-        for key in keys:
-            if key in vacancy:
-                description_items.append(f"{key}:\n{vacancy[key]}")
-        return "\n\n".join(description_items)
-
-    def __education_str(self, edu_data_str: str):
+    def _education_str(self, edu_data_str: str):
         result = ""
         try:
             edu_data = json.loads(edu_data_str)
@@ -100,7 +57,7 @@ class CvSelector:
             return "Нет данных"
         return result
 
-    def __salary_str(self, salary_data_str: str):
+    def _salary_str(self, salary_data_str: str):
         try:
             salary_data = json.loads(salary_data_str)
         except JSONDecodeError:
@@ -120,52 +77,6 @@ class CvSelector:
         )
         return completion.choices[0].message.content
 
-    def find_info(self, info: str):
-        client = OpenAI(api_key=os.getenv("OPENAI_TOKEN"))
-        description, mode, query, query_desc, delete_data = info.split("[SEP]")
-        if mode == ModeInfo.VACANCY:
-            question = self.question_vac.replace("[query]", query)
-        else:
-            question = self.question_vac.replace("[query]", query)
-        prompt = self.prompt_info.replace("[description]", description).replace(
-            "[question]", question
-        )
-        system_prompt = self.system_prompt_info.replace("[query]", query)
-        if query_desc is not None and query_desc != "None":
-            system_prompt += f"\n{query_desc}"
-        if delete_data is not None and delete_data != "None":
-            prompt = f"Данные для удаления:\n{delete_data}\n\n" + prompt
-
-        completion = client.chat.completions.create(
-            model=self.model_name,
-            messages=[
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": prompt},
-            ],
-            response_format={"type": "json_object"},
-        )
-        return completion.choices[0].message.content
-
-    def match_prompt(self, data: str):
-        client = OpenAI(api_key=self.api_token)
-        vac_desc, cv_desc = data.split("[SEP]")
-        prompt = self.prompt_matching + f"\n{cv_desc}"
-        system_prompt = self.system_prompt_matching + f"\n{vac_desc}"
-        completion = client.chat.completions.create(
-            model=self.model_name,
-            messages=[
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": prompt},
-            ],
-            response_format={"type": "json_object"},
-        )
-        result = completion.choices[0].message.content
-        try:
-            score = json.loads(result)["match_score"]
-        except JSONDecodeError:
-            score = 0.5
-        return score
-
     def rank_first_stage(self, vacancy: Dict, df_relevant: pd.DataFrame):
         ranking_features = self.cluster_match_features.copy()
         for feat in self.text_features:
@@ -183,25 +94,6 @@ class CvSelector:
         )
         df_ranked = df_relevant.sort_values("sim_score_first", ascending=False)
         return df_ranked.head(self.top_n_first_stage)
-
-    def postprocess_extracted_info(self, info: str, cat: str):
-        try:
-            info_dict = json.loads(info)
-            if type(info_dict[cat]) == list:
-                info_dict[cat] = ", ".join(info_dict[cat])
-            if type(info_dict[cat]) == dict:
-                info_dict[cat] = "; ".join(
-                    [f"{key}: {value}" for key, value in info_dict[cat].items()]
-                )
-            if (
-                (info_dict[cat] is None)
-                or (info_dict[cat] == "None")
-                or (info_dict[cat] == "")
-            ):
-                info_dict[cat] = "Нет данных"
-        except Exception:
-            info_dict = {cat: "Нет данных"}
-        return info_dict
 
     # def __preprocess_vacancy(self, vacancy: Dict):
     #     vacancy["Профессиональная область"] = vacancy.pop("prof_field_full")
@@ -226,7 +118,7 @@ class CvSelector:
     #     )
     #     return vacancy
 
-    # def __preprocess_cvs(self, df_relevant: pd.DataFrame):
+    # def preprocess_cvs(self, df_relevant: pd.DataFrame):
     #     corpus_experience = df_relevant["Опыт"].fillna("").to_list()
     #     logger.info("Generating experience summaries")
     #     summaries_experience = process_corpus(
@@ -288,31 +180,10 @@ class CvSelector:
     #     df_relevant["Full_description"] = descs
     #     return df_relevant
 
-    def vacancy_mask(self, vacancy_dict: Dict):
-        mask_vac = [
-            True
-            if feat not in vacancy_dict
-            else int(
-                vacancy_dict[feat].lower().strip()
-                not in [
-                    "нет данных",
-                    "нет информации",
-                    "",
-                    "none",
-                    "не указано",
-                    "не указана",
-                    "не указан",
-                    "не задан",
-                ]
-            )
-            for feat in self.ranking_features
-        ]
-        return np.array(mask_vac)
-
     def rank_second_stage(self, vacancy: Dict, df_relevant: pd.DataFrame):
-        vacancy_prep = self.__preprocess_vacancy(vacancy=vacancy)
+        vacancy_prep = self._preprocess_vacancy(vacancy=vacancy)
         vac_desc = vacancy_prep["Full_description"]
-        df_relevant = self.__preprocess_cvs(df_relevant=df_relevant)
+        df_relevant = self.preprocess_cvs(df_relevant=df_relevant)
 
         if self.method == Method.EMBEDDINGS:
             logger.info("Computing descriptions embeddings")
