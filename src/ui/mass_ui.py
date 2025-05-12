@@ -3,8 +3,8 @@ import streamlit as st
 import numpy as np
 from copy import deepcopy
 
-from utils.utils import select_color, format_intersection, df2dict # Импортируем нужные утилиты
-from utils.hardcode_data import map_names # Импортируем map_names
+from utils.utils import select_color, format_intersection
+from utils.hardcode_data import map_names
 
 def display_mass_input_form():
     """Отображает форму ввода для массового подбора и возвращает данные вакансии."""
@@ -47,19 +47,23 @@ def display_mass_input_form():
 def display_mass_results(data_cv_dict, vacancy_prep, config, nan_mask):
     """Отображает результаты массового подбора."""
     st.subheader("Кандидаты", divider="blue")
-    for key_original_id, cv_data in data_cv_dict.items(): # data_cv_dict это результат df2dict
-        col1_results, col2_cv = st.columns(2) # Эти колонки не используются в оригинальном коде, можно убрать если не нужны
+    for key_original_id, cv_data in data_cv_dict.items():
+        col1_results, col2_cv = st.columns(2)
         
         key_display_name = cv_data.get("Должность", "Нет должности")
-        if "(" in key_original_id and ")" not in key_original_id: # key_original_id это индекс из df, например ID кандидата
-            key_display_name += ")" # Это условие кажется странным, возможно key_original_id должен быть чем-то другим
+        if "(" in key_original_id and ")" not in key_original_id:
+            key_display_name += ")" 
+
+        if "?" in key_original_id:
+            key_original_id = key_original_id.split("?")[0][-10:]
         
         match_score_val = cv_data.get('sim_score_second', 0) * 100
         key_display = f"{key_original_id} - {key_display_name} ({round(match_score_val)}% match)"
         
         with st.expander(key_display):
-            url = f"https://www.avito.ru{cv_data.get('link', '')}"
-            st.write(f"[Ссылка на Avito]({url})")
+            # url = f"https://www.avito.ru{cv_data.get('link', '')}"
+            url = cv_data.get('link', '')
+            st.write(f"[Ссылка]({url})")
             
             match_score_first = round(cv_data.get("sim_score_first", 0) * 100)
             accent_color = select_color(match_score_first)
@@ -93,7 +97,6 @@ def display_mass_results(data_cv_dict, vacancy_prep, config, nan_mask):
                     feature_print = feature_print = map_names.get(feature, feature)
                     container_cv.caption(feature_print)
                     
-                    # Убедимся, что значения являются строками для format_intersection
                     formated_text_cv = format_intersection(
                         str(vacancy_feature_value), str(cv_feature_value)
                     )
@@ -101,7 +104,7 @@ def display_mass_results(data_cv_dict, vacancy_prep, config, nan_mask):
 
                 with col_results_2:
                     if i == 0:
-                        st.header(" ") # Пустой заголовок для выравнивания
+                        st.header(" ")
                     container_score = st.container(border=True, height=container_height)
                     
                     match_score_feature = round(cv_data.get(f"{feature}_sim", 0) * 100)
@@ -119,7 +122,7 @@ def display_mass_results(data_cv_dict, vacancy_prep, config, nan_mask):
                         match_score_feature = 0
                         flag_cv = True
                     
-                    if flag_vac and flag_cv: # Исправлено с умножения на логическое И
+                    if flag_vac and flag_cv:
                         match_score_feature = 0
                     
                     accent_color_feature = select_color(match_score_feature)

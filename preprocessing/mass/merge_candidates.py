@@ -7,12 +7,10 @@ from dotenv import load_dotenv
 from tenacity import retry, stop_after_attempt, wait_fixed
 from tqdm.auto import tqdm
 import logging
-import numpy as np
 import concurrent.futures # Для параллелизации
 import csv # Для работы с кэшем
-from functools import partial # Для передачи доп. аргументов в map
 import time # Для небольшой задержки при сохранении кэша
-from datetime import datetime, timedelta, date # Добавлено для работы с датами
+from datetime import date # Добавлено для работы с датами
 
 # --- Настройка логирования ---
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -23,21 +21,24 @@ load_dotenv(override=True)
 YANDEX_API_KEY = os.getenv("YANDEX_GEOCODER_API_KEY")
 if not YANDEX_API_KEY:
     logger.warning("Ключ YANDEX_GEOCODER_API_KEY не найден в .env файле! Геокодирование будет невозможно или ограничено.")
-    # Если геокодирование критично, можно раскомментировать exit()
     # exit()
 
 # --- Константы ---
 # Убедитесь, что пути правильные
-DATA_MASS_DIR = "preprocessing/data_mass/" # Если папка лежит рядом со скриптом
+DATA_MASS_DIR = "data/raw/mass/" # Если папка лежит рядом со скриптом
 GORNO_CSV_PATH = os.path.join(DATA_MASS_DIR, "Горнорабочий очистного забоя (ученик).csv")
 BELAZ_CSV_PATH = os.path.join(DATA_MASS_DIR, "Водитель карьерного автосамосвала БелАЗ.csv")
-OUTPUT_CSV_PATH = os.path.join("data_mass/", "candidates_new.csv") # Выходной файл будет в data_mass/
+OUTPUT_CSV_PATH = os.path.join("data/processed/mass", "candidates_hh.csv") # Выходной файл будет в data_mass/
 GEOCODING_CACHE_CSV = os.path.join(DATA_MASS_DIR, "geocoding_cache.csv") # Кэш будет в preprocessing/data_mass/
 MAX_GEOCODING_WORKERS = 10
 LINK_COLUMN = "link"
 ID_COLUMN = "ID"
 DATE_COLUMN = "date"
 JSON_DATE_SOURCE_COLUMN = "itemDate" # Колонка с датой в JSON
+
+BASE_URL_AVITO = "https://www.avito.ru"
+BASE_URL_HH = "https://hh.ru"
+DEFAULT_BASE_URL = BASE_URL_AVITO
 
 # Маппинг должностей для JSON файлов (русские названия)
 JOB_TITLE_MAPPING = {
@@ -69,12 +70,27 @@ MONTHS_RU_MAP = {
 def parse_item_date(date_str: str) -> pd.Timestamp:
     """
     Пытается распарсить строку с датой из поля itemDate.
-    Поддерживает форматы: "· DD MMMM в HH:MM", "· вчера в HH:MM", "· сегодня в HH:MM", " · DD MMMM YYYY".
+    Поддерживает форматы:
+    1. ISO-подобный: "YYYY-MM-DDTHH:MM:SS.ffffff"
+    2. Относительные: "· сегодня в HH:MM", "· вчера в HH:MM"
+    3. Текстовые: "· DD MMMM в HH:MM", " · DD MMMM YYYY"
     Возвращает Timestamp или NaT (Not a Time) при ошибке.
     """
     if pd.isna(date_str) or not isinstance(date_str, str) or date_str.strip() == "":
         return pd.NaT
 
+    try:
+        # errors='coerce' вернет NaT, если формат не распознан, что нам и нужно
+        # Не указываем format явно, чтобы pandas попробовал стандартные ISO-парсеры
+        parsed_iso_date = pd.to_datetime(date_str, errors='coerce')
+        if not pd.isna(parsed_iso_date):
+            # Если успешно распознано, возвращаем (время будет отброшено при форматировании в YYYY-MM-DD позже)
+            return parsed_iso_date
+    except Exception:
+        # Если прямой парсинг не удался, игнорируем ошибку и переходим к старой логике
+        pass
+
+    # --- Старая логика парсинга текстовых и относительных дат ---
     cleaned_str = date_str.lower().replace('·', '').strip()
     today = date.today()
 
@@ -194,6 +210,21 @@ def clean_address(addr):
     try: return str(addr).strip().split("\n")[0].strip()
     except Exception: return str(addr).strip()
 
+def build_full_link(row_link, is_hh):
+            # Если ссылка уже полная, не трогаем (простая проверка на http)
+            if row_link.startswith('http://') or row_link.startswith('https://'):
+                return row_link
+            # Если ссылка пустая, оставляем пустой
+            if not row_link:
+                return ''
+
+            base = BASE_URL_HH if is_hh else DEFAULT_BASE_URL
+            # Убираем возможный лишний слэш в начале относительной ссылки
+            if row_link.startswith('/'):
+                return base + row_link
+            else:
+                return base + '/' + row_link
+
 # --- Основная логика скрипта ---
 if __name__ == "__main__":
     geocoder = Geocoder(YANDEX_API_KEY)
@@ -206,60 +237,107 @@ if __name__ == "__main__":
     all_json_dfs = []
     for file_path in json_files:
         try:
-            with open(file_path, "r", encoding="utf-8") as f: raw_data = json.load(f)
-            if not isinstance(raw_data, list) or not all(isinstance(item, dict) for item in raw_data):
-                logger.warning(f"Пропуск {file_path}: не список словарей."); continue
+            with open(file_path, "r", encoding="utf-8") as f:
+                file_content = json.load(f) # Загружаем содержимое файла
 
-            df_init = pd.DataFrame(raw_data)
+            # Определяем, какая структура у файла: старая (список) или новая (словарь с "candidates")
+            candidate_list_raw = []
+            if isinstance(file_content, list):
+                # Старый формат: файл содержит список словарей
+                candidate_list_raw = file_content
+                logger.debug(f"Файл {file_path} определен как старый формат (список словарей).")
+            elif isinstance(file_content, dict) and "candidates" in file_content and isinstance(file_content["candidates"], list):
+                # Новый формат: файл содержит словарь с ключом "candidates"
+                candidate_list_raw = file_content["candidates"]
+                logger.debug(f"Файл {file_path} определен как новый формат (словарь с 'candidates').")
+            else:
+                logger.warning(f"Пропуск файла {file_path}: неизвестный формат JSON или отсутствует ключ 'candidates'.")
+                continue
+
+            if not candidate_list_raw: # Если список кандидатов пуст
+                logger.info(f"Файл {file_path} не содержит кандидатов или список 'candidates' пуст. Пропуск.")
+                continue
+
+            # В df_init теперь будут словари кандидатов (старый формат)
+            # или словари из списка "candidates" (новый формат)
+            df_init = pd.DataFrame(candidate_list_raw)
+
             file_name = os.path.basename(file_path)
             job_key = os.path.splitext(file_name)[0]
-            fallback_job_title = JOB_TITLE_MAPPING.get(job_key, None)
-            if job_key not in JOB_TITLE_MAPPING:
-                 logger.warning(f"Не найдено соответствие для файла '{file_name}' в JOB_TITLE_MAPPING. Fallback должность: '{fallback_job_title}' (или будет взята из поля 'title').")
+            # fallback_job_title определяется как и раньше, на случай если title не будет найден
+            fallback_job_title = JOB_TITLE_MAPPING.get(job_key) # Убрал None по умолчанию, т.к. ниже проверка if not fallback_job_title
+            if not fallback_job_title: # Если в маппинге нет, используем имя файла
+                fallback_job_title = job_key.replace('_', ' ').capitalize()
+                logger.warning(f"Не найдено точное соответствие для файла '{file_name}' в JOB_TITLE_MAPPING. Fallback должность: '{fallback_job_title}' (или будет взята из поля 'title' в resume_schema).")
+
 
             processed_rows = []
-            for index, row in df_init.iterrows():
-                flat_row = row.to_dict()
-                for key in ["mainParams", "additionalParams", "techInfo"]:
-                    if key in flat_row and isinstance(flat_row[key], dict):
-                        for sub_key, sub_value in flat_row[key].items():
-                            if sub_key not in flat_row: flat_row[sub_key] = sub_value
-                        del flat_row[key]
+            for index, row_candidate_outer in df_init.iterrows():
+                # `row_candidate_outer` - это один словарь кандидата из списка
+                # (либо из старого формата, либо из `file_content["candidates"]`)
+
+                # Инициализируем flat_row с полями верхнего уровня кандидата
+                flat_row = row_candidate_outer.to_dict()
+
+                # Пытаемся извлечь и распарсить resume_schema, если она есть
+                resume_schema_str = flat_row.pop("resume_schema", None) # Извлекаем и удаляем, чтобы не мешала дальше
+
+                if resume_schema_str and isinstance(resume_schema_str, str):
+                    try:
+                        resume_data = json.loads(resume_schema_str)
+                        flat_row.update(resume_data)
+                    except json.JSONDecodeError as e_schema:
+                        logger.warning(f"Ошибка декодирования resume_schema в файле {file_path}, строка {index}: {e_schema}. Данные из resume_schema не будут использованы.")
+                elif "resume_schema" in row_candidate_outer.to_dict(): # Если resume_schema было, но не строка
+                     logger.warning(f"Поле resume_schema в файле {file_path}, строка {index} не является строкой. Данные из resume_schema не будут использованы.")
+
+                for key_nested in ["mainParams", "additionalParams", "techInfo"]:
+                    if key_nested in flat_row and isinstance(flat_row[key_nested], dict):
+                        for sub_key, sub_value in flat_row[key_nested].items():
+                            if sub_key not in flat_row:
+                                flat_row[sub_key] = sub_value
+                        del flat_row[key_nested] # Удаляем сам вложенный ключ
 
                 fields_potentially_list = ["Опыт работы", "Категория прав", "Учебные заведения", "Гражданство"]
                 for field_name in fields_potentially_list:
                     if field_name in flat_row and isinstance(flat_row[field_name], list):
                         try:
                             string_items = [str(item).strip() for item in flat_row[field_name] if item is not None and str(item).strip() != ""]
-                            flat_row[field_name] = "\n".join(string_items[:2]) if string_items else "Нет данных" # Join first two or default
-                        except Exception as e:
-                            logger.warning(f"Ошибка обработки списка '{field_name}' в {file_path}, строка {index}: {e}.")
-                            flat_row[field_name] = "Нет данных" # Assign default on error
+                            # Оставляем "Нет данных", если список пуст после фильтрации
+                            flat_row[field_name] = "\n".join(string_items) if string_items else "Нет данных"
+                        except Exception as e_list:
+                            logger.warning(f"Ошибка обработки списка '{field_name}' в {file_path}, строка {index}: {e_list}. Установлено 'Нет данных'.")
+                            flat_row[field_name] = "Нет данных"
 
-                # Определение должности (с проверкой title)
-                record_title = flat_row.get("title") if fallback_job_title is None else fallback_job_title
+                # Определение должности
+                # Приоритет у 'title' из resume_schema (он уже в flat_row, если был)
+                record_title = flat_row.get("title")
                 if record_title and isinstance(record_title, str) and record_title.strip():
                     final_job_title = record_title.strip()
                 else:
+                    # Если title нет в resume_schema или он пустой, используем fallback
                     final_job_title = fallback_job_title
                 flat_row["Должность"] = final_job_title
 
                 # Обработка описания
-                desc_col_json = 'description'
-                desc_col_target = 'Описание'
-                if desc_col_json in flat_row:
-                    flat_row[desc_col_target] = flat_row[desc_col_json]
-                    del flat_row[desc_col_json]
+                # 'description' должно прийти из resume_schema (уже в flat_row, если было)
+                desc_col_target = 'Описание' # Целевое имя колонки
+                if 'description' in flat_row:
+                    # Если 'description' существует в flat_row, переименовываем/переносим его в 'Описание'
+                    # Если 'Описание' уже существует (маловероятно, но возможно), оно будет перезаписано
+                    flat_row[desc_col_target] = flat_row.pop('description') # pop извлекает и удаляет
+                # Если 'description' не было, поле 'Описание' останется как есть (или будет None)
+
                 processed_rows.append(flat_row)
 
             df_processed = pd.DataFrame(processed_rows)
             all_json_dfs.append(df_processed)
             logger.info(f"Обработан {file_path}, строк: {len(df_processed)}")
 
-        except json.JSONDecodeError: logger.error(f"Ошибка декодирования JSON: {file_path}")
+        except json.JSONDecodeError: logger.error(f"Ошибка декодирования JSON на уровне файла: {file_path}")
         except Exception as e: logger.error(f"Не удалось обработать файл {file_path}: {e}")
-
     if not all_json_dfs: logger.error("Не обработано ни одного JSON файла. Выход."); exit()
+
     df_json_combined = pd.concat(all_json_dfs, ignore_index=True, sort=False)
     logger.info(f"Объединенные JSON данные: строк={len(df_json_combined)}, колонок={len(df_json_combined.columns)}")
 
@@ -269,6 +347,8 @@ if __name__ == "__main__":
         logger.info(f"Переименована колонка 'itemId' в '{ID_COLUMN}'.")
     else:
         logger.warning(f"Колонка 'itemId' не найдена в JSON для переименования в '{ID_COLUMN}'.")
+
+    # df_json_combined[ID_COLUMN] = df_json_combined[LINK_COLUMN].apply(lambda x: "№ "+str(x[-10:]))
 
     # --- 1.2 Парсинг дат из JSON ---
     if JSON_DATE_SOURCE_COLUMN in df_json_combined.columns:
@@ -304,7 +384,6 @@ if __name__ == "__main__":
 
     # --- 3. Объединение всех данных --- (Перенесено ДО геокодирования)
     all_dfs_to_combine = [df_json_combined] + all_csv_dfs
-    # !!! Удалена очистка адресов CSV здесь !!!
 
     df_combined = pd.concat(all_dfs_to_combine, ignore_index=True, sort=False)
     logger.info(f"Все данные объединены: строк={len(df_combined)}, колонок={len(df_combined.columns)}")
@@ -359,8 +438,20 @@ if __name__ == "__main__":
     rows_before_dedup = len(df_combined)
     if LINK_COLUMN in df_combined.columns:
         logger.info(f"Удаление дубликатов по '{LINK_COLUMN}'...")
-        df_combined.drop_duplicates(subset=[LINK_COLUMN], keep='first', inplace=True, ignore_index=True) # ignore_index для перестройки индекса
+        df_combined.drop_duplicates(subset=[LINK_COLUMN], keep='first', inplace=True, ignore_index=True)
         logger.info(f"Строк после удаления дубликатов по '{LINK_COLUMN}': {len(df_combined)}")
+    
+    is_hh_source = pd.Series([False] * len(df_combined), index=df_combined.index)
+    if 'source' in df_combined.columns:
+        is_hh_source = df_combined['source'].astype(str).str.lower() == 'headhunter'
+    else:
+        logger.warning("Колонка 'source' не найдена. Все ссылки будут обработаны с DEFAULT_BASE_URL.")
+    
+    df_combined[LINK_COLUMN] = df_combined.apply(
+        lambda row: build_full_link(row[LINK_COLUMN], is_hh_source[row.name]),
+        axis=1
+    )
+    logger.info(f"Модификация колонки '{LINK_COLUMN}' завершена.")
 
     if ID_COLUMN in df_combined.columns:
          logger.info(f"Дополнительное удаление дубликатов по '{ID_COLUMN}'...")
@@ -418,7 +509,7 @@ if __name__ == "__main__":
     logger.info(f"Итоговый DataFrame: строк={len(df_final)}, колонок={len(df_final.columns)}")
     logger.info(f"Колонки: {df_final.columns.tolist()}")
     print("\nПредпросмотр итогового DataFrame (первые 5 строк):")
-    print(df_final.head().to_markdown(index=False)) # Вывод в формате Markdown
+    # print(df_final.head().to_markdown(index=False)) # Вывод в формате Markdown
 
     # --- 8. Сохранение результата ---
     try:

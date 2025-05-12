@@ -97,12 +97,10 @@ if st.button("Подобрать", type="primary"):
         
         # Загрузка данных кандидатов (специфично для режима)
         if current_mode == Mode.PROF:
-            # df_cv = load_data(f"./data/candidates_for_prof.csv") # Пример
-            # df_cv = df_cv.rename(columns={"address": "Адрес"}) # Если нужно
             st.info("Логика проф. подбора еще не полностью реализована.")
             st.stop() # Пока остановим здесь для проф режима
         else: # Mode.MASS
-            df_cv = load_data(f"data/processed/mass/candidates_new_big.csv")
+            df_cv = load_data(f"data/processed/mass/candidates_hh.csv")
             if df_cv.empty:
                 st.error("Не удалось загрузить данные кандидатов.")
                 st.stop()

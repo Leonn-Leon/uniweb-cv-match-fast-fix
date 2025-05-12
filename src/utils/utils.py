@@ -32,8 +32,8 @@ def select_color(match_score: int):
 
 
 # @st.cache_data
-def load_data(path: str):
-    return pd.read_csv(path)
+def load_data(path: str, sep: str = ",") -> pd.DataFrame:
+    return pd.read_csv(path, sep=sep)
 
 
 # @st.cache_resource
