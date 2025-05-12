@@ -23,7 +23,7 @@ import os
 from nltk.tokenize import word_tokenize
 from rank_bm25 import BM25Okapi
 from utils.enums import Method, ModeInfo
-from utils.request_api import OpenAIEmbedder, process_corpus
+from utils.request_api import Embedder, process_corpus
 from dotenv import load_dotenv
 import nltk
 
@@ -64,8 +64,8 @@ class BaseSelector(ABC):
         self.second_stage_weights = np.array(config["stage_2"]["weights"])
         self.top_n_second_stage = config["stage_2"]["top_n"]
 
-        self.embedder = OpenAIEmbedder(
-            api_key=api_token, model_name=config["stage_2"]["model_name_embed"]
+        self.embedder = Embedder(mode="local",
+            api_key=api_token, model_name="cointegrated/rubert-tiny2"#config["stage_2"]["model_name_embed"]
         )
         self.api_token = api_token
         self.method = method
@@ -74,6 +74,8 @@ class BaseSelector(ABC):
         self.prompt_matching = config["stage_2"]["prompt_matching"]
         self.system_prompt_matching = config["stage_2"]["system_prompt_matching"]
         self.stemmer = SnowballStemmer(language="russian")
+        self.cache_file = "data/processed/mass/find_info_cache.pkl"
+        self.cache = self._load_cache()
         
     @abstractmethod
     def rank_first_stage(self, vacancy, df_relevant, *args, **kwargs):
@@ -219,38 +221,78 @@ class BaseSelector(ABC):
             logger.error(f"An unexpected error occurred during geocoding for '{address_search}': {e}")
             return None, address_search
 
+    def _load_cache(self):
+        """Загружает кэш из JSON-файла."""
+        if not os.path.exists(self.cache_file):
+            return {}  # Файла нет, возвращаем пустой кэш
+        try:
+            with open(self.cache_file, 'r', encoding='utf-8') as f:
+                cache_data = json.load(f)
+                # logger.info(f"Кэш успешно загружен из {self.cache_file}. Записей: {len(cache_data)}")
+                print(f"Кэш успешно загружен из {self.cache_file}. Записей: {len(cache_data)}")
+                return cache_data
+        except (json.JSONDecodeError, IOError) as e:
+            # logger.error(f"Ошибка загрузки кэша из {self.cache_file}: {e}. Используется пустой кэш.")
+            print(f"Ошибка загрузки кэша из {self.cache_file}: {e}. Используется пустой кэш.")
+            return {} # Ошибка чтения или файл поврежден
+
+    def _save_cache(self):
+        """Сохраняет текущий кэш в JSON-файл."""
+        try:
+            with open(self.cache_file, 'w', encoding='utf-8') as f:
+                json.dump(self.cache, f, ensure_ascii=False, indent=4)
+            # logger.info(f"Кэш успешно сохранен в {self.cache_file}. Записей: {len(self.cache)}")
+        except IOError as e:
+            # logger.error(f"Ошибка сохранения кэша в {self.cache_file}: {e}")
+             print(f"Ошибка сохранения кэша в {self.cache_file}: {e}")
 
     def find_info(self, info: str):
-        client = OpenAI(api_key=os.getenv("OPENAI_TOKEN"))
+        # Распарсим 'info' в самом начале, так как части из него нужны для user_prompt
         description, mode, query, query_desc, delete_data = info.split("[SEP]")
         # logger.info(f"find_info: {info}")
 
-        # 1. Формируем базовый системный промпт
+        # 1. Формируем пользовательский промпт: Описание + Вопрос из query_desc
+        # Используем query_desc как основной вопрос. Если его нет, используем query как запасной вариант.
+        # Этот user_prompt будет ключом для кэша.
+        question = query_desc if query_desc is not None and query_desc != "None" else f"Извлеки данные для категории '{query}'."
+        user_prompt = f"Описание:\n{description}\n\nВопрос:\n{question}\n\nОтвет (в формате JSON):"
+
+        # 2. Проверяем, есть ли результат в кэше по user_prompt
+        if user_prompt in self.cache:
+            # logger.debug(f"Cache hit for user_prompt: {user_prompt[:100]}...") # Опционально для отладки
+            return self.cache[user_prompt]
+
+        # logger.info(f"Cache miss for user_prompt: {user_prompt[:100]}...") # Опционально для отладки
+
+        # Если в кэше нет, продолжаем формирование запроса к API
+        client = OpenAI(api_key=os.getenv("OPENAI_TOKEN"))
+
+        # 3. Формируем базовый системный промпт
         system_prompt = f"""Ты - ассистент по извлечению информации из текста. Твоя задача - найти в предоставленном тексте ('Описание') ответ на вопрос пользователя.
             Верни результат в формате JSON с одним ключом '{query}'.
             Если информация найдена, помести ее в значение ключа '{query}'.
             Если информация не найдена, используй значение "Нет данных". Не придумывай информацию."""
 
-        # 2. Добавляем инструкцию про удаление данных, ТОЛЬКО если delete_data передан
+        # 4. Добавляем инструкцию про удаление данных, ТОЛЬКО если delete_data передан (логика остается как была)
         # if delete_data is not None and delete_data != "None":
         #     system_prompt += f"\nВАЖНО: Из найденной информации исключи любые данные, которые пересекаются с этим списком для удаления: {delete_data}"
 
-        # 3. Формируем пользовательский промпт: Описание + Вопрос из query_desc
-        # Используем query_desc как основной вопрос. Если его нет, используем query как запасной вариант.
-        question = query_desc if query_desc is not None and query_desc != "None" else f"Извлеки данные для категории '{query}'."
-
-        # Собираем пользовательский промпт
-        user_prompt = f"Описание:\n{description}\n\nВопрос:\n{question}\n\nОтвет (в формате JSON):"
 
         completion = client.chat.completions.create(
             model=self.model_name,
             messages=[
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_prompt},
-            ],temperature=0.01,
+            ],
+            temperature=0.01,
             response_format={"type": "json_object"},
         )
-        return completion.choices[0].message.content
+        result = completion.choices[0].message.content
+
+        # 5. Сохраняем результат в кэш перед возвратом
+        self.cache[user_prompt] = result
+        self._save_cache()
+        return result
 
     def _shorten_address(self, address: str):
         split_ = address.split(", ")

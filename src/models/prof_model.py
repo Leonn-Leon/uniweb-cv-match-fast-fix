@@ -18,7 +18,7 @@ sys.path.append(str(project_root))
 
 from src.models.base_model import BaseSelector
 from utils.enums import Method, ModeInfo
-from utils.request_api import OpenAIEmbedder, process_corpus
+from utils.request_api import process_corpus
 
 load_dotenv(override=True)
 

@@ -36,7 +36,7 @@ def load_data(path: str, sep: str = ",") -> pd.DataFrame:
     return pd.read_csv(path, sep=sep)
 
 
-# @st.cache_resource
+@st.cache_resource
 def load_model(config_path: st):
     with open(config_path, "r", encoding='utf-8') as f:
         config = yaml.safe_load(f)

@@ -25,6 +25,7 @@ simplemma = "^1.1.2"
 rank-bm25 = "^0.2.2"
 rapidfuzz = "^3.13.0"
 geopy = "^2.4.1"
+sentence-transformers = "^4.1.0"
 
 
 [tool.poetry.group.dev.dependencies]
