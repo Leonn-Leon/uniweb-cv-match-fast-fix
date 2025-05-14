@@ -72,7 +72,7 @@ common_ui.display_sidebar(config, update_address_weight_callback)
 
 vacancy_input_data = None
 if current_mode == Mode.MASS:
-    st.header("Массовый подбор кандидатов")
+    st.header("АСПП")
     vacancy_input_data = mass_ui.display_mass_input_form()
 elif current_mode == Mode.PROF:
     st.header("Профессиональный подбор кандидатов")
