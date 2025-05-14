@@ -421,6 +421,7 @@ class MassSelector(BaseSelector):
                     logger.debug(f"Row data: {df_relevant.iloc[i].to_dict()}")
                     continue
             new_cats[cat] = process_corpus(corpus=corpus, func=self.find_info)
+            self._save_cache()
             found_values = []
             for i in range(df_relevant.shape[0]):
                 info_extracted = new_cats[cat][i]

@@ -291,7 +291,6 @@ class BaseSelector(ABC):
 
         # 5. Сохраняем результат в кэш перед возвратом
         self.cache[user_prompt] = result
-        self._save_cache()
         return result
 
     def _shorten_address(self, address: str):
