@@ -24,7 +24,6 @@ if not YANDEX_API_KEY:
     # exit()
 
 # --- Константы ---
-# Убедитесь, что пути правильные
 DATA_MASS_DIR = "data/raw/mass/" # Если папка лежит рядом со скриптом
 GORNO_CSV_PATH = os.path.join(DATA_MASS_DIR, "Горнорабочий очистного забоя (ученик).csv")
 BELAZ_CSV_PATH = os.path.join(DATA_MASS_DIR, "Водитель карьерного автосамосвала БелАЗ.csv")

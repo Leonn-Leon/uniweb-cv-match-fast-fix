@@ -329,11 +329,8 @@ if __name__ == "__main__":
         key_col_to_use = ID_COLUMN
 
     if key_col_to_use:
-        # Убедимся, что ключевая колонка не была случайно удалена (хотя мы не удаляем LINK/ID)
         if key_col_to_use in df_new.columns and key_col_to_use in df_old.columns:
             print(f"- Сравнение на основе колонки: '{key_col_to_use}'")
-            # Получаем множества ключей (обязательно убираем NaN и приводим к строке для надежности)
-            # Используем apply(str) для более надежного преобразования, если есть смешанные типы
             try:
                 keys_new = set(df_new[key_col_to_use].dropna().apply(str))
                 keys_old = set(df_old[key_col_to_use].dropna().apply(str))

@@ -529,7 +529,6 @@ class MassSelector(BaseSelector):
             df_relevant["sim_score_second"] = 0.0
         else:
             try:
-                # Убедимся, что используем колонки _sim в том же порядке, что и adjusted_weights
                 sim_values_matrix = df_relevant[sim_scores_names].values
                 df_relevant["sim_score_second"] = np.dot(sim_values_matrix, adjusted_weights) / total_weight
                 logger.info("Calculated final sim_score_second.")
