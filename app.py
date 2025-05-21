@@ -208,14 +208,15 @@ def create_huntflow_applicant_api(pii_standardized, candidate_ml_data, source_re
             "last_name": pii_standardized["last_name"], "first_name": pii_standardized["first_name"],
             "middle_name": pii_standardized["middle_name"], "phone": pii_standardized["phone"],
             "email": pii_standardized["email"],
-            "position": candidate_ml_data.get("Должность", candidate_ml_data.get("Желаемая должность", "")),
-            "money": str(candidate_ml_data.get("Зарплата от", "")),
+            "position": candidate_ml_data.get("Должность", ""),
+            "money": str(candidate_ml_data.get("Зарплата", "")),
+            "photo": None,
             "externals": [{"auth_type": "NATIVE", "id": source_resume_id, 
-                           "data": {"body": f"Кандидат из {source_type_for_hf}. Скоринг: {candidate_ml_data.get('Итоговый балл', 'N/A')}%"} }]
+                           "data": {"body": f"Кандидат из {source_type_for_hf}. Скоринг: {candidate_ml_data.get('sim_score_second', '')}%"} }]
         }
         response = requests.post(url, headers=headers, json=body, proxies=proxies)
         response.raise_for_status()
-        return response.json().get("id"), None
+        return response.json(), None
     except requests.exceptions.RequestException as e: return None, f"API HF (создание): {e.response.text if e.response else e}"
     except Exception as e: return None, f"Ошибка HF (создание): {e}"
 
@@ -762,9 +763,6 @@ if st.session_state.get("computed", False):
                             
 
                             hf_app_id, err_create = create_huntflow_applicant_api(pii_standardized, candidate_ml_data, resume_id_from_link, source_type.upper())
-                            err_create = True
-                            st.success(f"Создание кандидата в Huntflow захардкожено для тестов.")
-                            logger.info(f"Создание кандидата в Huntflow: {hf_app_id} Захардкожено для тестов.")
                             if err_create:
                                 st.error(f"Ошибка создания {cand_display_name} в Huntflow: {err_create}")
                                 logger.error(f"Ошибка создания {cand_display_name} в Huntflow: {err_create}")
