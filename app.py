@@ -148,7 +148,6 @@ def get_hh_contacts_api(resume_id, access_token_ext=None):
             r_contacts = r_contacts.json().get("contact")
         details = {"first_name": r_resume.json().get("first_name", ""), "last_name": r_resume.json().get("last_name", ""),
                    "middle_name": r_resume.json().get("middle_name", ""), "phone": "", "email": ""}
-        logger.debug(r_contacts[0].get("type").get("id"))
         if r_contacts[0].get("type").get("id") == "email":
             details["email"] = r_contacts[0].get("value", "")
             details["phone"] = r_contacts[1].get("value", "").get("formatted")
@@ -168,7 +167,18 @@ def get_avito_contacts_api(resume_id, access_token_ext=None):
         url = f"https://api.avito.ru/job/v1/resumes/{resume_id}/contacts/"
         response = requests.get(url, headers=headers)
         response.raise_for_status()
-        return response.json()
+        logger.debug(response.json())
+        FIO = response.json().get("full_name")
+        details = {"first_name": FIO.get("first_name", ""), "last_name": FIO.get("last_name", ""),
+                   "middle_name": FIO.get("patronymic", ""), "phone": "", "email": ""}
+        r_contacts = response.json().get("contacts")
+        if r_contacts[0].get("type") == "e-mail":
+            details["email"] = r_contacts[0].get("value", "")
+            details["phone"] = r_contacts[1].get("value", "")
+        elif r_contacts[0].get("type") == "phone":
+            details["phone"] = r_contacts[0].get("value")
+            details["email"] = r_contacts[1].get("value")
+        return details
     except requests.exceptions.RequestException as e: st.error(f"Ошибка API Avito ({resume_id}): {e}"); return None
     except Exception as e: st.error(f"Ошибка (Avito contacts {resume_id}): {e}"); return None
 
@@ -177,21 +187,11 @@ def _extract_pii_details(pii_data, source):
     details = {"first_name": "Неизв.", "last_name": "Неизв.", "middle_name": "", "phone": "", "email": ""}
     if not pii_data: return details
 
-    if source == "HH":
-        details["first_name"] = pii_data.get("first_name", "Неизв.")
-        details["last_name"] = pii_data.get("last_name", "Неизв.")
-        details["middle_name"] = pii_data.get("middle_name", "")
-        details["phone"] = pii_data.get("phone", "")
-        details["email"] = pii_data.get("email", "")
-        for contact in pii_data.get("contacts", []):
-            if contact.get("type") == "cell": details["phone"] = contact.get("value", "")
-            if contact.get("type") == "email": details["email"] = contact.get("value", "")
-    elif source == "AVITO": # Формат Avito может отличаться, это предположение
-        details["first_name"] = pii_data.get("name", "Неизв.").split(" ")[0] if pii_data.get("name") else "Неизв."
-        
-        phones = pii_data.get("phones", [])
-        if phones: details["phone"] = phones[0].get("uri") # Пример
-        # email может не быть или быть в другом месте
+    details["first_name"] = pii_data.get("first_name", "Неизв.")
+    details["last_name"] = pii_data.get("last_name", "Неизв.")
+    details["middle_name"] = pii_data.get("middle_name", "")
+    details["phone"] = pii_data.get("phone", "")
+    details["email"] = pii_data.get("email", "")
     return details
 
 
