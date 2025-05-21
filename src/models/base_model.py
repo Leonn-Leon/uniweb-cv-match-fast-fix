@@ -173,7 +173,7 @@ class BaseSelector(ABC):
             logger.error("Yandex Geocoder API key not found in environment variables.")
             return None, address_search # Возвращаем None и исходный адрес при ошибке
 
-        if not address_search or pd.isna(address_search): # Проверка на пустой или NaN адрес
+        if not address_search or pd.isna(address_search) or address_search.lower() == "нет данных": # Проверка на пустой или NaN адрес
             logger.warning(f"Attempted to geocode empty or NaN address.")
             return None, address_search
 
@@ -390,7 +390,7 @@ class BaseSelector(ABC):
         # 2. Если координаты не найдены, пробуем геокодировать по адресу
         if processed_coords is None:
             # Используем адрес кандидата для геокодинга
-            if pd.notna(candidate_address) and str(candidate_address).strip():
+            if pd.notna(candidate_address) and str(candidate_address).strip() and candidate_address.lower() != "нет данных":
                 try:
                     # Вызываем наш метод геокодинга через Яндекс API
                     cand_coords, _ = self.get_coords(candidate_address) # Форматированный адрес нам тут не нужен

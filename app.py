@@ -136,12 +136,26 @@ def get_hh_contacts_api(resume_id, access_token_ext=None):
         headers = {"Authorization": f"Bearer {hh_token}", "User-Agent": "Uniweb CV Match App"}
         resume_url = f"https://api.hh.ru/resumes/{resume_id}"
         r_resume = requests.get(resume_url, headers=headers)
+        # logger.debug(f"Получены данные:"+ str(r_resume.json()))
         r_resume.raise_for_status()
-        contacts_href = next((a['href'] for a in r_resume.json().get("actions", []) if a.get("name") == "showContacts"), None)
-        if not contacts_href: st.warning(f"Нет ссылки на контакты HH {resume_id}."); return None
-        r_contacts = requests.get(contacts_href, headers=headers)
-        r_contacts.raise_for_status()
-        return r_contacts.json()
+        r_contacts = r_resume.json().get("contact")
+        if not r_contacts:
+            contacts_href = r_resume.json().get("actions").get('get_with_contact').get("url")
+            if not contacts_href:
+                st.warning(f"Нет ссылки на контакты HH {resume_id}."); return None
+            r_contacts = requests.get(contacts_href, headers=headers)
+            r_contacts.raise_for_status()
+            r_contacts = r_contacts.json().get("contact")
+        details = {"first_name": r_resume.json().get("first_name", ""), "last_name": r_resume.json().get("last_name", ""),
+                   "middle_name": r_resume.json().get("middle_name", ""), "phone": "", "email": ""}
+        logger.debug(r_contacts[0].get("type").get("id"))
+        if r_contacts[0].get("type").get("id") == "email":
+            details["email"] = r_contacts[0].get("value", "")
+            details["phone"] = r_contacts[1].get("value", "").get("formatted")
+        elif r_contacts[0].get("type").get("id") == "cell":
+            details["phone"] = r_contacts[0].get("value").get("formatted")
+            details["email"] = r_contacts[1].get("value")
+        return details
     except requests.exceptions.RequestException as e: st.error(f"Ошибка API HH.ru ({resume_id}): {e}"); return None
     except Exception as e: st.error(f"Ошибка (HH contacts {resume_id}): {e}"); return None
 
@@ -167,6 +181,8 @@ def _extract_pii_details(pii_data, source):
         details["first_name"] = pii_data.get("first_name", "Неизв.")
         details["last_name"] = pii_data.get("last_name", "Неизв.")
         details["middle_name"] = pii_data.get("middle_name", "")
+        details["phone"] = pii_data.get("phone", "")
+        details["email"] = pii_data.get("email", "")
         for contact in pii_data.get("contacts", []):
             if contact.get("type") == "cell": details["phone"] = contact.get("value", "")
             if contact.get("type") == "email": details["email"] = contact.get("value", "")
@@ -315,7 +331,7 @@ def get_hh_oauth_token():
         token_data = response.json()
         
         new_access_token = token_data.get('access_token')
-        expires_in = token_data.get('expires_in') # Время жизни в секундах
+        expires_in = token_data.get('expires_in', 86400) # Время жизни в секундах, по дефолту сутки (86400 сек)
 
         if new_access_token and isinstance(expires_in, int):
             st.session_state[HH_ACCESS_TOKEN_KEY] = new_access_token
@@ -375,7 +391,7 @@ def get_avito_oauth_token():
         token_data = response.json()
 
         new_access_token = token_data.get('access_token')
-        expires_in = token_data.get('expires_in') # Время жизни в секундах
+        expires_in = token_data.get('expires_in', 86400) # Время жизни в секундах, по дефолту сутки (86400 сек)
 
         if new_access_token and isinstance(expires_in, int):
             st.session_state[AVITO_ACCESS_TOKEN_KEY] = new_access_token
@@ -713,7 +729,8 @@ if st.session_state.get("computed", False):
 
                             # 1. Получаем Access Token и затем PII
                             if source_type == "hh":
-                                access_token_ext = get_hh_oauth_token()
+                                # access_token_ext = get_hh_oauth_token()
+                                access_token_ext = st.secrets.get("HH_API_TOKEN")
                                 if access_token_ext:
                                     pii_data_raw = get_hh_contacts_api(resume_id_from_link, access_token_ext)
                             elif source_type == "avito":

@@ -217,7 +217,12 @@ def build_full_link(row_link, is_hh):
             if not row_link:
                 return ''
 
-            base = BASE_URL_HH if is_hh else DEFAULT_BASE_URL
+            if is_hh:
+                base = BASE_URL_HH
+                row_link = row_link.replace("resumes", "resume")
+            else:
+                base = BASE_URL_AVITO
+
             # Убираем возможный лишний слэш в начале относительной ссылки
             if row_link.startswith('/'):
                 return base + row_link
@@ -497,6 +502,9 @@ if __name__ == "__main__":
     # Общая замена остальных пропусков
     logger.info("Замена остальных пропусков (NaN/NaT/None) на 'Нет данных'...")
     df_final = df_final.fillna("Нет данных")
+
+    # Замена пустых строк на "Нет данных"
+    df_final = df_final.replace('', 'Нет данных')
 
     # Приведение к строковому типу
     cols_to_stringify = ['Описание', 'Опыт работы']
