@@ -1,0 +1,1679 @@
+{
+    "id": 13,
+    "code": "region_rusal",
+    "name": "Регионы",
+    "foreign": null,
+    "created": "2020-11-25T19:11:19+03:00",
+    "fields": [
+        {
+            "id": 499,
+            "name": "Архангельск г. - Архангельская область - РФ",
+            "order": 0,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1291111",
+            "meta": null
+        },
+        {
+            "id": 500,
+            "name": "Брянск г. - Брянская область - РФ",
+            "order": 1,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1321203",
+            "meta": null
+        },
+        {
+            "id": 50,
+            "name": "Волгоград г. - Волгоградская область - РФ",
+            "order": 2,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1006",
+            "meta": null
+        },
+        {
+            "id": 501,
+            "name": "Волжский г. - Волгоградская область - РФ",
+            "order": 3,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1341113",
+            "meta": null
+        },
+        {
+            "id": 502,
+            "name": "Жирекен пгт. - Забайкальский край - РФ",
+            "order": 4,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1753204",
+            "meta": null
+        },
+        {
+            "id": 503,
+            "name": "Красночикойский р-н - Забайкальский край - РФ",
+            "order": 5,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1752200",
+            "meta": null
+        },
+        {
+            "id": 504,
+            "name": "Петровск-Забайкальский г. - Забайкальский край - РФ",
+            "order": 6,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1751198",
+            "meta": null
+        },
+        {
+            "id": 505,
+            "name": "Чита г. - Забайкальский край - РФ",
+            "order": 7,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1751199",
+            "meta": null
+        },
+        {
+            "id": 506,
+            "name": "Аларский р-н - Иркутская область - РФ",
+            "order": 8,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1382166",
+            "meta": null
+        },
+        {
+            "id": 507,
+            "name": "Алгатуй с. - Иркутская область - РФ",
+            "order": 9,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1383226",
+            "meta": null
+        },
+        {
+            "id": 508,
+            "name": "Алёхино с., Черемховский район - Иркутская область - РФ",
+            "order": 10,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1383229",
+            "meta": null
+        },
+        {
+            "id": 509,
+            "name": "Ангарск г. - Иркутская область - РФ",
+            "order": 11,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1381141",
+            "meta": null
+        },
+        {
+            "id": 510,
+            "name": "Ангарский р-н - Иркутская область - РФ",
+            "order": 12,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1382167",
+            "meta": null
+        },
+        {
+            "id": 511,
+            "name": "Байкальск г. - Иркутская область - РФ",
+            "order": 13,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1381142",
+            "meta": null
+        },
+        {
+            "id": 512,
+            "name": "Балаганск пос. - Иркутская область - РФ",
+            "order": 14,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1383205",
+            "meta": null
+        },
+        {
+            "id": 513,
+            "name": "Балаганский р-н - Иркутская область - РФ",
+            "order": 15,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1382168",
+            "meta": null
+        },
+        {
+            "id": 514,
+            "name": "Баяндаевский р-н - Иркутская область - РФ",
+            "order": 16,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1382169",
+            "meta": null
+        },
+        {
+            "id": 515,
+            "name": "Баяндай с. - Иркутская область - РФ",
+            "order": 17,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1383206",
+            "meta": null
+        },
+        {
+            "id": 516,
+            "name": "Боханский р-н - Иркутская область - РФ",
+            "order": 18,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1382170",
+            "meta": null
+        },
+        {
+            "id": 49,
+            "name": "Братск г. - Иркутская область - РФ",
+            "order": 19,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1005",
+            "meta": null
+        },
+        {
+            "id": 517,
+            "name": "Братский р-н - Иркутская область - РФ",
+            "order": 20,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1382171",
+            "meta": null
+        },
+        {
+            "id": 518,
+            "name": "Бурдугуз пос. - Иркутская область - РФ",
+            "order": 21,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1383207",
+            "meta": null
+        },
+        {
+            "id": 519,
+            "name": "Вихоревка г. - Иркутская область - РФ",
+            "order": 22,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1381144",
+            "meta": null
+        },
+        {
+            "id": 520,
+            "name": "Еланцы с. - Иркутская область - РФ",
+            "order": 23,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1383208",
+            "meta": null
+        },
+        {
+            "id": 521,
+            "name": "Железногорск-Илимский г. - Иркутская область - РФ",
+            "order": 24,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1381145",
+            "meta": null
+        },
+        {
+            "id": 522,
+            "name": "Жигалово пгт. - Иркутская область - РФ",
+            "order": 25,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1383209",
+            "meta": null
+        },
+        {
+            "id": 523,
+            "name": "Жигаловский р-н - Иркутская область - РФ",
+            "order": 26,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1382172",
+            "meta": null
+        },
+        {
+            "id": 524,
+            "name": "Залари пгт. - Иркутская область - РФ",
+            "order": 27,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1383210",
+            "meta": null
+        },
+        {
+            "id": 525,
+            "name": "Заларинский р-н - Иркутская область - РФ",
+            "order": 28,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1382173",
+            "meta": null
+        },
+        {
+            "id": 526,
+            "name": "Зима г. - Иркутская область - РФ",
+            "order": 29,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1381146",
+            "meta": null
+        },
+        {
+            "id": 527,
+            "name": "Зиминский р-н - Иркутская область - РФ",
+            "order": 30,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1382174",
+            "meta": null
+        },
+        {
+            "id": 528,
+            "name": "Иркутск г. - Иркутская область - РФ",
+            "order": 31,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1381115",
+            "meta": null
+        },
+        {
+            "id": 529,
+            "name": "Иркутский р-н - Иркутская область - РФ",
+            "order": 32,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1382176",
+            "meta": null
+        },
+        {
+            "id": 530,
+            "name": "Казачинско-Ленский р-н - Иркутская область - РФ",
+            "order": 33,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1382178",
+            "meta": null
+        },
+        {
+            "id": 531,
+            "name": "Качуг пгт. - Иркутская область - РФ",
+            "order": 34,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1383211",
+            "meta": null
+        },
+        {
+            "id": 532,
+            "name": "Качугский р-н - Иркутская область - РФ",
+            "order": 35,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1382179",
+            "meta": null
+        },
+        {
+            "id": 533,
+            "name": "Киренск г. - Иркутская область - РФ",
+            "order": 36,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1381147",
+            "meta": null
+        },
+        {
+            "id": 534,
+            "name": "Киренский р-н - Иркутская область - РФ",
+            "order": 37,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1382181",
+            "meta": null
+        },
+        {
+            "id": 535,
+            "name": "Куйтун пгт. - Иркутская область - РФ",
+            "order": 38,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1383212",
+            "meta": null
+        },
+        {
+            "id": 536,
+            "name": "Куйтунский р-н - Иркутская область - РФ",
+            "order": 39,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1382182",
+            "meta": null
+        },
+        {
+            "id": 537,
+            "name": "Кутулик пос. - Иркутская область - РФ",
+            "order": 40,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1383213",
+            "meta": null
+        },
+        {
+            "id": 538,
+            "name": "Листвянка пгт. - Иркутская область - РФ",
+            "order": 41,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1383214",
+            "meta": null
+        },
+        {
+            "id": 539,
+            "name": "Магистральный пгт. - Иркутская область - РФ",
+            "order": 42,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1383215",
+            "meta": null
+        },
+        {
+            "id": 540,
+            "name": "Мама пгт. - Иркутская область - РФ",
+            "order": 43,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1383183",
+            "meta": null
+        },
+        {
+            "id": 541,
+            "name": "Мегет пос. - Иркутская область - РФ",
+            "order": 44,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1383216",
+            "meta": null
+        },
+        {
+            "id": 542,
+            "name": "Михайловка пгт. - Иркутская область - РФ",
+            "order": 45,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1383217",
+            "meta": null
+        },
+        {
+            "id": 543,
+            "name": "Нижнеилимский р-н - Иркутская область - РФ",
+            "order": 46,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1382184",
+            "meta": null
+        },
+        {
+            "id": 544,
+            "name": "Нижнеудинск г. - Иркутская область - РФ",
+            "order": 47,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1381151",
+            "meta": null
+        },
+        {
+            "id": 545,
+            "name": "Нижнеудинский р-н - Иркутская область - РФ",
+            "order": 48,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1382185",
+            "meta": null
+        },
+        {
+            "id": 546,
+            "name": "Новобирюсинский пгт. - Иркутская область - РФ",
+            "order": 49,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1383218",
+            "meta": null
+        },
+        {
+            "id": 547,
+            "name": "Новобирюсинский пос., Тайшетский р-н - Иркутская область - РФ",
+            "order": 50,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1383191",
+            "meta": null
+        },
+        {
+            "id": 548,
+            "name": "Новонукутский пос. - Иркутская область - РФ",
+            "order": 51,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1383219",
+            "meta": null
+        },
+        {
+            "id": 549,
+            "name": "Нукутский р-н - Иркутская область - РФ",
+            "order": 52,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1382186",
+            "meta": null
+        },
+        {
+            "id": 550,
+            "name": "Олонки с. - Иркутская область - РФ",
+            "order": 53,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1383220",
+            "meta": null
+        },
+        {
+            "id": 551,
+            "name": "Ольхонский р-н - Иркутская область - РФ",
+            "order": 54,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1382187",
+            "meta": null
+        },
+        {
+            "id": 552,
+            "name": "Оса с. - Иркутская область - РФ",
+            "order": 55,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1383221",
+            "meta": null
+        },
+        {
+            "id": 553,
+            "name": "Осинский р-н - Иркутская область - РФ",
+            "order": 56,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1382188",
+            "meta": null
+        },
+        {
+            "id": 554,
+            "name": "Покосное с. - Иркутская область - РФ",
+            "order": 57,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1383227",
+            "meta": null
+        },
+        {
+            "id": 555,
+            "name": "Рудногорск пгт. - Иркутская область - РФ",
+            "order": 58,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1383222",
+            "meta": null
+        },
+        {
+            "id": 556,
+            "name": "Саянск г. - Иркутская область - РФ",
+            "order": 59,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1381153",
+            "meta": null
+        },
+        {
+            "id": 557,
+            "name": "Свирск г. - Иркутская область - РФ",
+            "order": 60,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1381154",
+            "meta": null
+        },
+        {
+            "id": 558,
+            "name": "Слюдянка г. - Иркутская область - РФ",
+            "order": 61,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1381155",
+            "meta": null
+        },
+        {
+            "id": 559,
+            "name": "Слюдянский р-н - Иркутская область - РФ",
+            "order": 62,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1382189",
+            "meta": null
+        },
+        {
+            "id": 560,
+            "name": "Старый Акульшет с., Тайшетский р-н - Иркутская область - РФ",
+            "order": 63,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1383118",
+            "meta": null
+        },
+        {
+            "id": 561,
+            "name": "Тайшет г. - Иркутская область - РФ",
+            "order": 64,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1381116",
+            "meta": null
+        },
+        {
+            "id": 562,
+            "name": "Тайшетский р-н - Иркутская область - РФ",
+            "order": 65,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1382190",
+            "meta": null
+        },
+        {
+            "id": 563,
+            "name": "Тулун г. - Иркутская область - РФ",
+            "order": 66,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1381156",
+            "meta": null
+        },
+        {
+            "id": 564,
+            "name": "Тулунский р-н - Иркутская область - РФ",
+            "order": 67,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1382192",
+            "meta": null
+        },
+        {
+            "id": 565,
+            "name": "Усолье-Сибирское г. - Иркутская область - РФ",
+            "order": 68,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1381157",
+            "meta": null
+        },
+        {
+            "id": 566,
+            "name": "Усольский р-н - Иркутская область - РФ",
+            "order": 69,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1382193",
+            "meta": null
+        },
+        {
+            "id": 567,
+            "name": "Усть-Илимск г. - Иркутская область - РФ",
+            "order": 70,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1381158",
+            "meta": null
+        },
+        {
+            "id": 568,
+            "name": "Усть-Илимский р-н - Иркутская область - РФ",
+            "order": 71,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1382194",
+            "meta": null
+        },
+        {
+            "id": 569,
+            "name": "Усть-Кут г. - Иркутская область - РФ",
+            "order": 72,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1381159",
+            "meta": null
+        },
+        {
+            "id": 570,
+            "name": "Усть-Кутский пос. р-н - Иркутская область - РФ",
+            "order": 73,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1382119",
+            "meta": null
+        },
+        {
+            "id": 571,
+            "name": "Усть-Ордынский пос. - Иркутская область - РФ",
+            "order": 74,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1383223",
+            "meta": null
+        },
+        {
+            "id": 572,
+            "name": "Усть-Уда пгт. - Иркутская область - РФ",
+            "order": 75,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1383224",
+            "meta": null
+        },
+        {
+            "id": 573,
+            "name": "Усть-Удинский р-н - Иркутская область - РФ",
+            "order": 76,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1382195",
+            "meta": null
+        },
+        {
+            "id": 574,
+            "name": "Хомутово с. - Иркутская область - РФ",
+            "order": 77,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1383228",
+            "meta": null
+        },
+        {
+            "id": 575,
+            "name": "Черемхово г. - Иркутская область - РФ",
+            "order": 78,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1381161",
+            "meta": null
+        },
+        {
+            "id": 576,
+            "name": "Черемховский р-н - Иркутская область - РФ",
+            "order": 79,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1382196",
+            "meta": null
+        },
+        {
+            "id": 577,
+            "name": "Чунский пгт. - Иркутская область - РФ",
+            "order": 80,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1383225",
+            "meta": null
+        },
+        {
+            "id": 578,
+            "name": "Чунский р-н - Иркутская область - РФ",
+            "order": 81,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1382197",
+            "meta": null
+        },
+        {
+            "id": 63,
+            "name": "Шелехов г. - Иркутская область - РФ",
+            "order": 82,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1019",
+            "meta": null
+        },
+        {
+            "id": 579,
+            "name": "Шелеховский район р-н - Иркутская область - РФ",
+            "order": 83,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1382164",
+            "meta": null
+        },
+        {
+            "id": 580,
+            "name": "Эхирит-Булагатский р-н - Иркутская область - РФ",
+            "order": 84,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1382165",
+            "meta": null
+        },
+        {
+            "id": 66,
+            "name": "Другие н.п. - Иркутская область - РФ",
+            "order": 85,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "2003",
+            "meta": null
+        },
+        {
+            "id": 581,
+            "name": "Калининград г. - Калининградская область - РФ",
+            "order": 86,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1391120",
+            "meta": null
+        },
+        {
+            "id": 182,
+            "name": "Белогорск г. - Кемеровская область - РФ",
+            "order": 87,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1020",
+            "meta": null
+        },
+        {
+            "id": 582,
+            "name": "Кемерово г. - Кемеровская область - РФ",
+            "order": 88,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1421230",
+            "meta": null
+        },
+        {
+            "id": 57,
+            "name": "Новокузнецк г. - Кемеровская область - РФ",
+            "order": 89,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1013",
+            "meta": null
+        },
+        {
+            "id": 583,
+            "name": "Краснодар г. - Краснодарский край - РФ",
+            "order": 90,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1231148",
+            "meta": null
+        },
+        {
+            "id": 584,
+            "name": "Новороссийск г. - Краснодарский край - РФ",
+            "order": 91,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1231231",
+            "meta": null
+        },
+        {
+            "id": 585,
+            "name": "Усть-Лабинск г. - Краснодарский край - РФ",
+            "order": 92,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1231160",
+            "meta": null
+        },
+        {
+            "id": 47,
+            "name": "Ачинск г. - Красноярский край - РФ",
+            "order": 93,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1003",
+            "meta": null
+        },
+        {
+            "id": 586,
+            "name": "Богучаны - п. - Красноярский край - РФ",
+            "order": 94,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1243234",
+            "meta": null
+        },
+        {
+            "id": 587,
+            "name": "Дивногорск г. - Красноярский край - РФ",
+            "order": 95,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1241106",
+            "meta": null
+        },
+        {
+            "id": 588,
+            "name": "Ирбейское с. - Красноярский край - РФ",
+            "order": 96,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1242175",
+            "meta": null
+        },
+        {
+            "id": 589,
+            "name": "Кодинск г. - Красноярский край - РФ",
+            "order": 97,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1241233",
+            "meta": null
+        },
+        {
+            "id": 46,
+            "name": "Красноярск г. - Красноярский край - РФ",
+            "order": 98,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1002",
+            "meta": null
+        },
+        {
+            "id": 61,
+            "name": "Таежный г. - Красноярский край - РФ",
+            "order": 99,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1017",
+            "meta": null
+        },
+        {
+            "id": 590,
+            "name": "Богучанский р-н - Красноярский край - РФ",
+            "order": 100,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1242108",
+            "meta": null
+        },
+        {
+            "id": 591,
+            "name": "Кежемский р-н - Красноярский край - РФ",
+            "order": 101,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1242180",
+            "meta": null
+        },
+        {
+            "id": 64,
+            "name": "Другие н.п. - Красноярский край - РФ",
+            "order": 102,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "2001",
+            "meta": null
+        },
+        {
+            "id": 48,
+            "name": "Бокситогорск г. - Ленинградская область - РФ",
+            "order": 103,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1004",
+            "meta": null
+        },
+        {
+            "id": 592,
+            "name": "Волхов г. - Ленинградская область - РФ",
+            "order": 104,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1471124",
+            "meta": null
+        },
+        {
+            "id": 593,
+            "name": "Пикалево г. - Ленинградская область - РФ",
+            "order": 105,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1471125",
+            "meta": null
+        },
+        {
+            "id": 58,
+            "name": "Санкт-Петербург г. - РФ",
+            "order": 106,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1014",
+            "meta": null
+        },
+        {
+            "id": 594,
+            "name": "Сосновый бор г. - Ленинградская область - РФ",
+            "order": 107,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1471242",
+            "meta": null
+        },
+        {
+            "id": 45,
+            "name": "Москва г. - РФ",
+            "order": 108,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1001",
+            "meta": null
+        },
+        {
+            "id": 595,
+            "name": "Балашиха г. - Московская область - РФ",
+            "order": 109,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1501143",
+            "meta": null
+        },
+        {
+            "id": 51,
+            "name": "Дмитров г. - Московская область - РФ",
+            "order": 110,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1007",
+            "meta": null
+        },
+        {
+            "id": 184,
+            "name": "Домодедово г. - Московская область - РФ",
+            "order": 111,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1022",
+            "meta": null
+        },
+        {
+            "id": 53,
+            "name": "Кандалакша г. - Мурманская область - РФ",
+            "order": 112,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1009",
+            "meta": null
+        },
+        {
+            "id": 56,
+            "name": "Нижний Новгород г. - Нижегородская область - РФ",
+            "order": 113,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1012",
+            "meta": null
+        },
+        {
+            "id": 596,
+            "name": "Кувандык г. - Оренбургская область - РФ",
+            "order": 114,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1561128",
+            "meta": null
+        },
+        {
+            "id": 597,
+            "name": "Находка г. - Приморский край - РФ",
+            "order": 115,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1251201",
+            "meta": null
+        },
+        {
+            "id": 598,
+            "name": "Ярославский пгт. - Приморский край - РФ",
+            "order": 116,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1252109",
+            "meta": null
+        },
+        {
+            "id": 599,
+            "name": "Кабанский р-н - Республика Бурятия - РФ",
+            "order": 117,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "132177",
+            "meta": null
+        },
+        {
+            "id": 600,
+            "name": "Каменск пгт. - Республика Бурятия - РФ",
+            "order": 118,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1033239",
+            "meta": null
+        },
+        {
+            "id": 601,
+            "name": "Турунтаево с. - Республика Бурятия - РФ",
+            "order": 119,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1033238",
+            "meta": null
+        },
+        {
+            "id": 602,
+            "name": "Надвоицы - п. - Республика Карелия - РФ",
+            "order": 120,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1102101",
+            "meta": null
+        },
+        {
+            "id": 603,
+            "name": "Попов Порог - п. - Республика Карелия - РФ",
+            "order": 121,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1103240",
+            "meta": null
+        },
+        {
+            "id": 604,
+            "name": "Емва г. - Республика Коми - РФ",
+            "order": 122,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1111103",
+            "meta": null
+        },
+        {
+            "id": 605,
+            "name": "Каа-Хем пгт. - Республика Тыва - РФ",
+            "order": 123,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1173163",
+            "meta": null
+        },
+        {
+            "id": 606,
+            "name": "Кызыл г. - Республика Тыва - РФ",
+            "order": 124,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1171149",
+            "meta": null
+        },
+        {
+            "id": 62,
+            "name": "Ухта г. - Республика Ухта - РФ",
+            "order": 125,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1018",
+            "meta": null
+        },
+        {
+            "id": 607,
+            "name": "Абакан г. - Республика Хакасия - РФ",
+            "order": 126,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1191140",
+            "meta": null
+        },
+        {
+            "id": 59,
+            "name": "Саяногорск г. - Республика Хакасия - РФ",
+            "order": 127,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1015",
+            "meta": null
+        },
+        {
+            "id": 608,
+            "name": "Сорск г. - Республика Хакасия - РФ",
+            "order": 128,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1191241",
+            "meta": null
+        },
+        {
+            "id": 609,
+            "name": "Белая Калитва г. - Ростовская область - РФ",
+            "order": 129,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1611129",
+            "meta": null
+        },
+        {
+            "id": 610,
+            "name": "Кинель г. - Самарская область - РФ",
+            "order": 130,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1631130",
+            "meta": null
+        },
+        {
+            "id": 611,
+            "name": "Новосемейкино пос. - Самарская область - РФ",
+            "order": 131,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1633131",
+            "meta": null
+        },
+        {
+            "id": 612,
+            "name": "Южно-Сахалинск г. - Сахалинская область - РФ",
+            "order": 132,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1651202",
+            "meta": null
+        },
+        {
+            "id": 613,
+            "name": "Верхняя Синячиха пгт. - Свердловская область - РФ",
+            "order": 133,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1663137",
+            "meta": null
+        },
+        {
+            "id": 183,
+            "name": "Екатеринбург г. - Свердловская область - РФ",
+            "order": 134,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1021",
+            "meta": null
+        },
+        {
+            "id": 52,
+            "name": "Каменск-Уральский г. - Свердловская область - РФ",
+            "order": 135,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1008",
+            "meta": null
+        },
+        {
+            "id": 54,
+            "name": "Краснотурьинск г. - Свердловская область - РФ",
+            "order": 136,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1010",
+            "meta": null
+        },
+        {
+            "id": 55,
+            "name": "Михайловск г. - Свердловская область - РФ",
+            "order": 137,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1011",
+            "meta": null
+        },
+        {
+            "id": 60,
+            "name": "Североуральск г. - Свердловская область - РФ",
+            "order": 138,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1016",
+            "meta": null
+        },
+        {
+            "id": 614,
+            "name": "Ванино пгт. - Хабаровский край - РФ",
+            "order": 139,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1272110",
+            "meta": null
+        },
+        {
+            "id": 65,
+            "name": "Миасс г. - Челябинская область - РФ",
+            "order": 140,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "2002",
+            "meta": null
+        },
+        {
+            "id": 615,
+            "name": "Ярославль г. - Ярославская область - РФ",
+            "order": 141,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "1761162",
+            "meta": null
+        },
+        {
+            "id": 67,
+            "name": "Другие регионы РФ - РФ",
+            "order": 142,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "2999",
+            "meta": null
+        },
+        {
+            "id": 68,
+            "name": "Австралия - ЗО",
+            "order": 143,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "3001",
+            "meta": null
+        },
+        {
+            "id": 616,
+            "name": "Алматы г. - Казахстан - ЗО",
+            "order": 144,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "33981534",
+            "meta": null
+        },
+        {
+            "id": 69,
+            "name": "Гайана - ЗО",
+            "order": 145,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "3002",
+            "meta": null
+        },
+        {
+            "id": 235,
+            "name": "Гибралтар - ЗО",
+            "order": 146,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "3016",
+            "meta": null
+        },
+        {
+            "id": 617,
+            "name": "Дубай г. - Объединенные Арабские Эмираты - ЗО",
+            "order": 147,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "27841528",
+            "meta": null
+        },
+        {
+            "id": 618,
+            "name": "Ереван г. - Армения - ЗО",
+            "order": 148,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "30511522",
+            "meta": null
+        },
+        {
+            "id": 71,
+            "name": "Ирландия - ЗО",
+            "order": 149,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "3004",
+            "meta": null
+        },
+        {
+            "id": 72,
+            "name": "Италия - ЗО",
+            "order": 150,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "3005",
+            "meta": null
+        },
+        {
+            "id": 76,
+            "name": "Кингстон г. - Ямайка - ЗО",
+            "order": 151,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "3009",
+            "meta": null
+        },
+        {
+            "id": 619,
+            "name": "Конакри г. - Гвинейская Республика - ЗО",
+            "order": 152,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "23241508",
+            "meta": null
+        },
+        {
+            "id": 233,
+            "name": "Корея - ЗО",
+            "order": 153,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "3014",
+            "meta": null
+        },
+        {
+            "id": 73,
+            "name": "Лимассол г. - Кипр - ЗО",
+            "order": 154,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "3006",
+            "meta": null
+        },
+        {
+            "id": 74,
+            "name": "Лондон г. - Великобритания - ЗО",
+            "order": 155,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "3007",
+            "meta": null
+        },
+        {
+            "id": 620,
+            "name": "Никосия г. - Кипр - ЗО",
+            "order": 156,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "21961532",
+            "meta": null
+        },
+        {
+            "id": 232,
+            "name": "Пекин г. - Китай - ЗО",
+            "order": 157,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "3013",
+            "meta": null
+        },
+        {
+            "id": 230,
+            "name": "Сингапур - ЗО",
+            "order": 158,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "3011",
+            "meta": null
+        },
+        {
+            "id": 75,
+            "name": "Сундсвалль г. - Швеция - ЗО",
+            "order": 159,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "3008",
+            "meta": null
+        },
+        {
+            "id": 234,
+            "name": "США - ЗО",
+            "order": 160,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "3015",
+            "meta": null
+        },
+        {
+            "id": 236,
+            "name": "Турция - ЗО",
+            "order": 161,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "3017",
+            "meta": null
+        },
+        {
+            "id": 70,
+            "name": "Фрия г. - Гвинейская Республика - ЗО",
+            "order": 162,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "3003",
+            "meta": null
+        },
+        {
+            "id": 229,
+            "name": "Цуг г. - Швейцария - ЗО",
+            "order": 163,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "3010",
+            "meta": null
+        },
+        {
+            "id": 621,
+            "name": "Шанхай г. - Китай - ЗО",
+            "order": 164,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "21561535",
+            "meta": null
+        },
+        {
+            "id": 231,
+            "name": "Япония - ЗО",
+            "order": 165,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "3012",
+            "meta": null
+        },
+        {
+            "id": 77,
+            "name": "Другие зарубежные офисы - ЗО",
+            "order": 166,
+            "active": true,
+            "parent": null,
+            "deep": 0,
+            "foreign": "3999",
+            "meta": null
+        }
+    ]
+}

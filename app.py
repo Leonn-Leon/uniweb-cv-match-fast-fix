@@ -54,6 +54,10 @@ if current_mode == Mode.PROF:
 else: # Mode.MASS
     selector, config = load_model(config_path="./config/config_mass.yaml")
 
+
+with open("data/processed/mass/resual_regions.json", "r", encoding="utf-8") as f:
+    resual_regions = json.load(f)
+
 if not selector or not config:
     st.error("Не удалось загрузить модель или конфигурацию. Работа приложения остановлена.")
     st.stop()
@@ -214,9 +218,10 @@ def create_huntflow_applicant_api(pii_standardized, candidate_ml_data, source_re
             "externals": [{"auth_type": "NATIVE", "id": source_resume_id, 
                            "data": {"body": f"Кандидат из {source_type_for_hf}. Скоринг: {candidate_ml_data.get('sim_score_second', '')}%"} }]
         }
-        response = requests.post(url, headers=headers, json=body, proxies=proxies)
+        response = requests.post(url, headers=headers, json=body, proxies=proxies, timeout=10)
         response.raise_for_status()
         return response.json(), None
+        # return source_resume_id, None
     except requests.exceptions.RequestException as e: return None, f"API HF (создание): {e.response.text if e.response else e}"
     except Exception as e: return None, f"Ошибка HF (создание): {e}"
 
@@ -415,6 +420,13 @@ def get_avito_oauth_token():
                 st.text(e.response.text)
                 logger.error(f"Avito: Тело ошибки (не JSON): {e.response.text}")
         return None
+    
+def get_region_name_by_id(region_rusal_id):
+    # region_rusal_id должен быть int
+    for region in resual_regions.get("fields", []):
+        if region.get("id") == region_rusal_id:
+            return region.get("name")
+    return ""
 
 # Загрузка вакансий Huntflow один раз при старте или если список пуст
 if not st.session_state.huntflow_vacancies_list:
@@ -443,7 +455,7 @@ if st.session_state.huntflow_vacancies_list:
             if st.session_state.selected_huntflow_vacancy_id != newly_selected_hf_id:
                 st.session_state.selected_huntflow_vacancy_id = newly_selected_hf_id
                 details = st.session_state.huntflow_vacancies_details.get(newly_selected_hf_id)
-                logger.debug(f"Выбрана вакансия c ID: {newly_selected_hf_id}, её значение: {details}") # Оставил ваш логгер
+                logger.debug(f"Выбрана вакансия c ID: {newly_selected_hf_id}, её значение: {details}")
 
                 if details:
                     # 1. Должность
@@ -459,15 +471,19 @@ if st.session_state.huntflow_vacancies_list:
                         required_texts.append(f"Требования к опыту: {experience_req.strip()}")
 
                     if required_texts:
-                        st.session_state.vacancy_form_required = "\n\n".join(required_texts)
+                        st.session_state.vacancy_form_required = "\n".join(required_texts)
                     else:
                         st.session_state.vacancy_form_required = "" 
                         logger.warning(f"Не удалось извлечь структурированные обязательные требования для вакансии ID {newly_selected_hf_id}. Поля 'education' и 'experience_position' пусты или не строки.")
 
                     location_format_texts = []
                     region_rusal_id = details.get("region_rusal")
-                    if region_rusal_id:
-                        location_format_texts.append(f"Регион Русал (ID): {region_rusal_id}")
+                    if region_rusal_id and isinstance(region_rusal_id, int):
+                        location_format_texts.append("Локация: " + get_region_name_by_id(region_rusal_id))
+
+                    money_info = details.get("money")
+                    if money_info and isinstance(money_info, str):
+                        location_format_texts.append("Зарплата: " + money_info.strip())
                     
                     # Формат работы можно попробовать извлечь из "contract"
                     contract_type = details.get("contract")
@@ -475,12 +491,11 @@ if st.session_state.huntflow_vacancies_list:
                         location_format_texts.append(f"Тип договора: {contract_type.strip()}")
 
                     # Готовность к командировкам
-                    business_trip_info = details.get("business_trip") # В примере None
-                    if business_trip_info and isinstance(business_trip_info, str): # или если это boolean
+                    business_trip_info = details.get("business_trip")
+                    if business_trip_info and isinstance(business_trip_info, str):
                         location_format_texts.append(f"Командировки: {business_trip_info}")
                     elif isinstance(business_trip_info, bool):
                         location_format_texts.append(f"Командировки: {'Да' if business_trip_info else 'Нет'}")
-
 
                     if location_format_texts:
                         st.session_state.vacancy_form_location = "\n".join(location_format_texts)
@@ -488,42 +503,19 @@ if st.session_state.huntflow_vacancies_list:
                         st.session_state.vacancy_form_location = ""
                         logger.warning(f"Не удалось извлечь информацию о локации/формате работы для вакансии ID {newly_selected_hf_id}.")
 
-                    # 4. Дополнительные требования
-                    #    Сюда можно поместить 
-                    #    Поле "status" содержит много информации, включая HTML.
-                    #    Поле "notes" (в примере None).
-                    #    Поля "language_main", "proficiency_level_main".
-                    #    Поле "benefits" (в примере None).
                     
                     optional_texts = []
 
-                    language_main = details.get("language_main")
-                    proficiency_level_main = details.get("proficiency_level_main")
-                    if language_main and isinstance(language_main, str) and language_main.lower() != 'не требуется':
-                        lang_text = f"Основной язык: {language_main.strip()}"
-                        if proficiency_level_main and isinstance(proficiency_level_main, str):
-                            lang_text += f" (Уровень: {proficiency_level_main.strip()})"
-                        optional_texts.append(lang_text)
-
                     benefits_info = details.get("benefits") # В примере None
                     if benefits_info and isinstance(benefits_info, str):
-                        optional_texts.append(f"Условия и бенефиты: {benefits_info.strip()}")
+                        optional_texts.append(f"Условия: {benefits_info.strip()}")
                     
                     notes_info = details.get("notes") # В примере None
                     if notes_info and isinstance(notes_info, str):
                         optional_texts.append(f"Заметки: {notes_info.strip()}")
-
-                    # Поле "status" содержит HTML, его нужно очищать.
-                    # status_html = details.get("status")
-                    # if status_html:
-                    #     from bs4 import BeautifulSoup # Потребует установки: pip install beautifulsoup4
-                    #     soup = BeautifulSoup(status_html, "html.parser")
-                    #     status_text = soup.get_text(separator="\n").strip()
-                    #     if status_text: # Добавляем только если после очистки что-то осталось
-                    #          optional_texts.append(f"Дополнительная информация (из status):\n{status_text}")
                     
                     if optional_texts:
-                        st.session_state.vacancy_form_optional = "\n\n".join(optional_texts)
+                        st.session_state.vacancy_form_optional = "\n".join(optional_texts)
                     else:
                         st.session_state.vacancy_form_optional = ""
 
@@ -771,31 +763,31 @@ if st.session_state.get("computed", False):
                             logger.info(f"Кандидат {cand_display_name} создан в Huntflow (ID: {hf_app_id}).")
 
                             # 3. Заполняем анкету (упрощенно)
-                            ok_q, err_q = fill_huntflow_questionary_api(hf_app_id, candidate_ml_data)
-                            if err_q: 
-                                st.warning(f"Ошибка при заполнении анкеты {cand_display_name} в Huntflow: {err_q}")
-                                logger.warning(f"Ошибка анкеты {cand_display_name} в Huntflow: {err_q}")
-                            else: 
-                                st.info(f"Анкета для {cand_display_name} в Huntflow обработана.")
-                                logger.info(f"Анкета для {cand_display_name} в Huntflow обработана.")
+                            # ok_q, err_q = fill_huntflow_questionary_api(hf_app_id, candidate_ml_data)
+                            # if err_q: 
+                            #     st.warning(f"Ошибка при заполнении анкеты {cand_display_name} в Huntflow: {err_q}")
+                            #     logger.warning(f"Ошибка анкеты {cand_display_name} в Huntflow: {err_q}")
+                            # else: 
+                            #     st.info(f"Анкета для {cand_display_name} в Huntflow обработана.")
+                            #     logger.info(f"Анкета для {cand_display_name} в Huntflow обработана.")
 
-                            # 4. Привязываем к вакансии
-                            current_hf_vacancy_id = st.session_state.get("selected_huntflow_vacancy_id")
-                            if current_hf_vacancy_id:
-                                # score_perc уже был рассчитан как cand_score_perc
-                                ok_link, err_link = link_applicant_to_vacancy_api(hf_app_id, current_hf_vacancy_id, cand_score_perc if cand_score_perc != "N/A" else 0)
-                                if err_link: 
-                                    st.warning(f"Ошибка привязки {cand_display_name} к вакансии HF {current_hf_vacancy_id}: {err_link}")
-                                    logger.warning(f"Ошибка привязки {cand_display_name} к вакансии HF {current_hf_vacancy_id}: {err_link}")
-                                else: 
-                                    st.info(f"{cand_display_name} привязан к вакансии HF {current_hf_vacancy_id}.")
-                                    logger.info(f"{cand_display_name} привязан к вакансии HF {current_hf_vacancy_id}.")
-                            else:
-                                st.info(f"{cand_display_name} не будет привязан (вакансия Huntflow не выбрана).")
-                                logger.info(f"{cand_display_name} не привязан к вакансии HF (не выбрана).")
+                            # # 4. Привязываем к вакансии
+                            # current_hf_vacancy_id = st.session_state.get("selected_huntflow_vacancy_id")
+                            # if current_hf_vacancy_id:
+                            #     # score_perc уже был рассчитан как cand_score_perc
+                            #     ok_link, err_link = link_applicant_to_vacancy_api(hf_app_id, current_hf_vacancy_id, cand_score_perc if cand_score_perc != "N/A" else 0)
+                            #     if err_link: 
+                            #         st.warning(f"Ошибка привязки {cand_display_name} к вакансии HF {current_hf_vacancy_id}: {err_link}")
+                            #         logger.warning(f"Ошибка привязки {cand_display_name} к вакансии HF {current_hf_vacancy_id}: {err_link}")
+                            #     else: 
+                            #         st.info(f"{cand_display_name} привязан к вакансии HF {current_hf_vacancy_id}.")
+                            #         logger.info(f"{cand_display_name} привязан к вакансии HF {current_hf_vacancy_id}.")
+                            # else:
+                            #     st.info(f"{cand_display_name} не будет привязан (вакансия Huntflow не выбрана).")
+                            #     logger.info(f"{cand_display_name} не привязан к вакансии HF (не выбрана).")
                             
-                            st.success(f"Кандидат {cand_display_name} полностью обработан для Huntflow!")
-                            logger.info(f"Кандидат {cand_display_name} полностью обработан для Huntflow!")
-                            # st.session_state[f"processed_hf_{candidate_key}"] = True # Пометить как обработанного
-                            st.markdown("---")
-                            # st.rerun() # Если нужно обновить UI немедленно (например, скрыть кнопку)
+                            # st.success(f"Кандидат {cand_display_name} полностью обработан для Huntflow!")
+                            # logger.info(f"Кандидат {cand_display_name} полностью обработан для Huntflow!")
+                            # # st.session_state[f"processed_hf_{candidate_key}"] = True # Пометить как обработанного
+                            # st.markdown("---")
+                            # # st.rerun() # Если нужно обновить UI немедленно (например, скрыть кнопку)

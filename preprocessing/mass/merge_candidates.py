@@ -262,25 +262,19 @@ if __name__ == "__main__":
                 logger.info(f"Файл {file_path} не содержит кандидатов или список 'candidates' пуст. Пропуск.")
                 continue
 
-            # В df_init теперь будут словари кандидатов (старый формат)
-            # или словари из списка "candidates" (новый формат)
             df_init = pd.DataFrame(candidate_list_raw)
 
             file_name = os.path.basename(file_path)
             job_key = os.path.splitext(file_name)[0]
             # fallback_job_title определяется как и раньше, на случай если title не будет найден
             fallback_job_title = JOB_TITLE_MAPPING.get(job_key) # Убрал None по умолчанию, т.к. ниже проверка if not fallback_job_title
-            if not fallback_job_title: # Если в маппинге нет, используем имя файла
+            if not fallback_job_title:
                 fallback_job_title = job_key.replace('_', ' ').capitalize()
                 logger.warning(f"Не найдено точное соответствие для файла '{file_name}' в JOB_TITLE_MAPPING. Fallback должность: '{fallback_job_title}' (или будет взята из поля 'title' в resume_schema).")
 
 
             processed_rows = []
             for index, row_candidate_outer in df_init.iterrows():
-                # `row_candidate_outer` - это один словарь кандидата из списка
-                # (либо из старого формата, либо из `file_content["candidates"]`)
-
-                # Инициализируем flat_row с полями верхнего уровня кандидата
                 flat_row = row_candidate_outer.to_dict()
 
                 # Пытаемся извлечь и распарсить resume_schema, если она есть
@@ -299,10 +293,13 @@ if __name__ == "__main__":
                     if key_nested in flat_row and isinstance(flat_row[key_nested], dict):
                         for sub_key, sub_value in flat_row[key_nested].items():
                             if sub_key not in flat_row:
-                                flat_row[sub_key] = sub_value
+                                if isinstance(sub_value, list):
+                                    flat_row[sub_key] = "\n".join(sub_value)
+                                else:
+                                    flat_row[sub_key] = sub_value
                         del flat_row[key_nested] # Удаляем сам вложенный ключ
 
-                fields_potentially_list = ["Опыт работы", "Категория прав", "Учебные заведения", "Гражданство"]
+                fields_potentially_list = ["Опыт работы", "Категория прав", "Гражданство"]
                 for field_name in fields_potentially_list:
                     if field_name in flat_row and isinstance(flat_row[field_name], list):
                         try:
@@ -324,13 +321,9 @@ if __name__ == "__main__":
                 flat_row["Должность"] = final_job_title
 
                 # Обработка описания
-                # 'description' должно прийти из resume_schema (уже в flat_row, если было)
                 desc_col_target = 'Описание' # Целевое имя колонки
                 if 'description' in flat_row:
-                    # Если 'description' существует в flat_row, переименовываем/переносим его в 'Описание'
-                    # Если 'Описание' уже существует (маловероятно, но возможно), оно будет перезаписано
-                    flat_row[desc_col_target] = flat_row.pop('description') # pop извлекает и удаляет
-                # Если 'description' не было, поле 'Описание' останется как есть (или будет None)
+                    flat_row[desc_col_target] = flat_row.pop('description') 
 
                 processed_rows.append(flat_row)
 
@@ -474,6 +467,11 @@ if __name__ == "__main__":
     df_final = pd.DataFrame()
     logger.info("Формирование итогового DataFrame...")
     missing_cols = []
+
+    if "Образование" in df_combined.columns and "Учебные заведения" in df_combined.columns:
+        logger.info("Объединение колонок 'Образование' и 'Учебные заведения'...")
+        df_combined["Образование"] = df_combined["Образование"].combine_first(df_combined["Учебные заведения"])
+
     for col in FINAL_COLUMNS:
         if col in df_combined.columns: df_final[col] = df_combined[col]
         else: df_final[col] = None; missing_cols.append(col)
