@@ -173,15 +173,18 @@ def get_avito_contacts_api(resume_id, access_token_ext=None):
         response.raise_for_status()
         logger.debug(response.json())
         FIO = response.json().get("full_name")
-        details = {"first_name": FIO.get("first_name", ""), "last_name": FIO.get("last_name", ""),
-                   "middle_name": FIO.get("patronymic", ""), "phone": "", "email": ""}
+        if FIO:
+            details = {"first_name": FIO.get("first_name", ""), "last_name": FIO.get("last_name", ""),
+                    "middle_name": FIO.get("patronymic", ""), "phone": "", "email": "empty_email@error.ru"}
+        else:
+            details = {"first_name": response.json().get("name", ""), "last_name": "",
+                       "middle_name": "", "phone": "", "email": "empty_email@error.ru"}
         r_contacts = response.json().get("contacts")
-        if r_contacts[0].get("type") == "e-mail":
-            details["email"] = r_contacts[0].get("value", "")
-            details["phone"] = r_contacts[1].get("value", "")
-        elif r_contacts[0].get("type") == "phone":
-            details["phone"] = r_contacts[0].get("value")
-            details["email"] = r_contacts[1].get("value")
+        for contact in r_contacts:
+            if contact.get("type") == "e-mail":
+                details["email"] = contact.get("value", "")
+            elif contact.get("type") == "phone":
+                details["phone"] = contact.get("value", "")
         return details
     except requests.exceptions.RequestException as e: st.error(f"Ошибка API Avito ({resume_id}): {e}"); return None
     except Exception as e: st.error(f"Ошибка (Avito contacts {resume_id}): {e}"); return None
@@ -218,7 +221,9 @@ def create_huntflow_applicant_api(pii_standardized, candidate_ml_data, source_re
             "externals": [{"auth_type": "NATIVE", "id": source_resume_id, 
                            "data": {"body": f"Кандидат из {source_type_for_hf}. Скоринг: {candidate_ml_data.get('sim_score_second', '')}%"} }]
         }
+        logger.debug(f"Создание кандидата в HF: {body}")
         response = requests.post(url, headers=headers, json=body, proxies=proxies, timeout=10)
+        logger.debug(f"Создан кандидат в HF: {response.json()}")
         response.raise_for_status()
         return response.json().get("id"), None
         # return source_resume_id, None
@@ -699,7 +704,8 @@ if st.button("Подобрать", type="primary"):
                     vacancy=vacancy_processed,
                     df_relevant=df_ranked_1st.copy(),
                     df_weights=st.session_state["df_weights"], 
-                    score_threshold_stage_2=threshold_from_slider 
+                    score_threshold_stage_2=threshold_from_slider,
+                    top_n_second_stage = st.session_state.kols_candidates
                 )
                 if config["general"]["mode"] != "prod":
                     df_ranked_2nd.to_csv("./tmp_cvs.csv", index=False)
@@ -826,9 +832,9 @@ if st.session_state.get("computed", False):
                             st.success(f"Кандидат {cand_display_name} создан в HF (ID: {hf_app_id})."); logger.info(f"Кандидат {cand_display_name} создан в HF (ID: {hf_app_id}).")
                             st.session_state[session_key_hf_id] = hf_app_id # <-- Сохраняем ID аппликанта HF
                             
-                            ok_q, err_q = fill_huntflow_questionary_api(hf_app_id, candidate_ml_data) # Анкета
-                            if err_q: st.warning(f"Ошибка анкеты {cand_display_name} в HF: {err_q}"); logger.warning(f"Ошибка анкеты {cand_display_name} в HF: {err_q}")
-                            else: st.info(f"Анкета {cand_display_name} в HF обработана."); logger.info(f"Анкета {cand_display_name} в HF обработана.")
+                            # ok_q, err_q = fill_huntflow_questionary_api(hf_app_id, candidate_ml_data) # Анкета
+                            # if err_q: st.warning(f"Ошибка анкеты {cand_display_name} в HF: {err_q}"); logger.warning(f"Ошибка анкеты {cand_display_name} в HF: {err_q}")
+                            # else: st.info(f"Анкета {cand_display_name} в HF обработана."); logger.info(f"Анкета {cand_display_name} в HF обработана.")
 
                             current_hf_vacancy_id = st.session_state.get("selected_huntflow_vacancy_id") # Привязка к вакансии
                             if current_hf_vacancy_id:
@@ -841,7 +847,7 @@ if st.session_state.get("computed", False):
                             st.success(f"Кандидат {cand_display_name} полностью обработан для Huntflow!")
                             logger.info(f"Кандидат {cand_display_name} полностью обработан для Huntflow!")
                             st.markdown("---")
-                            st.rerun() # Перерисовать UI
+                            # st.rerun() # Перерисовать UI
                 
                 # Кнопка "Связаться по Whatsapp"
                 with cols_info_buttons[2]:

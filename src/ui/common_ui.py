@@ -75,3 +75,13 @@ def display_sidebar(config, update_address_weight_callback_func):
             key="distance_option",
             help="Фильтрует кандидатов на 1-м этапе по расстоянию до вакансии."
         )
+
+        kols_candidates = st.slider(
+            "Максимальное количество отображаемых кандидатов",
+            min_value=1,
+            max_value=31,
+            value=10, # Используем значение из session_state или дефолт
+            step=1,
+        )
+        # Обновляем session_state при изменении слайдера
+        st.session_state.kols_candidates = kols_candidates

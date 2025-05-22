@@ -436,8 +436,11 @@ class MassSelector(BaseSelector):
         vacancy: Dict,
         df_relevant: pd.DataFrame,
         df_weights: pd.DataFrame,
-        score_threshold_stage_2
+        score_threshold_stage_2,
+        top_n_second_stage: int = 0,
     ):
+        if top_n_second_stage == 0:
+            top_n_second_stage = self.top_n_second_stage
         vacancy_prep = deepcopy(vacancy)
 
         nan_mask = self.vacancy_mask(vacancy_dict=vacancy_prep)
@@ -547,4 +550,6 @@ class MassSelector(BaseSelector):
             logger.info("Score threshold is 0.0 or not set. Skipping score filtering.")
 
         df_ranked = df_relevant.sort_values("sim_score_second", ascending=False)
-        return df_ranked.head(self.top_n_second_stage), vacancy_prep, nan_mask
+        # return df_ranked, vacancy_prep, nan_mask
+        logger.info(f"Returning top {top_n_second_stage} candidates from stage 2.")
+        return df_ranked.head(top_n_second_stage), vacancy_prep, nan_mask
