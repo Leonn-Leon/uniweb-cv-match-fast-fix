@@ -10,6 +10,7 @@ import datetime
 import requests
 import re
 import time
+from urllib.parse import quote
 
 # Импорт ваших модулей
 from src.utils.utils import Mode, load_data, load_model, df2dict
@@ -116,8 +117,7 @@ def fetch_huntflow_vacancies_api():
             return [], {}
         headers = {"Authorization": f"Bearer {hf_token}"}
         url = f"{HUNTFLOW_BASE_URL}/accounts/{hf_account_id}/vacancies"
-        params = {"status": "OPEN", "count": 100} 
-        # response = requests.get(url, headers=headers, params=params)
+        params = {"status": "OPEN", "count": 100}
         response = requests.get(url, headers=headers, params=params, proxies=proxies)
         response.raise_for_status()
         vacancies_data = response.json().get("items", [])
@@ -140,7 +140,7 @@ def get_hh_contacts_api(resume_id, access_token_ext=None):
         headers = {"Authorization": f"Bearer {hh_token}", "User-Agent": "Uniweb CV Match App"}
         resume_url = f"https://api.hh.ru/resumes/{resume_id}"
         r_resume = requests.get(resume_url, headers=headers)
-        # logger.debug(f"Получены данные:"+ str(r_resume.json()))
+        logger.debug(f"Получены данные:"+ str(r_resume.json()))
         r_resume.raise_for_status()
         r_contacts = r_resume.json().get("contact")
         if not r_contacts:
@@ -220,7 +220,7 @@ def create_huntflow_applicant_api(pii_standardized, candidate_ml_data, source_re
         }
         response = requests.post(url, headers=headers, json=body, proxies=proxies, timeout=10)
         response.raise_for_status()
-        return response.json(), None
+        return response.json().get("id"), None
         # return source_resume_id, None
     except requests.exceptions.RequestException as e: return None, f"API HF (создание): {e.response.text if e.response else e}"
     except Exception as e: return None, f"Ошибка HF (создание): {e}"
@@ -228,6 +228,8 @@ def create_huntflow_applicant_api(pii_standardized, candidate_ml_data, source_re
 def fill_huntflow_questionary_api(hf_applicant_id, candidate_ml_data):
     """Заполняет анкету кандидата в Huntflow (шаг 2, упрощенно)."""
     try:
+        proxies = get_huntflow_proxies()
+
         hf_token = st.secrets.get("HUNTFLOW_API_TOKEN")
         hf_account_id = st.secrets.get("HUNTFLOW_ACCOUNT_ID", "2")
         if not hf_token: return False, "Токен Huntflow API не найден."
@@ -239,7 +241,7 @@ def fill_huntflow_questionary_api(hf_applicant_id, candidate_ml_data):
         }
         body_filtered = {k: v for k, v in body.items() if v is not None}
         if not body_filtered: return True, "Нет данных для анкеты."
-        response = requests.post(url, headers=headers, json=body_filtered)
+        response = requests.post(url, headers=headers, json=body_filtered, proxies=proxies, timeout=10)
         response.raise_for_status()
         return True, None
     except requests.exceptions.RequestException as e: return False, f"API HF (анкета): {e.response.text if e.response else e}"
@@ -248,6 +250,7 @@ def fill_huntflow_questionary_api(hf_applicant_id, candidate_ml_data):
 def link_applicant_to_vacancy_api(hf_applicant_id, hf_vacancy_id, score_percentage):
     """Привязывает кандидата к вакансии в Huntflow."""
     try:
+        proxies = get_huntflow_proxies()
         hf_token = st.secrets.get("HUNTFLOW_API_TOKEN")
         hf_account_id = st.secrets.get("HUNTFLOW_ACCOUNT_ID", "2")
         if not hf_token: return False, "Токен Huntflow API не найден."
@@ -258,7 +261,7 @@ def link_applicant_to_vacancy_api(hf_applicant_id, hf_vacancy_id, score_percenta
             "vacancy": hf_vacancy_id, "status": 21, # Статус из ТЗ
             "comment": f"Автоматически добавлен после скоринга. Результат: {score_percentage}%"
         }
-        response = requests.post(url, headers=headers, json=body)
+        response = requests.post(url, headers=headers, json=body, proxies=proxies, timeout=10)
         response.raise_for_status()
         return True, None
     except requests.exceptions.RequestException as e: return False, f"API HF (привязка): {e.response.text if e.response else e}"
@@ -428,6 +431,80 @@ def get_region_name_by_id(region_rusal_id):
             return region.get("name")
     return ""
 
+CHAT2DESK_BASE_URL = "https://m.bot-marketing.com/api/public/tunnelSessions"
+
+def sanitize_vacancy_name(name_str):
+    """Удаляет специальные символы и оставляет только буквы, цифры, пробелы, тире, точки."""
+    if not name_str or not isinstance(name_str, str):
+        return "Не указано"
+    # Удаляем все, кроме букв (русских и английских), цифр, пробелов, тире, точек
+    # Также заменяем множественные пробелы на один
+    sanitized = re.sub(r'[^\w\s\.\-а-яА-ЯёЁ]', '', name_str)
+    sanitized = re.sub(r'\s+', ' ', sanitized).strip()
+    return sanitized if sanitized else "Не указано"
+
+
+def send_to_chat2desk_api(phone_number: str, 
+                          client_name: str, 
+                          hf_account_id: str, 
+                          hf_vacancy_id: str, 
+                          hf_applicant_id: str, 
+                          vacancy_name_original: str):
+    """Отправляет запрос на инициацию диалога в Chat2Desk."""
+    
+    chat2desk_session_id = st.secrets.get("CHAT2DESK_SESSION_ID", "bphgdRze7")
+    chat2desk_code = st.secrets.get("CHAT2DESK_CODE", "rusal")
+
+    if not chat2desk_session_id or not chat2desk_code:
+        msg = "Chat2Desk: CHAT2DESK_SESSION_ID или CHAT2DESK_CODE не найдены в секретах."
+        st.error(msg)
+        logger.error(msg)
+        return False, "Ошибка конфигурации Chat2Desk"
+
+    # Предполагаем, что phone_number уже в формате 7XXXXXXXXXX
+    if not (phone_number and phone_number.startswith('7') and len(phone_number) == 11 and phone_number.isdigit()):
+        msg = f"Некорректный формат номера телефона для Chat2Desk: {phone_number}. Ожидается 7XXXXXXXXXX."
+        st.error(msg)
+        logger.error(f"Chat2Desk: {msg}")
+        return False, msg
+    
+    sanitized_vacancy_name_str = sanitize_vacancy_name(vacancy_name_original)
+
+    params_for_url = {
+        "code": chat2desk_code,
+        "params[phonenumber]": phone_number,
+        "params[nameclient]": client_name,
+        "params[account_id]": str(hf_account_id),
+        "params[vacancy_id]": str(hf_vacancy_id) if hf_vacancy_id else "",
+        "params[application_id]": str(hf_applicant_id),
+        "params[vacancyname]": sanitized_vacancy_name_str
+    }
+    
+    param_pairs = [f"{quote(key)}={quote(str(value))}" for key, value in params_for_url.items()]
+    url_with_params = f"{CHAT2DESK_BASE_URL}/{chat2desk_session_id}/request?{'&'.join(param_pairs)}"
+
+    logger.info(f"Chat2Desk: Запрос на URL: {url_with_params}")
+
+    try:
+        # Для POST запроса, где параметры в URL, тело обычно пустое (data=None, json=None)
+        # Content-Type может быть не критичен, если тело пустое, но 'application/json' - безопасный вариант.
+        response = requests.post(url_with_params, headers={'Content-Type': 'application/json'}) 
+        response.raise_for_status()
+        
+        success_message = f"Запрос в Chat2Desk отправлен (Статус: {response.status_code}). Ответ: {response.text[:150]}"
+        logger.info(f"Chat2Desk: Успешный ответ: {success_message}")
+        return True, success_message
+
+    except requests.exceptions.HTTPError as e:
+        error_msg = f"Chat2Desk HTTP ошибка: {e.response.status_code} - {e.response.text}"
+    except requests.exceptions.RequestException as e:
+        error_msg = f"Chat2Desk ошибка сети: {e}"
+    except Exception as e:
+        error_msg = f"Chat2Desk неожиданная ошибка: {e}"
+    
+    st.error(error_msg)
+    logger.error(error_msg)
+    return False, error_msg
 # Загрузка вакансий Huntflow один раз при старте или если список пуст
 if not st.session_state.huntflow_vacancies_list:
     with st.spinner("Загрузка активных вакансий из Huntflow..."):
@@ -678,116 +755,135 @@ if st.session_state.get("computed", False):
         st.markdown("---") 
         st.subheader("Действия с отобранными кандидатами")
 
-        if not data_cv_to_display: # Добавил проверку, если data_cv_to_display пуст
+        if not data_cv_to_display:
             st.info("Нет кандидатов для отображения действий.")
         else:
-            for candidate_key, candidate_ml_data in data_cv_to_display.items(): # Переименовал candidate_data в candidate_ml_data для ясности
+            for candidate_key, candidate_ml_data in data_cv_to_display.items():
                 if not isinstance(candidate_ml_data, dict):
                     logger.warning(f"Данные для кандидата {candidate_key} не являются словарем, пропуск.")
                     continue
 
-                cols = st.columns([3, 1]) # Изменил соотношение для кнопки, можно настроить
-                with cols[0]:
-                    cand_display_name = candidate_ml_data.get("Должность", f"Кандидат ID: {candidate_key}")
-                    # Попытка взять ФИО, если оно уже есть в данных (маловероятно до раскрытия ПД, но на всякий случай)
-                    if candidate_ml_data.get("ФИО"):
-                        cand_display_name = f"{candidate_ml_data.get('ФИО')} ({cand_display_name})"
+                # Ключи для session_state для этого кандидата
+                session_key_hf_id = f"hf_app_id_{candidate_key}"
+                session_key_pii = f"pii_data_{candidate_key}"
+                session_key_hf_processed = f"hf_processed_{candidate_key}" # Флаг, что кандидат в HF
 
-                    cand_score = candidate_ml_data.get("sim_score_second", 0)
-                    if isinstance(cand_score, (float, int)) and not isinstance(cand_score, bool):
-                        cand_score_perc = round(cand_score * 100 if cand_score <= 1.0 and cand_score !=0 else cand_score)
-                    else:
-                        cand_score_perc = "N/A"
-                    st.markdown(f"**{cand_display_name}** (Скоринг: {cand_score_perc}%)")
-                
-                with cols[1]:
-                    action_button_key = f"action_btn_{candidate_key}" # Упростил ключ кнопки
+                # Отображение информации о кандидате
+                cols_info_buttons = st.columns([3, 1, 1]) # Одна колонка для инфо, две для кнопок
+                with cols_info_buttons[0]:
+                    cand_display_name = candidate_ml_data.get("Должность", f"Кандидат ID: {candidate_key}")
+                    if st.session_state.get(session_key_pii, {}).get('first_name') != 'Неизв.': # Если имя уже раскрыто
+                        cand_display_name = f"{st.session_state.get(session_key_pii, {}).get('first_name', '')} {st.session_state.get(session_key_pii, {}).get('last_name', '')} ({cand_display_name})"
+                    elif candidate_ml_data.get("ФИО"): # Если есть в исходных данных
+                         cand_display_name = f"{candidate_ml_data.get('ФИО')} ({cand_display_name})"
                     
-                    if st.button("Раскрыть ПД и сохранить в Huntflow", key=action_button_key, help=f"Раскрыть ПД и создать {cand_display_name} в Huntflow"):
-                        st.markdown(f"--- \n_Обработка: {cand_display_name}..._")
-                        
+                    cand_score = candidate_ml_data.get("sim_score_second", candidate_ml_data.get("Итоговый балл",0))
+                    cand_score_perc = "N/A"
+                    if isinstance(cand_score, (float, int)) and not isinstance(cand_score, bool):
+                        cand_score_perc = round(cand_score * 100 if 0 < cand_score <= 1.0 else cand_score)
+                    
+                    st.markdown(f"{cand_display_name} (Скоринг: {cand_score_perc}%)")
+                
+                # Кнопка "В Huntflow"
+                with cols_info_buttons[1]:
+                    hf_button_key = f"hf_btn_{candidate_key}"
+                    # Блокируем кнопку, если уже успешно обработан
+                    disable_hf_button = st.session_state.get(session_key_hf_processed, False) 
+                    
+                    if st.button("В Huntflow", key=hf_button_key, help=f"Раскрыть ПД и создать {cand_display_name} в Huntflow", disabled=disable_hf_button):
+                        st.markdown(f"--- \n_Обработка для Huntflow: {cand_display_name}..._")
                         with st.spinner(f"Работаем с {cand_display_name}..."):
                             pii_data_raw = None
-                            access_token_ext = None # Access token для внешнего API (HH/Avito)
+                            access_token_ext = None
                             
                             candidate_link = candidate_ml_data.get("link")
                             source_type, resume_id_from_link = parse_resume_link(candidate_link)
 
                             if not source_type or not resume_id_from_link:
-                                st.error(f"Не удалось извлечь источник/ID из ссылки: {candidate_link}")
-                                logger.error(f"Ошибка парсинга ссылки для {cand_display_name}: {candidate_link}")
-                                continue 
-                            
+                                st.error(f"Не удалось извлечь источник/ID из ссылки: {candidate_link}"); logger.error(f"Парсинг ссылки для {cand_display_name}: {candidate_link}"); continue 
                             logger.info(f"Для {cand_display_name}: источник='{source_type}', ID='{resume_id_from_link}'")
 
-                            # 1. Получаем Access Token и затем PII
                             if source_type == "hh":
                                 # access_token_ext = get_hh_oauth_token()
                                 access_token_ext = st.secrets.get("HH_API_TOKEN")
-                                if access_token_ext:
-                                    pii_data_raw = get_hh_contacts_api(resume_id_from_link, access_token_ext)
+                                if access_token_ext: pii_data_raw = get_hh_contacts_api(resume_id_from_link, access_token_ext)
                             elif source_type == "avito":
                                 access_token_ext = get_avito_oauth_token()
-                                if access_token_ext:
-                                    pii_data_raw = get_avito_contacts_api(resume_id_from_link, access_token_ext)
+                                if access_token_ext: pii_data_raw = get_avito_contacts_api(resume_id_from_link, access_token_ext)
                             else:
-                                st.warning(f"Источник '{source_type}' не поддерживается для раскрытия ПД.")
-                                logger.warning(f"Неподдерживаемый источник '{source_type}' для {cand_display_name}")
-                                continue
+                                st.warning(f"Источник '{source_type}' не поддерживается."); logger.warning(f"Неподдерживаемый источник '{source_type}' для {cand_display_name}"); continue
                             
-                            if not access_token_ext:
-                                st.error(f"Не удалось получить Access Token для {source_type.upper()}.")
-                                logger.error(f"Ошибка получения Access Token {source_type.upper()} для {cand_display_name}")
-                                continue
+                            if not access_token_ext: st.error(f"Нет Access Token для {source_type.upper()}."); logger.error(f"Нет Access Token {source_type.upper()} для {cand_display_name}"); continue
+                            if not pii_data_raw: st.error(f"Нет ПД для {cand_display_name} из {source_type.upper()}."); logger.error(f"Нет ПД {source_type.upper()} для {cand_display_name} (ID: {resume_id_from_link})"); continue
                             
-                            if not pii_data_raw:
-                                st.error(f"Не удалось получить ПД для {cand_display_name} из {source_type.upper()}. Проверьте квоты или доступ к резюме.")
-                                logger.error(f"Ошибка получения ПД {source_type.upper()} для {cand_display_name} (ID: {resume_id_from_link})")
-                                continue
-                            
-                            st.success(f"ПД для {cand_display_name} из {source_type.upper()} получены.")
-                            logger.info(f"ПД для {cand_display_name} ({source_type.upper()}) получены.")
-                            pii_standardized = _extract_pii_details(pii_data_raw, source_type.upper()) # Передаем источник в верхнем регистре для _extract_pii_details
-                            
-                            # Опционально: отобразить полученные ПД для проверки
-                            st.write("Извлеченные ПД:")
-                            st.json(pii_standardized)
-                            
+                            st.success(f"ПД для {cand_display_name} из {source_type.upper()} получены."); logger.info(f"ПД для {cand_display_name} ({source_type.upper()}) получены.")
+                            pii_standardized = _extract_pii_details(pii_data_raw, source_type.upper())
+                            st.session_state[session_key_pii] = pii_standardized # <-- Сохраняем PII
+                            st.write("Извлеченные ПД:"); st.json(pii_standardized) # Для отладки
 
                             hf_app_id, err_create = create_huntflow_applicant_api(pii_standardized, candidate_ml_data, resume_id_from_link, source_type.upper())
-                            if err_create:
-                                st.error(f"Ошибка создания {cand_display_name} в Huntflow: {err_create}")
-                                logger.error(f"Ошибка создания {cand_display_name} в Huntflow: {err_create}")
-                                continue
-                            st.success(f"Кандидат {cand_display_name} создан в Huntflow (ID: {hf_app_id}).")
-                            logger.info(f"Кандидат {cand_display_name} создан в Huntflow (ID: {hf_app_id}).")
-
-                            # 3. Заполняем анкету (упрощенно)
-                            # ok_q, err_q = fill_huntflow_questionary_api(hf_app_id, candidate_ml_data)
-                            # if err_q: 
-                            #     st.warning(f"Ошибка при заполнении анкеты {cand_display_name} в Huntflow: {err_q}")
-                            #     logger.warning(f"Ошибка анкеты {cand_display_name} в Huntflow: {err_q}")
-                            # else: 
-                            #     st.info(f"Анкета для {cand_display_name} в Huntflow обработана.")
-                            #     logger.info(f"Анкета для {cand_display_name} в Huntflow обработана.")
-
-                            # # 4. Привязываем к вакансии
-                            # current_hf_vacancy_id = st.session_state.get("selected_huntflow_vacancy_id")
-                            # if current_hf_vacancy_id:
-                            #     # score_perc уже был рассчитан как cand_score_perc
-                            #     ok_link, err_link = link_applicant_to_vacancy_api(hf_app_id, current_hf_vacancy_id, cand_score_perc if cand_score_perc != "N/A" else 0)
-                            #     if err_link: 
-                            #         st.warning(f"Ошибка привязки {cand_display_name} к вакансии HF {current_hf_vacancy_id}: {err_link}")
-                            #         logger.warning(f"Ошибка привязки {cand_display_name} к вакансии HF {current_hf_vacancy_id}: {err_link}")
-                            #     else: 
-                            #         st.info(f"{cand_display_name} привязан к вакансии HF {current_hf_vacancy_id}.")
-                            #         logger.info(f"{cand_display_name} привязан к вакансии HF {current_hf_vacancy_id}.")
-                            # else:
-                            #     st.info(f"{cand_display_name} не будет привязан (вакансия Huntflow не выбрана).")
-                            #     logger.info(f"{cand_display_name} не привязан к вакансии HF (не выбрана).")
+                            if err_create: st.error(f"Ошибка создания {cand_display_name} в HF: {err_create}"); logger.error(f"Ошибка создания {cand_display_name} в HF: {err_create}"); continue
+                            st.success(f"Кандидат {cand_display_name} создан в HF (ID: {hf_app_id})."); logger.info(f"Кандидат {cand_display_name} создан в HF (ID: {hf_app_id}).")
+                            st.session_state[session_key_hf_id] = hf_app_id # <-- Сохраняем ID аппликанта HF
                             
-                            # st.success(f"Кандидат {cand_display_name} полностью обработан для Huntflow!")
-                            # logger.info(f"Кандидат {cand_display_name} полностью обработан для Huntflow!")
-                            # # st.session_state[f"processed_hf_{candidate_key}"] = True # Пометить как обработанного
-                            # st.markdown("---")
-                            # # st.rerun() # Если нужно обновить UI немедленно (например, скрыть кнопку)
+                            ok_q, err_q = fill_huntflow_questionary_api(hf_app_id, candidate_ml_data) # Анкета
+                            if err_q: st.warning(f"Ошибка анкеты {cand_display_name} в HF: {err_q}"); logger.warning(f"Ошибка анкеты {cand_display_name} в HF: {err_q}")
+                            else: st.info(f"Анкета {cand_display_name} в HF обработана."); logger.info(f"Анкета {cand_display_name} в HF обработана.")
+
+                            current_hf_vacancy_id = st.session_state.get("selected_huntflow_vacancy_id") # Привязка к вакансии
+                            if current_hf_vacancy_id:
+                                ok_link, err_link = link_applicant_to_vacancy_api(hf_app_id, current_hf_vacancy_id, cand_score_perc if cand_score_perc != "N/A" else 0)
+                                if err_link: st.warning(f"Ошибка привязки {cand_display_name} к вакансии HF {current_hf_vacancy_id}: {err_link}"); logger.warning(f"Ошибка привязки {cand_display_name} к вакансии HF {current_hf_vacancy_id}: {err_link}")
+                                else: st.info(f"{cand_display_name} привязан к вакансии HF {current_hf_vacancy_id}."); logger.info(f"{cand_display_name} привязан к вакансии HF {current_hf_vacancy_id}.")
+                            else: st.info(f"{cand_display_name} не привязан (вакансия HF не выбрана)."); logger.info(f"{cand_display_name} не привязан к вакансии HF (не выбрана).")
+                            
+                            st.session_state[session_key_hf_processed] = True # Помечаем как полностью обработанного для HF
+                            st.success(f"Кандидат {cand_display_name} полностью обработан для Huntflow!")
+                            logger.info(f"Кандидат {cand_display_name} полностью обработан для Huntflow!")
+                            st.markdown("---")
+                            st.rerun() # Перерисовать UI
+                
+                # Кнопка "Связаться по Whatsapp"
+                with cols_info_buttons[2]:
+                    whatsapp_button_key = f"whatsapp_btn_{candidate_key}"
+                    # Кнопка активна, если есть hf_app_id (т.е. кандидат создан в Huntflow) и есть ПД
+                    can_send_whatsapp = st.session_state.get(session_key_hf_id) and st.session_state.get(session_key_pii)
+                    
+                    if st.button("Whatsapp", key=whatsapp_button_key, help=f"Связаться с {cand_display_name} по Whatsapp", disabled=not can_send_whatsapp):
+                        pii_for_whatsapp = st.session_state.get(session_key_pii)
+                        applicant_id_for_whatsapp = st.session_state.get(session_key_hf_id)
+                        
+                        phone = pii_for_whatsapp.get("phone")
+                        name_client = f"{pii_for_whatsapp.get('first_name', '')} {pii_for_whatsapp.get('last_name', '')}".strip()
+                        hf_account_id_for_c2d = st.secrets.get("HUNTFLOW_ACCOUNT_ID", "2") # Берем из секретов
+                        current_hf_vacancy_id_for_c2d = st.session_state.get("selected_huntflow_vacancy_id")
+                        
+                        # Получаем название текущей выбранной вакансии из Huntflow для параметра vacancyname
+                        vacancy_name_for_c2d = "Не указано"
+                        if current_hf_vacancy_id_for_c2d and st.session_state.get('huntflow_vacancies_details'):
+                            selected_vac_details = st.session_state['huntflow_vacancies_details'].get(current_hf_vacancy_id_for_c2d)
+                            if selected_vac_details:
+                                vacancy_name_for_c2d = selected_vac_details.get("position", "Не указано")
+                        
+                        if not phone:
+                            st.error("Не найден номер телефона кандидата для отправки в Whatsapp.")
+                            logger.error(f"Chat2Desk: нет номера телефона для {cand_display_name}")
+                        elif not applicant_id_for_whatsapp: # Доп. проверка, хотя disabled должен был сработать
+                            st.error("Не найден ID аппликанта в Huntflow.")
+                            logger.error(f"Chat2Desk: нет ID аппликанта HF для {cand_display_name}")
+                        else:
+                            st.info(f"Попытка отправить сообщение {name_client} по номеру {phone} через Chat2Desk...")
+                            with st.spinner(f"Отправка в Chat2Desk для {name_client}..."):
+                                success_c2d, msg_c2d = send_to_chat2desk_api(
+                                    phone_number=phone,
+                                    client_name=name_client,
+                                    hf_account_id=hf_account_id_for_c2d,
+                                    hf_vacancy_id=current_hf_vacancy_id_for_c2d,
+                                    hf_applicant_id=applicant_id_for_whatsapp,
+                                    vacancy_name_original=vacancy_name_for_c2d
+                                )
+                                if success_c2d:
+                                    st.success(f"Chat2Desk: {msg_c2d}")
+                                else:
+                                    st.error(f"Chat2Desk: {msg_c2d}")
+                st.markdown("<hr style='margin-top:0.5rem; margin-bottom:0.5rem;'/>", unsafe_allow_html=True) # Горизонтальная линия между кандидатами
