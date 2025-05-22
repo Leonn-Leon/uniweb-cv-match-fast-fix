@@ -212,6 +212,8 @@ def clean_address(addr):
 def build_full_link(row_link, is_hh):
             # Если ссылка уже полная, не трогаем (простая проверка на http)
             if row_link.startswith('http://') or row_link.startswith('https://'):
+                if is_hh:
+                    row_link = row_link.replace("resumes", "resume")
                 return row_link
             # Если ссылка пустая, оставляем пустой
             if not row_link:
