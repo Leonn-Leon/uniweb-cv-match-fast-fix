@@ -282,7 +282,10 @@ if __name__ == "__main__":
                 # Пытаемся извлечь и распарсить resume_schema, если она есть
                 resume_schema_str = flat_row.pop("resume_schema", None) # Извлекаем и удаляем, чтобы не мешала дальше
 
-                if resume_schema_str and isinstance(resume_schema_str, str):
+                if resume_schema_str and isinstance(resume_schema_str, dict):
+                    resume_data = resume_schema_str
+                    flat_row.update(resume_data)
+                elif resume_schema_str and isinstance(resume_schema_str, str):
                     try:
                         resume_data = json.loads(resume_schema_str)
                         flat_row.update(resume_data)

@@ -436,7 +436,8 @@ def get_region_name_by_id(region_rusal_id):
             return region.get("name")
     return ""
 
-CHAT2DESK_BASE_URL = "https://m.bot-marketing.com/api/public/tunnelSessions"
+# CHAT2DESK_BASE_URL = "https://m.bot-marketing.com/api/public/tunnelSessions"
+CHAT2DESK_BASE_URL = "https://ror.chat2desk.com/webhooks/smart_script/LoC5G7r"
 
 def sanitize_vacancy_name(name_str):
     """Удаляет специальные символы и оставляет только буквы, цифры, пробелы, тире, точки."""
@@ -486,13 +487,15 @@ def send_to_chat2desk_api(phone_number: str,
     }
     
     param_pairs = [f"{quote(key)}={quote(str(value))}" for key, value in params_for_url.items()]
-    url_with_params = f"{CHAT2DESK_BASE_URL}/{chat2desk_session_id}/request?{'&'.join(param_pairs)}"
+    url_with_params = f"{CHAT2DESK_BASE_URL}?{'&'.join(param_pairs)}"
 
     logger.info(f"Chat2Desk: Запрос на URL: {url_with_params}")
 
     try:
         # Для POST запроса, где параметры в URL, тело обычно пустое (data=None, json=None)
         # Content-Type может быть не критичен, если тело пустое, но 'application/json' - безопасный вариант.
+        
+        raise Exception("Пока заблочил отправку запроса в Chat2Desk по новому эндпоинту")
         response = requests.post(url_with_params, headers={'Content-Type': 'application/json'}) 
         response.raise_for_status()
         
