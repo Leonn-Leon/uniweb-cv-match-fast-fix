@@ -143,15 +143,18 @@ def get_hh_contacts_api(resume_id, access_token_ext=None):
         logger.debug(f"Получены данные:"+ str(r_resume.json()))
         r_resume.raise_for_status()
         r_contacts = r_resume.json().get("contact")
-        if not r_contacts:
+        print(f"Контакты: {r_contacts}", type(r_contacts))
+        if not r_contacts or (isinstance(r_contacts, list) and len(r_contacts) == 0):
+            logger.debug("Делаем запрос контактов глубже")
             contacts_href = r_resume.json().get("actions").get('get_with_contact').get("url")
             if not contacts_href:
                 st.warning(f"Нет ссылки на контакты HH {resume_id}."); return None
-            r_contacts = requests.get(contacts_href, headers=headers)
-            r_contacts.raise_for_status()
-            r_contacts = r_contacts.json().get("contact")
+            r_resume = requests.get(contacts_href, headers=headers)
+            logger.debug(f"Глубокие контакты: {r_resume.json()}")
+            r_resume.raise_for_status()
+            r_contacts = r_resume.json().get("contact")
         details = {"first_name": r_resume.json().get("first_name", ""), "last_name": r_resume.json().get("last_name", ""),
-                   "middle_name": r_resume.json().get("middle_name", ""), "phone": "", "email": ""}
+                   "middle_name": r_resume.json().get("middle_name", ""), "phone": "", "email": "empty_email@error.ru"}
         # if r_contacts[0].get("type").get("id") == "email":
         #     details["email"] = r_contacts[0].get("value", "")
         #     details["phone"] = r_contacts[1].get("value", "").get("formatted")
@@ -164,8 +167,8 @@ def get_hh_contacts_api(resume_id, access_token_ext=None):
             elif contact.get("type").get("id") == "cell":
                 details["phone"] = contact.get("value").get("formatted")
         return details
-    except requests.exceptions.RequestException as e: st.error(f"Ошибка API HH.ru ({resume_id}): {e}"); return None
-    except Exception as e: st.error(f"Ошибка (HH contacts {resume_id}): {e}"); return None
+    except requests.exceptions.RequestException as e: st.error(f"Ошибка API HH.ru ({resume_id}): {e}"); return {}
+    except Exception as e: st.error(f"Ошибка (HH contacts {resume_id}): {e}"); return {}
 
 def get_avito_contacts_api(resume_id, access_token_ext=None):
     """Получает контакты кандидата с Avito."""
@@ -513,7 +516,7 @@ def send_to_chat2desk_api(phone_number: str,
     logger.info(f"Chat2Desk: Запрос на URL: {url_with_params}")
 
     try:
-        response = requests.post(url_with_params, headers={'Content-Type': 'application/json'}) 
+        response = requests.post(url_with_params, headers={'Content-Type': 'application/json'}, timeout=5) 
         response.raise_for_status()
         
         success_message = f"Запрос в Chat2Desk отправлен (Статус: {response.status_code}). Ответ: {response.text[:150]}"
@@ -833,6 +836,9 @@ if st.session_state.get("computed", False):
                                 # access_token_ext = get_hh_oauth_token()
                                 access_token_ext = st.secrets.get("HH_API_TOKEN")
                                 if access_token_ext: pii_data_raw = get_hh_contacts_api(resume_id_from_link, access_token_ext)
+                                if pii_data_raw.get("first_name") == None:
+                                    logger.warning(f"Имя кандидата не получено из HH API, повторяем запрос")
+                                    pii_data_raw = get_hh_contacts_api(resume_id_from_link, access_token_ext)
                             elif source_type == "avito":
                                 access_token_ext = get_avito_oauth_token()
                                 if access_token_ext: pii_data_raw = get_avito_contacts_api(resume_id_from_link, access_token_ext)
