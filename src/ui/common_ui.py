@@ -61,7 +61,7 @@ def display_sidebar(config, update_address_weight_callback_func):
             "Минимальный процент соответствия",
             min_value=0.0,
             max_value=1.0,
-            value=st.session_state.get('current_threshold', 0.5), # Используем значение из session_state или дефолт
+            value=st.session_state.get('current_threshold'),
             step=0.05,
             help="Кандидаты с процентом соответствия ниже этого значения не будут показаны"
         )

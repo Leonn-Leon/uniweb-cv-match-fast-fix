@@ -139,7 +139,7 @@ def get_hh_contacts_api(resume_id, access_token_ext=None):
         if not hh_token: st.error("Токен HH.ru API не найден."); return None
         headers = {"Authorization": f"Bearer {hh_token}", "User-Agent": "Uniweb CV Match App"}
         resume_url = f"https://api.hh.ru/resumes/{resume_id}"
-        r_resume = requests.get(resume_url, headers=headers)
+        r_resume = requests.get(resume_url, headers=headers, json={"get_with_contact":"true"})
         logger.debug(f"Получены данные:"+ str(r_resume.json()))
         r_resume.raise_for_status()
         r_contacts = r_resume.json().get("contact")
@@ -468,6 +468,7 @@ def send_to_chat2desk_api(phone_number: str,
         return False, "Ошибка конфигурации Chat2Desk"
 
     # Предполагаем, что phone_number уже в формате 7XXXXXXXXXX
+    phone_number = re.sub(r"\D", "", phone_number)
     if not (phone_number and phone_number.startswith('7') and len(phone_number) == 11 and phone_number.isdigit()):
         msg = f"Некорректный формат номера телефона для Chat2Desk: {phone_number}. Ожидается 7XXXXXXXXXX."
         st.error(msg)
@@ -485,6 +486,21 @@ def send_to_chat2desk_api(phone_number: str,
         "params[application_id]": str(hf_applicant_id),
         "params[vacancyname]": sanitized_vacancy_name_str
     }
+
+    param_pairs = [f"{quote(key)}={quote(str(value))}" for key, value in params_for_url.items()]
+    url_with_params = f"{CHAT2DESK_BASE_URL}?{'&'.join(param_pairs)}"
+
+    logger.info(f"Chat2Desk: Запрос на URL 1: {url_with_params}")
+
+    params_for_url = {
+        "code": chat2desk_code,
+        "params[phonenumber]": 77770444258,
+        "params[nameclient]": "Вячеслав",
+        "params[account_id]": str(2),
+        "params[vacancy_id]": str(24295) if hf_vacancy_id else "",
+        "params[application_id]": str(469314),
+        "params[vacancyname]": "Эксперт"
+    }
     
     param_pairs = [f"{quote(key)}={quote(str(value))}" for key, value in params_for_url.items()]
     url_with_params = f"{CHAT2DESK_BASE_URL}?{'&'.join(param_pairs)}"
@@ -492,10 +508,6 @@ def send_to_chat2desk_api(phone_number: str,
     logger.info(f"Chat2Desk: Запрос на URL: {url_with_params}")
 
     try:
-        # Для POST запроса, где параметры в URL, тело обычно пустое (data=None, json=None)
-        # Content-Type может быть не критичен, если тело пустое, но 'application/json' - безопасный вариант.
-        
-        raise Exception("Пока заблочил отправку запроса в Chat2Desk по новому эндпоинту")
         response = requests.post(url_with_params, headers={'Content-Type': 'application/json'}) 
         response.raise_for_status()
         

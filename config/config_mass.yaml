@@ -18,7 +18,7 @@ model:
     top_n_init: 100
     top_n: 30
   stage_2:
-    score_threshold: 0.5
+    score_threshold: 0.75
     keys_vacancy:
       - "Должность"
       - "Должность категория"
