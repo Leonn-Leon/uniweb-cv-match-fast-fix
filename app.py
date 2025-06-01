@@ -138,8 +138,8 @@ def get_hh_contacts_api(resume_id, access_token_ext=None):
         hh_token = access_token_ext
         if not hh_token: st.error("Токен HH.ru API не найден."); return None
         headers = {"Authorization": f"Bearer {hh_token}", "User-Agent": "Uniweb CV Match App"}
-        resume_url = f"https://api.hh.ru/resumes/{resume_id}"
-        r_resume = requests.get(resume_url, headers=headers, json={"get_with_contact":"true"})
+        resume_url = f"https://api.hh.ru/resumes/{resume_id}?get_with_contact=true"
+        r_resume = requests.get(resume_url, headers=headers)
         logger.debug(f"Получены данные:"+ str(r_resume.json()))
         r_resume.raise_for_status()
         r_contacts = r_resume.json().get("contact")
