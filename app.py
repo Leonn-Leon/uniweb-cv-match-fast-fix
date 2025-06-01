@@ -152,12 +152,17 @@ def get_hh_contacts_api(resume_id, access_token_ext=None):
             r_contacts = r_contacts.json().get("contact")
         details = {"first_name": r_resume.json().get("first_name", ""), "last_name": r_resume.json().get("last_name", ""),
                    "middle_name": r_resume.json().get("middle_name", ""), "phone": "", "email": ""}
-        if r_contacts[0].get("type").get("id") == "email":
-            details["email"] = r_contacts[0].get("value", "")
-            details["phone"] = r_contacts[1].get("value", "").get("formatted")
-        elif r_contacts[0].get("type").get("id") == "cell":
-            details["phone"] = r_contacts[0].get("value").get("formatted")
-            details["email"] = r_contacts[1].get("value")
+        # if r_contacts[0].get("type").get("id") == "email":
+        #     details["email"] = r_contacts[0].get("value", "")
+        #     details["phone"] = r_contacts[1].get("value", "").get("formatted")
+        # elif r_contacts[0].get("type").get("id") == "cell":
+        #     details["phone"] = r_contacts[0].get("value").get("formatted")
+        #     details["email"] = r_contacts[1].get("value")
+        for contact in r_contacts:
+            if contact.get("type").get("id") == "email":
+                details["email"] = contact.get("value", "")
+            elif contact.get("type").get("id") == "cell":
+                details["phone"] = contact.get("value").get("formatted")
         return details
     except requests.exceptions.RequestException as e: st.error(f"Ошибка API HH.ru ({resume_id}): {e}"); return None
     except Exception as e: st.error(f"Ошибка (HH contacts {resume_id}): {e}"); return None
