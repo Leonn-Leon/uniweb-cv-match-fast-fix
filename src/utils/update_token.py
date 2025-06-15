@@ -26,22 +26,28 @@ def refresh_api_token(token_url: str, refresh_token_value: str, proxy_details: d
     proxies = _prepare_proxies(proxy_details) if proxy_details else None
 
     try:
-        response = requests.post(token_url, json=payload, headers=headers, proxies=proxies)
+        response = requests.post(token_url, json=payload, headers=headers, proxies=proxies, timeout=5)
         response.raise_for_status()
 
         response_data = response.json()
-        new_access_token = response_data.get('access_token')
+        # new_access_token = response_data.get('access_token')
 
-        if new_access_token:
-            return new_access_token
-        else:
-            return None
+        # if new_access_token:
+        #     return new_access_token
+        return response_data
 
     except Exception as e:
         logger.info(f"Failed to refresh API token:{e}")
         return None
     
 if __name__ == "__main__":
-    token_url = "https://hh.ru/oauth/token"
-    refresh_token_value="USERH3MP9KU02L1OHJOC3JV0CAVBLEVHMI5ECH21JAUK2MAA5J54K9OEBTHLMAR8"
-    logger.info(refresh_api_token(token_url, refresh_token_value))
+    import streamlit as st
+    token_url = st.secrets["HUNTFLOW_REFRESH_TOKEN_URL"]
+    refresh_token_value = st.secrets["HUNTFLOW_CURRENT_REFRESH_TOKEN"]
+    proxy_details = {
+        "PROXY_USER": st.secrets.get("HUNTFLOW_PROXY_USER"),
+        "PROXY_PASS": st.secrets.get("HUNTFLOW_PROXY_PASS"),
+        "PROXY_HOST": st.secrets.get("HUNTFLOW_PROXY_HOST"),
+        "PROXY_PORT": st.secrets.get("HUNTFLOW_PROXY_PORT")
+    }
+    logger.info(refresh_api_token(token_url, refresh_token_value, proxy_details))

@@ -6,11 +6,154 @@ from copy import deepcopy # Не используется в display_mass_input_
 # Предполагается, что эти утилиты используются в display_mass_results
 from src.utils.utils import select_color, format_intersection 
 from src.utils.hardcode_data import map_names
+from loguru import logger
+import json
+from src.utils.update_token import refresh_api_token
+
+def hf_format_vacancy():
+
+    token_url = st.secrets["HUNTFLOW_REFRESH_TOKEN_URL"]
+    refresh_token_value = st.secrets["HUNTFLOW_CURRENT_REFRESH_TOKEN"]
+    proxy_details = {
+        "PROXY_USER": st.secrets.get("HUNTFLOW_PROXY_USER"),
+        "PROXY_PASS": st.secrets.get("HUNTFLOW_PROXY_PASS"),
+        "PROXY_HOST": st.secrets.get("HUNTFLOW_PROXY_HOST"),
+        "PROXY_PORT": st.secrets.get("HUNTFLOW_PROXY_PORT")
+    }
+
+    res = refresh_api_token(token_url, refresh_token_value, proxy_details)
+    if res is not None and 'access_token' in res and "refresh_token" in res:
+        st.secrets["HUNTFLOW_API_TOKEN"] = res["access_token"]
+        st.secrets["HUNTFLOW_CURRENT_REFRESH_TOKEN"] = res["refresh_token"]
+    
+
+    st.header("Выбор вакансии и ввод данных для подбора")
+    if st.session_state.huntflow_vacancies_list:
+        vacancy_options = ["Начинайте вводить или заполните вручную"] + [name for name, _ in st.session_state.huntflow_vacancies_list]
+        selected_vacancy_display_name = st.selectbox(
+            "Выберите вакансию из Huntflow (для предзаполнения полей ниже):",
+            options=vacancy_options,
+            index=0,
+            key="hf_vacancy_selectbox_selector" 
+        )
+
+        if selected_vacancy_display_name != vacancy_options[0]:
+            selected_idx_in_hf_list = next(
+                (i for i, (name, _id) in enumerate(st.session_state.huntflow_vacancies_list)
+                if name == selected_vacancy_display_name),
+                -1
+            )
+            if selected_idx_in_hf_list != -1:
+                newly_selected_hf_id = st.session_state.huntflow_vacancies_list[selected_idx_in_hf_list][1]
+                if st.session_state.selected_huntflow_vacancy_id != newly_selected_hf_id:
+                    st.session_state.selected_huntflow_vacancy_id = newly_selected_hf_id
+
+                    details_path = st.session_state.huntflow_vacancies_details.get(newly_selected_hf_id)
+                    try:
+                        with open(details_path, "r", encoding="utf-8") as f:
+                            details = json.load(f)  # тот же объект, что был раньше, только читаем из файла
+                    except Exception as e:
+                        logger.warning(f"Не удалось загрузить детали вакансии {newly_selected_hf_id}: {e}")
+                        details = {}
+                    logger.debug(f"Выбрана вакансия c ID: {newly_selected_hf_id}, её значение: {details}")
+
+                    if details:
+                        # 1. Должность
+                        st.session_state.vacancy_form_title = details.get("position", "")
+                        
+                        required_texts = []
+                        education_req = details.get("education")
+                        if education_req and isinstance(education_req, str):
+                            required_texts.append(f"Образование: {education_req.strip()}")
+                        
+                        experience_req = details.get("experience_position")
+                        if experience_req and isinstance(experience_req, str):
+                            required_texts.append(f"Требования к опыту: {experience_req.strip()}")
+
+                        if required_texts:
+                            st.session_state.vacancy_form_required = "\n".join(required_texts)
+                        else:
+                            st.session_state.vacancy_form_required = "" 
+                            logger.warning(f"Не удалось извлечь структурированные обязательные требования для вакансии ID {newly_selected_hf_id}. Поля 'education' и 'experience_position' пусты или не строки.")
+
+                        location_format_texts = []
+                        region_rusal_id = details.get("region_rusal")
+                        if region_rusal_id and isinstance(region_rusal_id, int):
+                            location_format_texts.append("Локация: " + get_region_name_by_id(region_rusal_id))
+
+                        money_info = details.get("money")
+                        if money_info and isinstance(money_info, str):
+                            location_format_texts.append("Зарплата: " + money_info.strip())
+                        
+                        # Формат работы можно попробовать извлечь из "contract"
+                        contract_type = details.get("contract")
+                        if contract_type and isinstance(contract_type, str):
+                            location_format_texts.append(f"Тип договора: {contract_type.strip()}")
+
+                        # Готовность к командировкам
+                        business_trip_info = details.get("business_trip")
+                        if business_trip_info and isinstance(business_trip_info, str):
+                            location_format_texts.append(f"Командировки: {business_trip_info}")
+                        elif isinstance(business_trip_info, bool):
+                            location_format_texts.append(f"Командировки: {'Да' if business_trip_info else 'Нет'}")
+
+                        if location_format_texts:
+                            st.session_state.vacancy_form_location = "\n".join(location_format_texts)
+                        else:
+                            st.session_state.vacancy_form_location = ""
+                            logger.warning(f"Не удалось извлечь информацию о локации/формате работы для вакансии ID {newly_selected_hf_id}.")
+
+                        
+                        optional_texts = []
+
+                        benefits_info = details.get("benefits") # В примере None
+                        if benefits_info and isinstance(benefits_info, str):
+                            optional_texts.append(f"Условия: {benefits_info.strip()}")
+                        
+                        notes_info = details.get("notes") # В примере None
+                        if notes_info and isinstance(notes_info, str):
+                            optional_texts.append(f"Заметки: {notes_info.strip()}")
+                        
+                        if optional_texts:
+                            st.session_state.vacancy_form_optional = "\n".join(optional_texts)
+                        else:
+                            st.session_state.vacancy_form_optional = ""
+
+                        st.toast(f"Поля предзаполнены вакансией: {details.get('position')}", icon="ℹ️")
+                        st.rerun() # Перезапускаем, чтобы виджеты обновились
+                    else: # Если details не найдены (хотя не должно быть, если ID есть в списке)
+                        logger.error(f"Детали для вакансии ID {newly_selected_hf_id} не найдены в st.session_state.huntflow_vacancies_details")
+                        # Можно сбросить поля или ничего не делать
+                        st.session_state.vacancy_form_title = "" 
+                        st.session_state.vacancy_form_required = ""
+                        st.session_state.vacancy_form_location = ""
+                        st.session_state.vacancy_form_optional = ""
+                        # st.rerun() # Если нужно, чтобы сброс отразился
+
+            else: 
+                if st.session_state.selected_huntflow_vacancy_id is not None: # Сбрасываем, если была выбрана, а теперь не найдена
+                    st.session_state.selected_huntflow_vacancy_id = None
+                    # Очистка полей
+                    st.session_state.vacancy_form_title = "" 
+                    st.session_state.vacancy_form_required = ""
+                    st.session_state.vacancy_form_location = ""
+                    st.session_state.vacancy_form_optional = ""
+                    st.warning(f"Не удалось найти детали для выбранной вакансии '{selected_vacancy_display_name}'. Поля сброшены.")
+                    st.rerun() # Перезапускаем, чтобы сброс отразился
+
+        elif selected_vacancy_display_name == "Начинайте вводить или заполните вручную" and st.session_state.selected_huntflow_vacancy_id is not None:
+            st.session_state.selected_huntflow_vacancy_id = None 
+            st.session_state.vacancy_form_title = "" 
+            st.session_state.vacancy_form_required = ""
+            st.session_state.vacancy_form_location = ""
+            st.session_state.vacancy_form_optional = ""
+            st.toast("Поля сброшены для ввода вручную.", icon="✍️")
+            st.rerun()
 
 def display_mass_input_form():
     """Отображает форму ввода для массового подбора и возвращает данные вакансии,
     используя st.session_state для предзаполнения."""
-    
+    hf_format_vacancy() # Вызываем функцию для отображения формы выбора вакансии
     vacancy = {}
     
     # Ключи должны совпадать с теми, что используются в app.py для st.session_state

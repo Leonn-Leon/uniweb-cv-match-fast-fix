@@ -90,7 +90,7 @@ def update_address_weight_callback():
     except Exception as e:
         st.error(f"Ошибка при обновлении веса 'Адрес': {e}")
 
-HUNTFLOW_BASE_URL = "https://rusal-api-mirror.huntflow.ru/v2" 
+HUNTFLOW_BASE_URL = st.secrets.get("HUNTFLOW_BASE_URL")
 
 def get_huntflow_proxies():
     proxy_user = st.secrets.get("HUNTFLOW_PROXY_USER")
@@ -106,31 +106,73 @@ def get_huntflow_proxies():
         }
     return None
 
-def fetch_huntflow_vacancies_api():
-    """Загружает активные вакансии из Huntflow."""
+import json
+import requests
+import streamlit as st
+from pathlib import Path
+
+HUNTFLOW_BASE_URL = "https://api.huntflow.ru"
+
+def fetch_huntflow_vacancies(page_size: int = 100,
+                                       save_dir: str = "vacancies_json"):
+    """
+    Скачивает все вакансии постранично, записывает каждый объект в отдельный JSON-файл,
+    а в session_state кладёт список кортежей (название, id).
+    """
+    # Проверяем token
+    hf_token = st.secrets.get("HUNTFLOW_API_TOKEN")
+    hf_account_id = st.secrets.get("HUNTFLOW_ACCOUNT_ID", "2")
+    if not hf_token:
+        st.error("HUNTFLOW_API_TOKEN не задан в secrets.toml")
+        return [], {}
+
+    headers = {"Authorization": f"Bearer {hf_token}"}
+    url = f"{HUNTFLOW_BASE_URL}/accounts/{hf_account_id}/vacancies"
     proxies = get_huntflow_proxies()
-    try:
-        hf_token = st.secrets.get("HUNTFLOW_API_TOKEN")
-        hf_account_id = st.secrets.get("HUNTFLOW_ACCOUNT_ID", "2")
-        if not hf_token:
-            st.error("Токен API Huntflow не найден в секретах. Проверьте .streamlit/secrets.toml")
-            return [], {}
-        headers = {"Authorization": f"Bearer {hf_token}"}
-        url = f"{HUNTFLOW_BASE_URL}/accounts/{hf_account_id}/vacancies"
-        params = {"status": "OPEN", "count": 100}
-        response = requests.get(url, headers=headers, params=params, proxies=proxies)
-        response.raise_for_status()
-        vacancies_data = response.json().get("items", [])
-        vac_list_selectbox = [(vac.get("position", f"Вакансия ID {vac.get('id')}"), vac.get("id")) for vac in vacancies_data if vac.get("id")]
-        vac_details_map = {vac.get("id"): vac for vac in vacancies_data if vac.get("id")}
-        return vac_list_selectbox, vac_details_map
-    except requests.exceptions.ProxyError as e:
-        st.error(f"Ошибка прокси при подключении к Huntflow: {e}")
-    except requests.exceptions.RequestException as e:
-        st.error(f"Ошибка при загрузке вакансий из Huntflow: {e}")
-    except Exception as e:
-        st.error(f"Неожиданная ошибка (вакансии Huntflow): {e}")
-    return [], {}
+
+    # Папка для хранения JSON-файлов
+    out_folder = Path(save_dir)
+    out_folder.mkdir(exist_ok=True)
+
+    vacancy_list = []
+    vacancy_details = {}
+
+    offset = 0
+    while True:
+        params = {
+            "status": "OPEN",
+            "count": page_size,
+            "offset": offset
+        }
+        try:
+            resp = requests.get(url, headers=headers, params=params, proxies=proxies)
+            resp.raise_for_status()
+        except requests.RequestException as e:
+            st.error(f"Ошибка при запросе Huntflow API: {e}")
+            break
+
+        items = resp.json().get("items", [])
+        if not items:
+            break
+
+        for vac in items:
+            vac_id = vac.get("id")
+            title = vac.get("position", f"Вакансия #{vac_id}")
+            # Сохраняем метаданные списка
+            vacancy_list.append((title, vac_id))
+            # Сохраняем полный JSON-объект в файл
+            file_path = out_folder / f"vacancy_{vac_id}.json"
+            with file_path.open("w", encoding="utf-8") as f:
+                json.dump(vac, f, ensure_ascii=False, indent=2)
+
+            # При необходимости оставить в памяти лишь минимальный маппинг
+            vacancy_details[vac_id] = str(file_path)
+
+        offset += len(items)
+        # Можно показывать прогресс
+        st.write(f"Загружено и сохранено: {offset} вакансий…")
+
+    return vacancy_list, vacancy_details
 
 def get_hh_contacts_api(resume_id, access_token_ext=None):
     """Получает контакты кандидата с HH.ru."""
@@ -317,31 +359,15 @@ def parse_resume_link(link_url):
     logger.warning(f"Не удалось определить источник или ID из ссылки: {link_url}")
     return None, None
 
-HH_ACCESS_TOKEN_KEY = "hh_access_token_val" # Изменил имя ключа, чтобы не пересекаться с предыдущими
-HH_TOKEN_EXPIRES_AT_KEY = "hh_token_expires_at_val"
-
 def get_hh_oauth_token():
-    access_token = st.session_state.get(HH_ACCESS_TOKEN_KEY)
-    expires_at = st.session_state.get(HH_TOKEN_EXPIRES_AT_KEY)
-
-    if access_token and expires_at and time.time() < expires_at:
-        logger.debug("HH: Используется существующий валидный токен.")
-        return access_token
+    refresh_token = st.secrets.get("HH_REFRESH_TOKEN")
 
     logger.info("HH: Попытка получения нового access token...")
     token_url = st.secrets.get("HH_TOKEN_URL")
-    client_id = st.secrets.get("HH_CLIENT_ID")
-    client_secret = st.secrets.get("HH_CLIENT_SECRET")
-
-    if not all([token_url, client_id, client_secret]):
-        st.error("HH.ru: CLIENT_ID, CLIENT_SECRET или TOKEN_URL не настроены в секретах.")
-        logger.error("HH.ru: CLIENT_ID, CLIENT_SECRET или TOKEN_URL не настроены в секретах.")
-        return None
 
     payload = {
-        'grant_type': 'client_credentials', # Это стандарт для client_credentials
-        'client_id': client_id,       # HH может требовать client_id/secret в теле
-        'client_secret': client_secret  # или через Basic Auth. Нужно проверить документацию!
+        'grant_type': 'refresh_token',
+        'refresh_token': refresh_token,
     }
     headers = {
         'Content-Type': 'application/x-www-form-urlencoded'
@@ -353,17 +379,16 @@ def get_hh_oauth_token():
         token_data = response.json()
         
         new_access_token = token_data.get('access_token')
-        expires_in = token_data.get('expires_in', 86400) # Время жизни в секундах, по дефолту сутки (86400 сек)
 
-        if new_access_token and isinstance(expires_in, int):
-            st.session_state[HH_ACCESS_TOKEN_KEY] = new_access_token
-            st.session_state[HH_TOKEN_EXPIRES_AT_KEY] = time.time() + expires_in - 60 # Буфер 60 сек
+        if new_access_token:
+            st.secrets["HH_API_TOKEN"] = new_access_token
+            st.secrets["HH_REFRESH_TOKEN"] = token_data.get('refresh_token')
             st.success("HH.ru: Access token успешно получен/обновлен.")
             logger.info("HH.ru: Access token успешно получен/обновлен.")
             return new_access_token
         else:
-            st.error(f"HH.ru: Не удалось получить 'access_token' или 'expires_in' из ответа. Ответ: {token_data}")
-            logger.error(f"HH.ru: Не удалось получить 'access_token' или 'expires_in' из ответа. Ответ: {token_data}")
+            st.error(f"HH.ru: Не удалось получить 'access_token' из ответа. Ответ: {token_data}")
+            logger.error(f"HH.ru: Не удалось получить 'access_token' из ответа. Ответ: {token_data}")
             return None
     except requests.exceptions.RequestException as e:
         st.error(f"HH.ru: Ошибка при получении токена: {e}")
@@ -536,124 +561,10 @@ def send_to_chat2desk_api(phone_number: str,
 # Загрузка вакансий Huntflow один раз при старте или если список пуст
 if not st.session_state.huntflow_vacancies_list:
     with st.spinner("Загрузка активных вакансий из Huntflow..."):
-        st.session_state.huntflow_vacancies_list, st.session_state.huntflow_vacancies_details = fetch_huntflow_vacancies_api()
+        st.session_state.huntflow_vacancies_list, st.session_state.huntflow_vacancies_details = fetch_huntflow_vacancies()
 
 # --- Отображение UI ---
 common_ui.display_sidebar(config, update_address_weight_callback)
-
-# --- БЛОК: Выбор вакансии из Huntflow и форма ввода ---
-st.header("Выбор вакансии и ввод данных для подбора")
-if st.session_state.huntflow_vacancies_list:
-    vacancy_options = ["-- Ввести вручную --"] + [name for name, _ in st.session_state.huntflow_vacancies_list]
-    selected_vacancy_display_name = st.selectbox(
-        "Выберите вакансию из Huntflow (для предзаполнения полей ниже):",
-        options=vacancy_options,
-        index=0, # По умолчанию "-- Ввести вручную --"
-        key="hf_vacancy_selectbox_selector" 
-    )
-
-    if selected_vacancy_display_name != "-- Ввести вручную --":
-        selected_idx_in_hf_list = next((i for i, (name, _id) in enumerate(st.session_state.huntflow_vacancies_list) if name == selected_vacancy_display_name), -1)
-
-        if selected_idx_in_hf_list != -1:
-            newly_selected_hf_id = st.session_state.huntflow_vacancies_list[selected_idx_in_hf_list][1]
-            if st.session_state.selected_huntflow_vacancy_id != newly_selected_hf_id:
-                st.session_state.selected_huntflow_vacancy_id = newly_selected_hf_id
-                details = st.session_state.huntflow_vacancies_details.get(newly_selected_hf_id)
-                logger.debug(f"Выбрана вакансия c ID: {newly_selected_hf_id}, её значение: {details}")
-
-                if details:
-                    # 1. Должность
-                    st.session_state.vacancy_form_title = details.get("position", "")
-                    
-                    required_texts = []
-                    education_req = details.get("education")
-                    if education_req and isinstance(education_req, str):
-                        required_texts.append(f"Образование: {education_req.strip()}")
-                    
-                    experience_req = details.get("experience_position")
-                    if experience_req and isinstance(experience_req, str):
-                        required_texts.append(f"Требования к опыту: {experience_req.strip()}")
-
-                    if required_texts:
-                        st.session_state.vacancy_form_required = "\n".join(required_texts)
-                    else:
-                        st.session_state.vacancy_form_required = "" 
-                        logger.warning(f"Не удалось извлечь структурированные обязательные требования для вакансии ID {newly_selected_hf_id}. Поля 'education' и 'experience_position' пусты или не строки.")
-
-                    location_format_texts = []
-                    region_rusal_id = details.get("region_rusal")
-                    if region_rusal_id and isinstance(region_rusal_id, int):
-                        location_format_texts.append("Локация: " + get_region_name_by_id(region_rusal_id))
-
-                    money_info = details.get("money")
-                    if money_info and isinstance(money_info, str):
-                        location_format_texts.append("Зарплата: " + money_info.strip())
-                    
-                    # Формат работы можно попробовать извлечь из "contract"
-                    contract_type = details.get("contract")
-                    if contract_type and isinstance(contract_type, str):
-                        location_format_texts.append(f"Тип договора: {contract_type.strip()}")
-
-                    # Готовность к командировкам
-                    business_trip_info = details.get("business_trip")
-                    if business_trip_info and isinstance(business_trip_info, str):
-                        location_format_texts.append(f"Командировки: {business_trip_info}")
-                    elif isinstance(business_trip_info, bool):
-                        location_format_texts.append(f"Командировки: {'Да' if business_trip_info else 'Нет'}")
-
-                    if location_format_texts:
-                        st.session_state.vacancy_form_location = "\n".join(location_format_texts)
-                    else:
-                        st.session_state.vacancy_form_location = ""
-                        logger.warning(f"Не удалось извлечь информацию о локации/формате работы для вакансии ID {newly_selected_hf_id}.")
-
-                    
-                    optional_texts = []
-
-                    benefits_info = details.get("benefits") # В примере None
-                    if benefits_info and isinstance(benefits_info, str):
-                        optional_texts.append(f"Условия: {benefits_info.strip()}")
-                    
-                    notes_info = details.get("notes") # В примере None
-                    if notes_info and isinstance(notes_info, str):
-                        optional_texts.append(f"Заметки: {notes_info.strip()}")
-                    
-                    if optional_texts:
-                        st.session_state.vacancy_form_optional = "\n".join(optional_texts)
-                    else:
-                        st.session_state.vacancy_form_optional = ""
-
-                    st.toast(f"Поля предзаполнены вакансией: {details.get('position')}", icon="ℹ️")
-                    st.rerun() # Перезапускаем, чтобы виджеты обновились
-                else: # Если details не найдены (хотя не должно быть, если ID есть в списке)
-                    logger.error(f"Детали для вакансии ID {newly_selected_hf_id} не найдены в st.session_state.huntflow_vacancies_details")
-                    # Можно сбросить поля или ничего не делать
-                    st.session_state.vacancy_form_title = "" 
-                    st.session_state.vacancy_form_required = ""
-                    st.session_state.vacancy_form_location = ""
-                    st.session_state.vacancy_form_optional = ""
-                    # st.rerun() # Если нужно, чтобы сброс отразился
-
-        else: 
-            if st.session_state.selected_huntflow_vacancy_id is not None: # Сбрасываем, если была выбрана, а теперь не найдена
-                st.session_state.selected_huntflow_vacancy_id = None
-                # Очистка полей
-                st.session_state.vacancy_form_title = "" 
-                st.session_state.vacancy_form_required = ""
-                st.session_state.vacancy_form_location = ""
-                st.session_state.vacancy_form_optional = ""
-                st.warning(f"Не удалось найти детали для выбранной вакансии '{selected_vacancy_display_name}'. Поля сброшены.")
-                st.rerun() # Перезапускаем, чтобы сброс отразился
-
-    elif selected_vacancy_display_name == "-- Ввести вручную --" and st.session_state.selected_huntflow_vacancy_id is not None:
-        st.session_state.selected_huntflow_vacancy_id = None 
-        st.session_state.vacancy_form_title = "" 
-        st.session_state.vacancy_form_required = ""
-        st.session_state.vacancy_form_location = ""
-        st.session_state.vacancy_form_optional = ""
-        st.toast("Поля сброшены для ввода вручную.", icon="✍️")
-        st.rerun()
 
 # --- Отображение формы ввода (АСПП или Проф) ---
 vacancy_input_data = None
@@ -663,6 +574,11 @@ if current_mode == Mode.MASS:
 elif current_mode == Mode.PROF:
     st.header("Профессиональный подбор кандидатов")
     vacancy_input_data = prof_ui.display_prof_input_form()
+
+scrape_extra_resumes = st.checkbox(
+    "произвести поиск доп. резюме в интернете (около 10 минут)",
+    key="scrape_extra_resumes_flag"
+)
 
 if st.button("Подобрать", type="primary"):
     if not vacancy_input_data:
@@ -774,7 +690,7 @@ if st.session_state.get("computed", False):
                 st.error("Ошибка в структуре конфигурационного файла для отображения результатов.")
         elif current_mode == Mode.PROF:
             prof_ui.display_prof_results(
-                data_cv_to_display, 
+                data_cv_to_display,
                 vacancy_prep_to_display, 
                 config, 
                 nan_mask_to_display
@@ -833,8 +749,8 @@ if st.session_state.get("computed", False):
                             logger.info(f"Для {cand_display_name}: источник='{source_type}', ID='{resume_id_from_link}'")
 
                             if source_type == "hh":
-                                # access_token_ext = get_hh_oauth_token()
-                                access_token_ext = st.secrets.get("HH_API_TOKEN")
+                                access_token_ext = get_hh_oauth_token()
+                                # access_token_ext = st.secrets.get("HH_API_TOKEN")
                                 if access_token_ext: pii_data_raw = get_hh_contacts_api(resume_id_from_link, access_token_ext)
                                 if pii_data_raw.get("first_name") == None:
                                     logger.warning(f"Имя кандидата не получено из HH API, повторяем запрос")

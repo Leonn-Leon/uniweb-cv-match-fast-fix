@@ -256,7 +256,6 @@ class MassSelector(BaseSelector):
                     axis=1,
                 )
             )
-        
         df_relevant_filtered = df_relevant.copy()
 
         ## 5. Сортировка по расстоянию и выбор self.first_filter
@@ -267,12 +266,6 @@ class MassSelector(BaseSelector):
         if max_distance_filter is not None:
             # Есть расстояние
             df_relevant_filtered = df_relevant_filtered[df_relevant_filtered["distance"] <= max_distance_filter].copy()
-        
-        if not is_vahta:
-            df_relevant_filtered = df_relevant_filtered.head(self.first_filter).copy()
-            logger.info(f"Selected top {len(df_relevant_filtered)} candidates based on distance (self.first_filter={self.first_filter}).")
-        else:
-            logger.info("Vahta mode is enabled. Skipping distance filter.")
 
         ## 6. Фильтрация по должности (BM25 -> Embeddings)
         position_col_name = "Должность"
@@ -302,9 +295,9 @@ class MassSelector(BaseSelector):
                  )
                  df_relevant_for_position_filter["_tmp_bm25_sim"] = bm25_scores
                  # Ограничиваем self.top_n_init размером текущего DataFrame
-                 current_top_bm25 = min(self.top_n_init, len(df_relevant_for_position_filter))
-                 df_top_bm25 = df_relevant_for_position_filter.nlargest(current_top_bm25, "_tmp_bm25_sim").copy()
-                 logger.info(f"Selected top {len(df_top_bm25)} candidates based on BM25 job title score.")
+                #  current_top_bm25 = min(self.first_filter, len(df_relevant_for_position_filter))
+                 df_top_bm25 = df_relevant_for_position_filter.copy()
+                #  logger.info(f"Selected top {len(df_top_bm25)} candidates based on BM25 job title score.")
 
             if df_top_bm25.empty:
                 logger.warning("No candidates left after BM25 job title filter.")
@@ -333,6 +326,10 @@ class MassSelector(BaseSelector):
 
                     cos_sims = cosine_similarity(embedding_vac_np, embeddings_np)[0]
                     df_top_bm25["embedding_sim"] = cos_sims
+                    # current_top_bm25 = min(self.top_n_init, len(df_relevant_for_position_filter))
+                    # df_top_bm25 = df_relevant_for_position_filter.nsmallest(current_top_bm25, "embedding_sim").copy()
+                    # logger.info(f"Selected top {len(df_top_bm25)} candidates based on BM25 job title score.")
+
 
                     df_filtered_final = df_top_bm25.drop(columns=["_tmp_bm25_sim"], errors='ignore')
 
@@ -340,7 +337,6 @@ class MassSelector(BaseSelector):
                     logger.error(f"Error during embedding similarity calculation for job titles: {e}. Skipping embedding filter.")
                     df_filtered_final = df_top_bm25.drop(columns=["_tmp_bm25_sim"], errors='ignore') # Используем результат BM25
 
-        # Если после финальной фильтрации по должности никого не осталось
         if df_filtered_final.empty:
              logger.warning("No candidates left after final job title filtering (BM25 + Embeddings).")
              return pd.DataFrame(columns=df_filtered_final.columns.tolist() + ['sim_score_first'])
