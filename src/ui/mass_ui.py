@@ -10,6 +10,16 @@ from loguru import logger
 import json
 from src.utils.update_token import refresh_api_token
 
+with open("data/processed/mass/resual_regions.json", "r", encoding="utf-8") as f:
+    resual_regions = json.load(f)
+
+def get_region_name_by_id(region_rusal_id):
+    # region_rusal_id должен быть int
+    for region in resual_regions.get("fields", []):
+        if region.get("id") == region_rusal_id:
+            return region.get("name")
+    return ""
+
 def hf_format_vacancy():
 
     token_url = st.secrets["HUNTFLOW_REFRESH_TOKEN_URL"]
@@ -21,10 +31,10 @@ def hf_format_vacancy():
         "PROXY_PORT": st.secrets.get("HUNTFLOW_PROXY_PORT")
     }
 
-    res = refresh_api_token(token_url, refresh_token_value, proxy_details)
-    if res is not None and 'access_token' in res and "refresh_token" in res:
-        st.secrets["HUNTFLOW_API_TOKEN"] = res["access_token"]
-        st.secrets["HUNTFLOW_CURRENT_REFRESH_TOKEN"] = res["refresh_token"]
+    # res = refresh_api_token(token_url, refresh_token_value, proxy_details)
+    # if res is not None and 'access_token' in res and "refresh_token" in res:
+    #     st.secrets["HUNTFLOW_API_TOKEN"] = res["access_token"]
+    #     st.secrets["HUNTFLOW_CURRENT_REFRESH_TOKEN"] = res["refresh_token"]
     
 
     st.header("Выбор вакансии и ввод данных для подбора")
@@ -69,6 +79,16 @@ def hf_format_vacancy():
                         experience_req = details.get("experience_position")
                         if experience_req and isinstance(experience_req, str):
                             required_texts.append(f"Требования к опыту: {experience_req.strip()}")
+
+                        requirements_req = details.get("requirements")
+                        if requirements_req and isinstance(requirements_req, str):
+                            clean_text = "".join(s.split(">", 1)[-1] for s in requirements_req.split("<"))
+                            required_texts.append(f"Требования к опыту: {clean_text.strip()}")
+
+                        body_req = details.get("body")
+                        if body_req and isinstance(body_req, str):
+                            clean_text = "".join(s.split(">", 1)[-1] for s in body_req.split("<"))
+                            required_texts.append(f"Требования к опыту: {clean_text.strip()}")
 
                         if required_texts:
                             st.session_state.vacancy_form_required = "\n".join(required_texts)

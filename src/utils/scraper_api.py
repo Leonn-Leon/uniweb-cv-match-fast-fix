@@ -35,7 +35,7 @@ def fetch_huntflow_vacancies_api():
             return [], {}
         headers = {"Authorization": f"Bearer {hf_token}"}
         url = f"{HUNTFLOW_BASE_URL}/accounts/{hf_account_id}/vacancies"
-        params = {"status": "OPEN", "count": 100}
+        params = {"state": "OPEN", "count": 100}
         response = requests.get(url, headers=headers, params=params, proxies=proxies)
         response.raise_for_status()
         vacancies_data = response.json().get("items", [])
@@ -66,14 +66,16 @@ def build_search_params(vacancy_details, aggregator_type):
     # Собираем тело запроса из данных вакансии
     # Убедись, что ключи совпадают с ожидаемыми в API
     payload = {
-        "position": vacancy_details.get("position"),    
-        "money": re.sub(r'\D', '', vacancy_details.get("money")),
-        "region_rusal": vacancy_details.get("company_region"), # Пример: может быть другое поле
-        "experience_position": vacancy_details.get("experience"), # Пример
-        "education": vacancy_details.get("education") # Пример
+        "position": vacancy_details.get("Должность"),
+        "money": int(re.sub(r'\D', '', vacancy_details.get("money", "0"))),
+        "region_rusal": vacancy_details.get("location", ""),
+        "experience_position": vacancy_details.get("required", ""),
+        "education": vacancy_details.get("additional", "")
     }
     # Убираем пустые значения
     payload = {k: v for k, v in payload.items() if v is not None}
+
+    logger.info("Параметры для поиска: "+str(payload))
 
     try:
         response = requests.post(url, headers=get_scraper_api_headers(), json=payload)
@@ -83,6 +85,7 @@ def build_search_params(vacancy_details, aggregator_type):
         st.json(result.get("search_params"))
         return result.get("search_params")
     except requests.exceptions.RequestException as e:
+        logger.error(f"Ошибка при создании параметров поиска: {e} | response: "+str(response.json()))
         st.error(f"Ошибка при создании параметров поиска: {e}")
         st.json(e.response.json())
         return None
@@ -139,12 +142,12 @@ def track_task_progress(task_id):
             logger.info("Ответ: "+str(task_info))
             
 
-            if status in ["success", "failed", "cancelled"]:
+            if status in ["success", "failure", "cancelled"]:
                 st.info("4. Задача завершена!")
                 if status == "success":
                     st.success("Задача выполнена успешно!")
                 else:
-                    st.error(f"Задача завершилась со статусом: {status}")
+                    st.error(f"Задача завершилась со статусом: {status}, информация: {str(task_info)}")
                 
                 st.subheader("Итоговый результат:")
                 st.json(task_info.get("result", {}))
@@ -156,57 +159,58 @@ def track_task_progress(task_id):
             st.error(f"Ошибка при проверке статуса задачи: {e}")
             break
 
-# --- ИНТЕРФЕЙС STREAMLIT ---
+if __name__ == "__main__":
+    # --- ИНТЕРФЕЙС STREAMLIT ---
 
-st.set_page_config(layout="wide")
-st.title("Тестирование API для поиска резюме")
+    st.set_page_config(layout="wide")
+    st.title("Тестирование API для поиска резюме")
 
-if not SCRAPER_API_BASE_URL:
-    st.error("Необходимо задать `SCRAPER_API_BASE_URL` в .streamlit/secrets.toml")
-else:
-    st.info(f"API для тестирования: `{SCRAPER_API_BASE_URL}`")
-
-    # Загружаем вакансии
-    vacancies_list, vacancies_map = fetch_huntflow_vacancies_api()
-
-    if not vacancies_list:
-        st.warning("Не удалось загрузить вакансии из Huntflow.")
+    if not SCRAPER_API_BASE_URL:
+        st.error("Необходимо задать `SCRAPER_API_BASE_URL` в .streamlit/secrets.toml")
     else:
-        # Выбор вакансии
-        selected_vacancy_option = st.selectbox(
-            "Выберите вакансию из Huntflow для теста:",
-            options=vacancies_list,
-            format_func=lambda x: x[0] # Показываем только название вакансии
-        )
-        
-        selected_vacancy_id = selected_vacancy_option[1]
-        selected_vacancy_details = vacancies_map.get(selected_vacancy_id)
+        st.info(f"API для тестирования: `{SCRAPER_API_BASE_URL}`")
 
-        st.subheader("Детали выбранной вакансии (JSON из Huntflow)")
-        st.json(selected_vacancy_details)
+        # Загружаем вакансии
+        vacancies_list, vacancies_map = fetch_huntflow_vacancies_api()
 
-        st.divider()
+        if not vacancies_list:
+            st.warning("Не удалось загрузить вакансии из Huntflow.")
+        else:
+            # Выбор вакансии
+            selected_vacancy_option = st.selectbox(
+                "Выберите вакансию из Huntflow для теста:",
+                options=vacancies_list,
+                format_func=lambda x: x[0] # Показываем только название вакансии
+            )
+            
+            selected_vacancy_id = selected_vacancy_option[1]
+            selected_vacancy_details = vacancies_map.get(selected_vacancy_id)
 
-        col1, col2 = st.columns(2)
+            st.subheader("Детали выбранной вакансии (JSON из Huntflow)")
+            st.json(selected_vacancy_details)
 
-        with col1:
-            st.header("Поиск на HeadHunter")
-            if st.button("Запустить поиск на HH.ru", key="hh"):
-                # Полный цикл для HH
-                with st.spinner("Выполняется полный цикл для HH..."):
-                    params = build_search_params(selected_vacancy_details, "headhunter_api")
-                    if params:
-                        task_id = launch_pipeline(params, "headhunter_api")
-                        if task_id:
-                            track_task_progress(task_id)
+            st.divider()
 
-        with col2:
-            st.header("Поиск на Avito")
-            if st.button("Запустить поиск на Avito", key="avito"):
-                # Полный цикл для Avito
-                with st.spinner("Выполняется полный цикл для Avito..."):
-                    params = build_search_params(selected_vacancy_details, "avito_api")
-                    if params:
-                        task_id = launch_pipeline(params, "avito_api")
-                        if task_id:
-                            track_task_progress(task_id)
+            col1, col2 = st.columns(2)
+
+            with col1:
+                st.header("Поиск на HeadHunter")
+                if st.button("Запустить поиск на HH.ru", key="hh"):
+                    # Полный цикл для HH
+                    with st.spinner("Выполняется полный цикл для HH..."):
+                        params = build_search_params(selected_vacancy_details, "headhunter_api")
+                        if params:
+                            task_id = launch_pipeline(params, "headhunter_api")
+                            if task_id:
+                                track_task_progress(task_id)
+
+            with col2:
+                st.header("Поиск на Avito")
+                if st.button("Запустить поиск на Avito", key="avito"):
+                    # Полный цикл для Avito
+                    with st.spinner("Выполняется полный цикл для Avito..."):
+                        params = build_search_params(selected_vacancy_details, "avito_api")
+                        if params:
+                            task_id = launch_pipeline(params, "avito_api")
+                            if task_id:
+                                track_task_progress(task_id)

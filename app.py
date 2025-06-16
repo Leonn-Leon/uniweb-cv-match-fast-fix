@@ -11,6 +11,9 @@ import requests
 import re
 import time
 from urllib.parse import quote
+from src.utils.scraper_api import build_search_params, launch_pipeline, track_task_progress
+from typing import List
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 # Импорт ваших модулей
 from src.utils.utils import Mode, load_data, load_model, df2dict
@@ -111,8 +114,6 @@ import requests
 import streamlit as st
 from pathlib import Path
 
-HUNTFLOW_BASE_URL = "https://api.huntflow.ru"
-
 def fetch_huntflow_vacancies(page_size: int = 100,
                                        save_dir: str = "vacancies_json"):
     """
@@ -140,16 +141,19 @@ def fetch_huntflow_vacancies(page_size: int = 100,
     offset = 0
     while True:
         params = {
-            "status": "OPEN",
+            "state": "OPEN",
             "count": page_size,
-            "offset": offset
+            "page": int(offset/page_size)+1,
+            "opened": False
         }
         try:
             resp = requests.get(url, headers=headers, params=params, proxies=proxies)
             resp.raise_for_status()
         except requests.RequestException as e:
-            st.error(f"Ошибка при запросе Huntflow API: {e}")
+            st.error(f"Ошибка при запросе Huntflow API: {e}, response: {resp.json()}")
             break
+
+        logger.debug(f"Загружен лист вакансий")
 
         items = resp.json().get("items", [])
         if not items:
@@ -170,7 +174,8 @@ def fetch_huntflow_vacancies(page_size: int = 100,
 
         offset += len(items)
         # Можно показывать прогресс
-        st.write(f"Загружено и сохранено: {offset} вакансий…")
+        # st.write(f"Загружено и сохранено: {offset} вакансий…")
+        # logger.info(items[0])
 
     return vacancy_list, vacancy_details
 
@@ -558,6 +563,102 @@ def send_to_chat2desk_api(phone_number: str,
     st.error(error_msg)
     logger.error(error_msg)
     return False, error_msg
+
+RENAME_MAP = {
+    "resume_schema.link":                       "link",
+    "resume_schema.address":                    "address",
+    "resume_schema.mainParams.Тип занятости":   "Тип занятости",
+    "resume_schema.mainParams.График работы":   "График работы",
+    "resume_schema.additionalParams.Образование": "Образование",
+    "resume_schema.additionalParams.Опыт работы": "Опыт работы",
+    "resume_schema.additionalParams.Категория прав": "Категория прав",
+    "resume_schema.description":                "Описание",
+    "resume_schema.title":                      "Должность",
+    "id":                                       "ID",
+}
+
+# какие колонки гарантированно списковые — склеиваем через '\n'
+LIST_LIKE_COLS: List[str] = [
+    "Образование",
+    "Опыт работы",
+    "Компетенции",
+]
+
+def _scrape_single_aggregator(vacancy_details: dict, aggregator: str) -> pd.DataFrame | None:
+    """Возвращает extra_df для одного агрегатора либо None."""
+    logger.info(f"Собираем параметры для скрапинга.")
+    search_params = build_search_params(vacancy_details, aggregator)
+    if not search_params:
+        return None
+
+    logger.info(f"Запускаем скрапинг {aggregator}")
+    task_id = launch_pipeline(search_params, aggregator)
+    if not task_id:
+        return None
+
+    logger.info(f"Ждём завершения работы скрапинга для {aggregator}")
+    task_info = track_task_progress(task_id)
+    if not task_info or task_info.get("status") != "success":
+        return None
+
+    candidates = task_info.get("result", {}).get("candidates", [])
+    if not candidates:
+        return None
+
+    df = pd.json_normalize(candidates, sep='.')
+    return df
+
+
+def append_extra_resumes(df_cv: pd.DataFrame, vacancy_details: dict) -> pd.DataFrame:
+    """
+    Одновременный поиск резюме на HH и Avito, склейка в исходный df_cv.
+    """
+    extra_frames: List[pd.DataFrame] = []
+    aggregators = ("headhunter_api", "avito_api")
+
+    logger.info("Начинаем скрапинг hh и avito")
+
+    # --- 1. параллельный запуск двух пайплайнов --------------------------------
+    with ThreadPoolExecutor(max_workers=len(aggregators)) as pool:
+        futures = {
+            pool.submit(_scrape_single_aggregator, vacancy_details, agg): agg
+            for agg in aggregators
+        }
+        for fut in as_completed(futures):
+            df = fut.result()
+            if df is not None:
+                extra_frames.append(df)
+
+    # --- 2. если что-то нашли, готовим к склейке --------------------------------
+    if not extra_frames:
+        st.info("Дополнительных резюме не найдено.")
+        return df_cv
+
+    extra_all = pd.concat(extra_frames, ignore_index=True)
+
+    # 2.1. применяем карту переименования
+    cols_to_rename = {old: new for old, new in RENAME_MAP.items() if old in extra_all.columns}
+    extra_all = extra_all.rename(columns=cols_to_rename)
+
+    # 2.2. списки → строка
+    for col in LIST_LIKE_COLS:
+        if col in extra_all.columns:
+            extra_all[col] = extra_all[col].apply(
+                lambda v: "\n".join(v) if isinstance(v, list) else v
+            )
+
+    # 2.3. обеспечиваем полный набор колонок и порядок, как в df_cv
+    for col in df_cv.columns:
+        if col not in extra_all.columns:
+            extra_all[col] = pd.NA
+    extra_all = extra_all[df_cv.columns]
+
+    # --- 3. финальная склейка ----------------------------------------------------
+    df_cv = pd.concat([df_cv, extra_all], ignore_index=True)
+    st.success(f"Добавлено дополнительных резюме: {len(extra_all)}")
+
+    return df_cv
+
 # Загрузка вакансий Huntflow один раз при старте или если список пуст
 if not st.session_state.huntflow_vacancies_list:
     with st.spinner("Загрузка активных вакансий из Huntflow..."):
@@ -607,6 +708,13 @@ if st.button("Подобрать", type="primary"):
             if df_cv.empty:
                 st.error(f"Не удалось загрузить данные кандидатов из {df_cv_path}.")
                 st.stop()
+
+            if scrape_extra_resumes:
+                with st.spinner("Ищем дополнительные резюме в интернете (до 10 минут)…"):
+                    # vacancy_input_data уже содержит актуальные поля формы;
+                    # при желании можно заменить на st.session_state.selected_huntflow_vacancy_details
+                    df_cv = append_extra_resumes(df_cv, vacancy_input_data)
+                
             if "address" in df_cv.columns: # Переименование, если есть
                  df_cv = df_cv.rename(columns={"address": "Адрес"})
 

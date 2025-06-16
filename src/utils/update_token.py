@@ -34,10 +34,11 @@ def refresh_api_token(token_url: str, refresh_token_value: str, proxy_details: d
 
         # if new_access_token:
         #     return new_access_token
+        logger.info("Вот что получили при обновлении токена: "+str(response_data))
         return response_data
 
     except Exception as e:
-        logger.info(f"Failed to refresh API token:{e}")
+        logger.info(f"Failed to refresh API token:{e}, response: {response.json()}")
         return None
     
 if __name__ == "__main__":
