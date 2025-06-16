@@ -380,6 +380,7 @@ def get_hh_oauth_token():
 
     try:
         response = requests.post(token_url, data=payload, headers=headers)
+        logger.info("Получили при запросе на обновление токена: "+str(response.json()))
         response.raise_for_status() # Проверка на HTTP ошибки
         token_data = response.json()
         
@@ -394,18 +395,11 @@ def get_hh_oauth_token():
         else:
             st.error(f"HH.ru: Не удалось получить 'access_token' из ответа. Ответ: {token_data}")
             logger.error(f"HH.ru: Не удалось получить 'access_token' из ответа. Ответ: {token_data}")
-            return None
+            return st.secrets["HH_API_TOKEN"]
     except requests.exceptions.RequestException as e:
         st.error(f"HH.ru: Ошибка при получении токена: {e}")
         logger.error(f"HH.ru: Ошибка при получении токена: {e}")
-        if hasattr(e, 'response') and e.response is not None:
-            try:
-                st.json(e.response.json())
-                logger.error(f"HH.ru: Тело ошибки: {e.response.json()}")
-            except ValueError:
-                st.text(e.response.text)
-                logger.error(f"HH.ru: Тело ошибки (не JSON): {e.response.text}")
-        return None
+        return st.secrets["HH_API_TOKEN"]
 
 AVITO_ACCESS_TOKEN_KEY = "avito_access_token_val"
 AVITO_TOKEN_EXPIRES_AT_KEY = "avito_token_expires_at_val"
@@ -528,22 +522,26 @@ def send_to_chat2desk_api(phone_number: str,
     param_pairs = [f"{quote(key)}={quote(str(value))}" for key, value in params_for_url.items()]
     url_with_params = f"{CHAT2DESK_BASE_URL}?{'&'.join(param_pairs)}"
 
-    logger.info(f"Chat2Desk: Запрос на URL 1: {url_with_params}")
-
-    params_for_url = {
-        "code": chat2desk_code,
-        "params[phonenumber]": 77770444258,
-        "params[nameclient]": "Вячеслав",
-        "params[account_id]": str(2),
-        "params[vacancy_id]": str(24295) if hf_vacancy_id else "",
-        "params[application_id]": str(469314),
-        "params[vacancyname]": "Эксперт"
-    }
-    
-    param_pairs = [f"{quote(key)}={quote(str(value))}" for key, value in params_for_url.items()]
-    url_with_params = f"{CHAT2DESK_BASE_URL}?{'&'.join(param_pairs)}"
-
     logger.info(f"Chat2Desk: Запрос на URL: {url_with_params}")
+    
+    ##############
+
+    # params_for_url = {
+    #     "code": chat2desk_code,
+    #     "params[phonenumber]": 77770444258,
+    #     "params[nameclient]": "Вячеслав",
+    #     "params[account_id]": str(2),
+    #     "params[vacancy_id]": str(24295) if hf_vacancy_id else "",
+    #     "params[application_id]": str(469314),
+    #     "params[vacancyname]": "Эксперт"
+    # }
+    
+    # param_pairs = [f"{quote(key)}={quote(str(value))}" for key, value in params_for_url.items()]
+    # url_with_params = f"{CHAT2DESK_BASE_URL}?{'&'.join(param_pairs)}"
+
+    # logger.info(f"Chat2Desk: Запрос на URL TEST: {url_with_params}")
+
+    ############33
 
     try:
         response = requests.post(url_with_params, headers={'Content-Type': 'application/json'}, timeout=5) 
@@ -591,7 +589,7 @@ def _scrape_single_aggregator(vacancy_details: dict, aggregator: str) -> pd.Data
     if not search_params:
         return None
 
-    logger.info(f"Запускаем скрапинг {aggregator}")
+    logger.info(f"Запускаем скрапинг {aggregator}, search_params {search_params}")
     task_id = launch_pipeline(search_params, aggregator)
     if not task_id:
         return None
@@ -599,12 +597,17 @@ def _scrape_single_aggregator(vacancy_details: dict, aggregator: str) -> pd.Data
     logger.info(f"Ждём завершения работы скрапинга для {aggregator}")
     task_info = track_task_progress(task_id)
     if not task_info or task_info.get("status") != "success":
+        logger.info(f"Таска провалилась для {aggregator}, результат: {task_info}")
         return None
 
     candidates = task_info.get("result", {}).get("candidates", [])
     if not candidates:
+        logger.error(f"Нет результатов для {aggregator}, {task_info["result"]["candidates"]}")
+        logger.error(str(task_info)[:1000])
         return None
-
+    
+    logger.success(f"Есть результаты для {aggregator}")
+    
     df = pd.json_normalize(candidates, sep='.')
     return df
 
@@ -659,6 +662,144 @@ def append_extra_resumes(df_cv: pd.DataFrame, vacancy_details: dict) -> pd.DataF
 
     return df_cv
 
+def process_candidate_for_huntflow(candidate_key, candidate_ml_data):
+    """
+    Обрабатывает одного кандидата для отправки в Huntflow.
+    Возвращает (True, "Сообщение об успехе") или (False, "Сообщение об ошибке").
+    """
+    session_key_pii = f"pii_data_{candidate_key}"
+    session_key_hf_id = f"hf_app_id_{candidate_key}"
+    session_key_hf_processed = f"hf_processed_{candidate_key}"
+    
+    cand_display_name = candidate_ml_data.get("Должность", f"Кандидат ID: {candidate_key}")
+    
+    try:
+        pii_data_raw = None
+        access_token_ext = None
+        
+        candidate_link = candidate_ml_data.get("link")
+        source_type, resume_id_from_link = parse_resume_link(candidate_link)
+
+        if not source_type or not resume_id_from_link:
+            msg = f"Не удалось извлечь источник/ID из ссылки: {candidate_link}"
+            st.warning(msg); logger.error(f"Парсинг ссылки для {cand_display_name}: {candidate_link}")
+            return False, msg
+
+        logger.info(f"Для {cand_display_name}: источник='{source_type}', ID='{resume_id_from_link}'")
+
+        if source_type == "hh":
+            access_token_ext = get_hh_oauth_token()
+            if access_token_ext: pii_data_raw = get_hh_contacts_api(resume_id_from_link, access_token_ext)
+        elif source_type == "avito":
+            access_token_ext = get_avito_oauth_token()
+            if access_token_ext: pii_data_raw = get_avito_contacts_api(resume_id_from_link, access_token_ext)
+        else:
+            msg = f"Источник '{source_type}' не поддерживается."
+            st.warning(msg); logger.warning(f"Неподдерживаемый источник '{source_type}' для {cand_display_name}")
+            return False, msg
+        
+        if not access_token_ext: 
+            msg = f"Нет Access Token для {source_type.upper()}."
+            st.warning(msg); logger.error(f"Нет Access Token {source_type.upper()} для {cand_display_name}")
+            return False, msg
+        if not pii_data_raw: 
+            msg = f"Не удалось получить ПД для кандидата из {source_type.upper()}."
+            st.warning(msg); logger.error(f"Нет ПД {source_type.upper()} для {cand_display_name} (ID: {resume_id_from_link})")
+            return False, msg
+        
+        pii_standardized = _extract_pii_details(pii_data_raw, source_type.upper())
+        st.session_state[session_key_pii] = pii_standardized
+        
+        hf_app_id, err_create = create_huntflow_applicant_api(pii_standardized, candidate_ml_data, resume_id_from_link, source_type.upper())
+        if err_create:
+            msg = f"Ошибка создания кандидата в HF: {err_create}"
+            st.warning(msg); logger.error(f"Ошибка создания {cand_display_name} в HF: {err_create}")
+            return False, msg
+
+        st.session_state[session_key_hf_id] = hf_app_id
+        
+        current_hf_vacancy_id = st.session_state.get("selected_huntflow_vacancy_id")
+        if current_hf_vacancy_id:
+            cand_score = candidate_ml_data.get("sim_score_second", candidate_ml_data.get("Итоговый балл",0))
+            cand_score_perc = 0
+            if isinstance(cand_score, (float, int)) and not isinstance(cand_score, bool):
+                cand_score_perc = round(cand_score * 100 if 0 < cand_score <= 1.0 else cand_score)
+            
+            ok_link, err_link = link_applicant_to_vacancy_api(hf_app_id, current_hf_vacancy_id, cand_score_perc)
+            if err_link:
+                logger.warning(f"Ошибка привязки {cand_display_name} к вакансии HF {current_hf_vacancy_id}: {err_link}")
+            else:
+                logger.info(f"{cand_display_name} привязан к вакансии HF {current_hf_vacancy_id}.")
+        
+        st.session_state[session_key_hf_processed] = True
+        success_msg = f"Кандидат успешно обработан для Huntflow (ID: {hf_app_id})."
+        logger.info(f"{cand_display_name}: {success_msg}")
+        return True, success_msg
+
+    except Exception as e:
+        error_msg = f"Непредвиденная ошибка при обработке для Huntflow: {e}"
+        logger.error(f"{cand_display_name}: {error_msg}")
+        return False, error_msg
+
+
+def process_candidate_for_whatsapp(candidate_key, candidate_ml_data):
+    """
+    Отправляет сообщение кандидату через WhatsApp.
+    Возвращает (True, "Сообщение об успехе") или (False, "Сообщение об ошибке").
+    """
+    session_key_pii = f"pii_data_{candidate_key}"
+    session_key_hf_id = f"hf_app_id_{candidate_key}"
+    session_key_wa_sent = f"wa_sent_{candidate_key}"
+    
+    # Проверяем, есть ли все необходимые данные
+    if not st.session_state.get(session_key_hf_id) or not st.session_state.get(session_key_pii):
+        msg = "Недостаточно данных для отправки в WhatsApp (требуется обработка в Huntflow)."
+        st.warning(msg)
+        return False, msg
+
+    pii_for_whatsapp = st.session_state.get(session_key_pii)
+    phone = pii_for_whatsapp.get("phone")
+    if not phone:
+        msg = "Не найден номер телефона кандидата."
+        st.warning(msg)
+        logger.error(f"Chat2Desk: нет номера телефона для кандидата {candidate_key}")
+        return False, msg
+
+    try:
+        applicant_id_for_whatsapp = st.session_state.get(session_key_hf_id)
+        name_client = f"{pii_for_whatsapp.get('first_name', '')} {pii_for_whatsapp.get('last_name', '')}".strip()
+        hf_account_id_for_c2d = st.secrets.get("HUNTFLOW_ACCOUNT_ID", "2")
+        current_hf_vacancy_id_for_c2d = st.session_state.get("selected_huntflow_vacancy_id")
+        
+        vacancy_name_for_c2d = "Не указано"
+        if current_hf_vacancy_id_for_c2d and st.session_state.get('huntflow_vacancies_details'):
+            selected_vac_details = st.session_state['huntflow_vacancies_details'].get(current_hf_vacancy_id_for_c2d)
+            if selected_vac_details:
+                vacancy_name_for_c2d = selected_vac_details.get("position", "Не указано")
+        
+        success_c2d, msg_c2d = send_to_chat2desk_api(
+            phone_number=phone,
+            client_name=name_client,
+            hf_account_id=hf_account_id_for_c2d,
+            hf_vacancy_id=current_hf_vacancy_id_for_c2d,
+            hf_applicant_id=applicant_id_for_whatsapp,
+            vacancy_name_original=vacancy_name_for_c2d
+        )
+        
+        if success_c2d:
+            st.session_state[session_key_wa_sent] = True
+            logger.info(f"Chat2Desk: Сообщение для {name_client} отправлено. {msg_c2d}")
+            return True, msg_c2d
+        else:
+            st.warning(f"Chat2Desk: {msg_c2d}")
+            logger.error(f"Chat2Desk: Ошибка отправки для {name_client}. {msg_c2d}")
+            return False, msg_c2d
+
+    except Exception as e:
+        error_msg = f"Непредвиденная ошибка при отправке в WhatsApp: {e}"
+        logger.error(f"Кандидат {candidate_key}: {error_msg}")
+        return False, error_msg
+
 # Загрузка вакансий Huntflow один раз при старте или если список пуст
 if not st.session_state.huntflow_vacancies_list:
     with st.spinner("Загрузка активных вакансий из Huntflow..."):
@@ -709,17 +850,19 @@ if st.button("Подобрать", type="primary"):
                 st.error(f"Не удалось загрузить данные кандидатов из {df_cv_path}.")
                 st.stop()
 
+            with st.status("Подготовка вакансии..."):
+                vacancy_processed = selector.preprocess_vacancy(deepcopy(vacancy_input_data)) 
+
+            logger.info(f"Параметры вакансии:\n{vacancy_processed}")
+
             if scrape_extra_resumes:
                 with st.spinner("Ищем дополнительные резюме в интернете (до 10 минут)…"):
                     # vacancy_input_data уже содержит актуальные поля формы;
                     # при желании можно заменить на st.session_state.selected_huntflow_vacancy_details
-                    df_cv = append_extra_resumes(df_cv, vacancy_input_data)
+                    df_cv = append_extra_resumes(df_cv, vacancy_processed)
                 
             if "address" in df_cv.columns: # Переименование, если есть
                  df_cv = df_cv.rename(columns={"address": "Адрес"})
-
-        with st.status("Подготовка вакансии..."):
-            vacancy_processed = selector.preprocess_vacancy(deepcopy(vacancy_input_data)) 
         
         with st.status("Подбор кандидатов..."):
             use_cache = not (not Path("./tmp_cvs.csv").exists() or config["general"]["mode"] == "prod")
@@ -786,160 +929,115 @@ if st.session_state.get("computed", False):
     if not data_cv_to_display:
         st.info("Нет кандидатов для отображения.")
     else:
+        # Отображение результатов в зависимости от режима (как и было)
         if current_mode == Mode.MASS:
             if "model" in config and "stage_2" in config["model"] and "ranking_features" in config["model"]["stage_2"]:
-                 mass_ui.display_mass_results(
-                    data_cv_to_display, 
-                    vacancy_prep_to_display, 
-                    config, 
-                    nan_mask_to_display
-                )
+                 mass_ui.display_mass_results(data_cv_to_display, vacancy_prep_to_display, config, nan_mask_to_display)
             else:
                 st.error("Ошибка в структуре конфигурационного файла для отображения результатов.")
         elif current_mode == Mode.PROF:
-            prof_ui.display_prof_results(
-                data_cv_to_display,
-                vacancy_prep_to_display, 
-                config, 
-                nan_mask_to_display
-            )
-        
+            prof_ui.display_prof_results(data_cv_to_display, vacancy_prep_to_display, config, nan_mask_to_display)
         
         st.markdown("---") 
-        st.subheader("Действия с отобранными кандидатами")
+        st.subheader("Групповые действия с кандидатами")
+        
+        # --- НОВЫЕ ГРУППОВЫЕ КНОПКИ ---
+        cols_actions = st.columns(2)
+        with cols_actions[0]:
+            hf_mass_button = st.button("✅ Отправить выбранных в Huntflow", use_container_width=True)
+        with cols_actions[1]:
+            wa_mass_button = st.button("🔵 Отправить выбранным в Whatsapp", use_container_width=True)
+        
+        st.markdown("<hr style='margin-top:0.5rem; margin-bottom:0.5rem;'/>", unsafe_allow_html=True)
+        
+        # Список для хранения ключей выбранных кандидатов
+        selected_candidates_keys = []
 
-        if not data_cv_to_display:
-            st.info("Нет кандидатов для отображения действий.")
-        else:
-            for candidate_key, candidate_ml_data in data_cv_to_display.items():
-                if not isinstance(candidate_ml_data, dict):
-                    logger.warning(f"Данные для кандидата {candidate_key} не являются словарем, пропуск.")
-                    continue
+        # --- СПИСОК КАНДИДАТОВ С ЧЕКБОКСАМИ ---
+        for candidate_key, candidate_ml_data in data_cv_to_display.items():
+            if not isinstance(candidate_ml_data, dict):
+                logger.warning(f"Данные для кандидата {candidate_key} не являются словарем, пропуск.")
+                continue
 
-                # Ключи для session_state для этого кандидата
-                session_key_hf_id = f"hf_app_id_{candidate_key}"
-                session_key_pii = f"pii_data_{candidate_key}"
-                session_key_hf_processed = f"hf_processed_{candidate_key}" # Флаг, что кандидат в HF
+            # Ключи для session_state (статусы обработки)
+            session_key_hf_processed = f"hf_processed_{candidate_key}"
+            session_key_wa_sent = f"wa_sent_{candidate_key}"
+            
+            cols_info = st.columns([1, 10]) # Колонка для чекбокса и для информации
+            
+            with cols_info[0]:
+                # Чекбокс для выбора кандидата. Отключаем, если уже обработан в HF.
+                is_processed_in_hf = st.session_state.get(session_key_hf_processed, False)
+                if st.checkbox("", key=f"select_{candidate_key}", value=False, help="Выбрать кандидата для группового действия"):
+                    selected_candidates_keys.append(candidate_key)
 
-                # Отображение информации о кандидате
-                cols_info_buttons = st.columns([3, 1, 1]) # Одна колонка для инфо, две для кнопок
-                with cols_info_buttons[0]:
-                    cand_display_name = candidate_ml_data.get("Должность", f"Кандидат ID: {candidate_key}")
-                    if st.session_state.get(session_key_pii, {}).get('first_name') != 'Неизв.': # Если имя уже раскрыто
-                        cand_display_name = f"{st.session_state.get(session_key_pii, {}).get('first_name', '')} {st.session_state.get(session_key_pii, {}).get('last_name', '')} ({cand_display_name})"
-                    elif candidate_ml_data.get("ФИО"): # Если есть в исходных данных
-                         cand_display_name = f"{candidate_ml_data.get('ФИО')} ({cand_display_name})"
-                    
-                    cand_score = candidate_ml_data.get("sim_score_second", candidate_ml_data.get("Итоговый балл",0))
-                    cand_score_perc = "N/A"
-                    if isinstance(cand_score, (float, int)) and not isinstance(cand_score, bool):
-                        cand_score_perc = round(cand_score * 100 if 0 < cand_score <= 1.0 else cand_score)
-                    
-                    st.markdown(f"{cand_display_name} (Скоринг: {cand_score_perc}%)")
+            with cols_info[1]:
+                # Формирование имени для отображения
+                cand_display_name = candidate_ml_data.get("Должность", f"Кандидат ID: {candidate_key}")
                 
-                # Кнопка "В Huntflow"
-                with cols_info_buttons[1]:
-                    hf_button_key = f"hf_btn_{candidate_key}"
-                    # Блокируем кнопку, если уже успешно обработан
-                    disable_hf_button = st.session_state.get(session_key_hf_processed, False) 
-                    
-                    if st.button("В Huntflow", key=hf_button_key, help=f"Раскрыть ПД и создать {cand_display_name} в Huntflow", disabled=disable_hf_button):
-                        st.markdown(f"--- \n_Обработка для Huntflow: {cand_display_name}..._")
-                        with st.spinner(f"Работаем с {cand_display_name}..."):
-                            pii_data_raw = None
-                            access_token_ext = None
-                            
-                            candidate_link = candidate_ml_data.get("link")
-                            source_type, resume_id_from_link = parse_resume_link(candidate_link)
-
-                            if not source_type or not resume_id_from_link:
-                                st.error(f"Не удалось извлечь источник/ID из ссылки: {candidate_link}"); logger.error(f"Парсинг ссылки для {cand_display_name}: {candidate_link}"); continue 
-                            logger.info(f"Для {cand_display_name}: источник='{source_type}', ID='{resume_id_from_link}'")
-
-                            if source_type == "hh":
-                                access_token_ext = get_hh_oauth_token()
-                                # access_token_ext = st.secrets.get("HH_API_TOKEN")
-                                if access_token_ext: pii_data_raw = get_hh_contacts_api(resume_id_from_link, access_token_ext)
-                                if pii_data_raw.get("first_name") == None:
-                                    logger.warning(f"Имя кандидата не получено из HH API, повторяем запрос")
-                                    pii_data_raw = get_hh_contacts_api(resume_id_from_link, access_token_ext)
-                            elif source_type == "avito":
-                                access_token_ext = get_avito_oauth_token()
-                                if access_token_ext: pii_data_raw = get_avito_contacts_api(resume_id_from_link, access_token_ext)
-                            else:
-                                st.warning(f"Источник '{source_type}' не поддерживается."); logger.warning(f"Неподдерживаемый источник '{source_type}' для {cand_display_name}"); continue
-                            
-                            if not access_token_ext: st.error(f"Нет Access Token для {source_type.upper()}."); logger.error(f"Нет Access Token {source_type.upper()} для {cand_display_name}"); continue
-                            if not pii_data_raw: st.error(f"Нет ПД для {cand_display_name} из {source_type.upper()}."); logger.error(f"Нет ПД {source_type.upper()} для {cand_display_name} (ID: {resume_id_from_link})"); continue
-                            
-                            st.success(f"ПД для {cand_display_name} из {source_type.upper()} получены."); logger.info(f"ПД для {cand_display_name} ({source_type.upper()}) получены.")
-                            pii_standardized = _extract_pii_details(pii_data_raw, source_type.upper())
-                            st.session_state[session_key_pii] = pii_standardized # <-- Сохраняем PII
-                            st.write("Извлеченные ПД:"); st.json(pii_standardized) # Для отладки
-
-                            hf_app_id, err_create = create_huntflow_applicant_api(pii_standardized, candidate_ml_data, resume_id_from_link, source_type.upper())
-                            if err_create: st.error(f"Ошибка создания {cand_display_name} в HF: {err_create}"); logger.error(f"Ошибка создания {cand_display_name} в HF: {err_create}"); continue
-                            st.success(f"Кандидат {cand_display_name} создан в HF (ID: {hf_app_id})."); logger.info(f"Кандидат {cand_display_name} создан в HF (ID: {hf_app_id}).")
-                            st.session_state[session_key_hf_id] = hf_app_id # <-- Сохраняем ID аппликанта HF
-                            
-                            # ok_q, err_q = fill_huntflow_questionary_api(hf_app_id, candidate_ml_data) # Анкета
-                            # if err_q: st.warning(f"Ошибка анкеты {cand_display_name} в HF: {err_q}"); logger.warning(f"Ошибка анкеты {cand_display_name} в HF: {err_q}")
-                            # else: st.info(f"Анкета {cand_display_name} в HF обработана."); logger.info(f"Анкета {cand_display_name} в HF обработана.")
-
-                            current_hf_vacancy_id = st.session_state.get("selected_huntflow_vacancy_id") # Привязка к вакансии
-                            if current_hf_vacancy_id:
-                                ok_link, err_link = link_applicant_to_vacancy_api(hf_app_id, current_hf_vacancy_id, cand_score_perc if cand_score_perc != "N/A" else 0)
-                                if err_link: st.warning(f"Ошибка привязки {cand_display_name} к вакансии HF {current_hf_vacancy_id}: {err_link}"); logger.warning(f"Ошибка привязки {cand_display_name} к вакансии HF {current_hf_vacancy_id}: {err_link}")
-                                else: st.info(f"{cand_display_name} привязан к вакансии HF {current_hf_vacancy_id}."); logger.info(f"{cand_display_name} привязан к вакансии HF {current_hf_vacancy_id}.")
-                            else: st.info(f"{cand_display_name} не привязан (вакансия HF не выбрана)."); logger.info(f"{cand_display_name} не привязан к вакансии HF (не выбрана).")
-                            
-                            st.session_state[session_key_hf_processed] = True # Помечаем как полностью обработанного для HF
-                            st.success(f"Кандидат {cand_display_name} полностью обработан для Huntflow!")
-                            logger.info(f"Кандидат {cand_display_name} полностью обработан для Huntflow!")
-                            st.markdown("---")
-                            # st.rerun() # Перерисовать UI
+                cand_score = candidate_ml_data.get("sim_score_second", candidate_ml_data.get("Итоговый балл",0))
+                cand_score_perc = "N/A"
+                if isinstance(cand_score, (float, int)) and not isinstance(cand_score, bool):
+                    cand_score_perc = round(cand_score * 100 if 0 < cand_score <= 1.0 else cand_score)
                 
-                # Кнопка "Связаться по Whatsapp"
-                with cols_info_buttons[2]:
-                    whatsapp_button_key = f"whatsapp_btn_{candidate_key}"
-                    # Кнопка активна, если есть hf_app_id (т.е. кандидат создан в Huntflow) и есть ПД
-                    can_send_whatsapp = st.session_state.get(session_key_hf_id) and st.session_state.get(session_key_pii)
-                    
-                    if st.button("Whatsapp", key=whatsapp_button_key, help=f"Связаться с {cand_display_name} по Whatsapp", disabled=not can_send_whatsapp):
-                        pii_for_whatsapp = st.session_state.get(session_key_pii)
-                        applicant_id_for_whatsapp = st.session_state.get(session_key_hf_id)
-                        
-                        phone = pii_for_whatsapp.get("phone")
-                        name_client = f"{pii_for_whatsapp.get('first_name', '')} {pii_for_whatsapp.get('last_name', '')}".strip()
-                        hf_account_id_for_c2d = st.secrets.get("HUNTFLOW_ACCOUNT_ID", "2") # Берем из секретов
-                        current_hf_vacancy_id_for_c2d = st.session_state.get("selected_huntflow_vacancy_id")
-                        
-                        # Получаем название текущей выбранной вакансии из Huntflow для параметра vacancyname
-                        vacancy_name_for_c2d = "Не указано"
-                        if current_hf_vacancy_id_for_c2d and st.session_state.get('huntflow_vacancies_details'):
-                            selected_vac_details = st.session_state['huntflow_vacancies_details'].get(current_hf_vacancy_id_for_c2d)
-                            if selected_vac_details:
-                                vacancy_name_for_c2d = selected_vac_details.get("position", "Не указано")
-                        
-                        if not phone:
-                            st.error("Не найден номер телефона кандидата для отправки в Whatsapp.")
-                            logger.error(f"Chat2Desk: нет номера телефона для {cand_display_name}")
-                        elif not applicant_id_for_whatsapp: # Доп. проверка, хотя disabled должен был сработать
-                            st.error("Не найден ID аппликанта в Huntflow.")
-                            logger.error(f"Chat2Desk: нет ID аппликанта HF для {cand_display_name}")
+                # Отображение статусов
+                status_icons = []
+                if st.session_state.get(session_key_hf_processed, False):
+                    status_icons.append("✅")
+                if st.session_state.get(session_key_wa_sent, False):
+                    status_icons.append("🔵")
+                
+                st.markdown(f"{' '.join(status_icons)} {cand_display_name} (Скоринг: {cand_score_perc}%)")
+            
+            st.markdown("<hr style='margin-top:0.1rem; margin-bottom:0.1rem; border-top: 1px dashed #222;'/>", unsafe_allow_html=True)
+
+        # --- ЛОГИКА ОБРАБОТКИ ГРУППОВЫХ ДЕЙСТВИЙ ---
+
+        # Если нажата кнопка "В Huntflow"
+        if hf_mass_button:
+            if not selected_candidates_keys:
+                st.warning("Пожалуйста, выберите хотя бы одного кандидата с помощью галочки.")
+            else:
+                processed_count = 0
+                with st.status(f"Обработка {len(selected_candidates_keys)} кандидатов для Huntflow...", expanded=True) as status:
+                    for key in selected_candidates_keys:
+                        # Пропускаем уже обработанных
+                        if st.session_state.get(f"hf_processed_{key}", False):
+                            st.write(f"ℹ️ Кандидат {key} уже был обработан ранее, пропуск.")
+                            continue
+
+                        st.write(f"▶️ Обработка кандидата {key}...")
+                        success, message = process_candidate_for_huntflow(key, data_cv_to_display[key])
+                        if success:
+                            st.write(f"✔️ {message}")
+                            processed_count += 1
                         else:
-                            st.info(f"Попытка отправить сообщение {name_client} по номеру {phone} через Chat2Desk...")
-                            with st.spinner(f"Отправка в Chat2Desk для {name_client}..."):
-                                success_c2d, msg_c2d = send_to_chat2desk_api(
-                                    phone_number=phone,
-                                    client_name=name_client,
-                                    hf_account_id=hf_account_id_for_c2d,
-                                    hf_vacancy_id=current_hf_vacancy_id_for_c2d,
-                                    hf_applicant_id=applicant_id_for_whatsapp,
-                                    vacancy_name_original=vacancy_name_for_c2d
-                                )
-                                if success_c2d:
-                                    st.success(f"Chat2Desk: {msg_c2d}")
-                                else:
-                                    st.error(f"Chat2Desk: {msg_c2d}")
+                            st.write(f"❌ {message}")
+                    
+                    status.update(label=f"Обработка для Huntflow завершена! Успешно: {processed_count} из {len(selected_candidates_keys)}.", state="complete")
+                st.rerun() # Перезапускаем скрипт, чтобы обновить UI (иконки статусов)
+
+        # Если нажата кнопка "В Whatsapp"
+        if wa_mass_button:
+            if not selected_candidates_keys:
+                st.warning("Пожалуйста, выберите хотя бы одного кандидата с помощью галочки.")
+            else:
+                sent_count = 0
+                with st.status(f"Отправка сообщений {len(selected_candidates_keys)} кандидатам...", expanded=True) as status:
+                    for key in selected_candidates_keys:
+                        # Пропускаем тех, кому уже отправляли
+                        if st.session_state.get(f"wa_sent_{key}", False):
+                            st.write(f"ℹ️ Кандидату {key} сообщение уже отправлялось, пропуск.")
+                            continue
+
+                        st.write(f"▶️ Отправка сообщения кандидату {key}...")
+                        success, message = process_candidate_for_whatsapp(key, data_cv_to_display[key])
+                        if success:
+                            st.write(f"✔️ Сообщение отправлено. Ответ API: {message}")
+                            sent_count += 1
+                        else:
+                            st.write(f"❌ Ошибка отправки: {message}")
+
+                    status.update(label=f"Отправка в Whatsapp завершена! Успешно: {sent_count} из {len(selected_candidates_keys)}.", state="complete")
+                st.rerun()
                 st.markdown("<hr style='margin-top:0.5rem; margin-bottom:0.5rem;'/>", unsafe_allow_html=True) # Горизонтальная линия между кандидатами

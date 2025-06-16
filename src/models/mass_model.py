@@ -43,7 +43,7 @@ class MassSelector(BaseSelector):
             return False
 
     def preprocess_vacancy(self, vacancy: Dict):
-        for cat in tqdm(["Адрес", "График работы", "Тип занятости", "Переезд"]):
+        for cat in tqdm(["Адрес", "График работы", "Тип занятости", "Переезд", "Зарплата"]):
             info = "[SEP]".join(
                 [
                     vacancy["location"],

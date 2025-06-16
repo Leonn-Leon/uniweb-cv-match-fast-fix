@@ -67,11 +67,14 @@ def build_search_params(vacancy_details, aggregator_type):
     # Убедись, что ключи совпадают с ожидаемыми в API
     payload = {
         "position": vacancy_details.get("Должность"),
-        "money": int(re.sub(r'\D', '', vacancy_details.get("money", "0"))),
-        "region_rusal": vacancy_details.get("location", ""),
-        "experience_position": vacancy_details.get("required", ""),
-        "education": vacancy_details.get("additional", "")
+        "money": int(re.sub(r'\D', '', vacancy_details.get("Зарплата", "")) or 0),
+        "region_rusal": vacancy_details.get("Адрес", ""),
+        "experience_position": vacancy_details.get("Опыт работы", ""),
+        "education": vacancy_details.get("Образование", "")
     }
+
+    logger.info("Параметры для запроса: "+str(payload))
+    
     # Убираем пустые значения
     payload = {k: v for k, v in payload.items() if v is not None}
 
@@ -81,8 +84,6 @@ def build_search_params(vacancy_details, aggregator_type):
         response = requests.post(url, headers=get_scraper_api_headers(), json=payload)
         response.raise_for_status()
         result = response.json()
-        st.success("Параметры успешно созданы.")
-        st.json(result.get("search_params"))
         return result.get("search_params")
     except requests.exceptions.RequestException as e:
         logger.error(f"Ошибка при создании параметров поиска: {e} | response: "+str(response.json()))
@@ -139,25 +140,22 @@ def track_task_progress(task_id):
             
             progress_bar.progress(progress, text=f"{status}: {message}")
             status_text.json(task_info) # Показываем полный JSON ответа для отладки
-            logger.info("Ответ: "+str(task_info))
-            
 
             if status in ["success", "failure", "cancelled"]:
-                st.info("4. Задача завершена!")
+                logger.info("4. Задача завершена!")
                 if status == "success":
-                    st.success("Задача выполнена успешно!")
+                    logger.info("Задача выполнена успешно!")
                 else:
-                    st.error(f"Задача завершилась со статусом: {status}, информация: {str(task_info)}")
-                
-                st.subheader("Итоговый результат:")
-                st.json(task_info.get("result", {}))
+                    logger.error(f"Задача завершилась со статусом: {status}, информация: {str(task_info)}")
                 break
+            logger.info("Ответ: "+str(task_info))
 
             time.sleep(5) # Пауза 5 секунд между проверками
             
         except requests.exceptions.RequestException as e:
-            st.error(f"Ошибка при проверке статуса задачи: {e}")
+            logger.error(f"Ошибка при проверке статуса задачи: {e}")
             break
+    return task_info
 
 if __name__ == "__main__":
     # --- ИНТЕРФЕЙС STREAMLIT ---
