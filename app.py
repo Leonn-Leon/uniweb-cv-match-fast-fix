@@ -1039,5 +1039,4 @@ if st.session_state.get("computed", False):
                             st.write(f"❌ Ошибка отправки: {message}")
 
                     status.update(label=f"Отправка в Whatsapp завершена! Успешно: {sent_count} из {len(selected_candidates_keys)}.", state="complete")
-                st.rerun()
                 st.markdown("<hr style='margin-top:0.5rem; margin-bottom:0.5rem;'/>", unsafe_allow_html=True) # Горизонтальная линия между кандидатами
