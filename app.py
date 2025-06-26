@@ -393,11 +393,11 @@ def get_hh_oauth_token():
             logger.info("HH.ru: Access token успешно получен/обновлен.")
             return new_access_token
         else:
-            st.error(f"HH.ru: Не удалось получить 'access_token' из ответа. Ответ: {token_data}")
+            # st.error(f"HH.ru: Не удалось получить 'access_token' из ответа. Ответ: {token_data}")
             logger.error(f"HH.ru: Не удалось получить 'access_token' из ответа. Ответ: {token_data}")
             return st.secrets["HH_API_TOKEN"]
     except requests.exceptions.RequestException as e:
-        st.error(f"HH.ru: Ошибка при получении токена: {e}")
+        # st.error(f"HH.ru: Ошибка при получении токена: {e}")
         logger.error(f"HH.ru: Ошибка при получении токена: {e}")
         return st.secrets["HH_API_TOKEN"]
 
@@ -689,6 +689,7 @@ def process_candidate_for_huntflow(candidate_key, candidate_ml_data):
 
         if source_type == "hh":
             access_token_ext = get_hh_oauth_token()
+            # access_token_ext = st.secrets.get("HH_API_TOKEN")
             if access_token_ext: pii_data_raw = get_hh_contacts_api(resume_id_from_link, access_token_ext)
         elif source_type == "avito":
             access_token_ext = get_avito_oauth_token()
