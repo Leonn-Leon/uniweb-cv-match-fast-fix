@@ -793,7 +793,8 @@ def process_candidate_for_whatsapp(candidate_key, candidate_ml_data):
         name_client = f"{pii_for_whatsapp.get('first_name', '')} {pii_for_whatsapp.get('last_name', '')}".strip()
         hf_account_id_for_c2d = st.secrets.get("HUNTFLOW_ACCOUNT_ID", "2")
         current_hf_vacancy_id_for_c2d = st.session_state.get("selected_huntflow_vacancy_id")
-        
+        logger.success("Параметры извлечены из стейта!")
+
         vacancy_name_for_c2d = "Не указано"
         if current_hf_vacancy_id_for_c2d and st.session_state.get('huntflow_vacancies_details'):
             selected_vac_details = st.session_state['huntflow_vacancies_details'].get(current_hf_vacancy_id_for_c2d)
@@ -819,7 +820,7 @@ def process_candidate_for_whatsapp(candidate_key, candidate_ml_data):
             return False, msg_c2d
 
     except Exception as e:
-        error_msg = f"Непредвиденная ошибка при отправке в WhatsApp: {e} \n pii_data - {pii_for_whatsapp}" 
+        error_msg = f"Непредвиденная ошибка при отправке в WhatsApp: {e} \n pii_data - {pii_for_whatsapp}\n||| {type(pii_for_whatsapp)}\n {st.session_state.get('huntflow_vacancies_details')}"
         logger.error(f"Кандидат {candidate_key}: {error_msg}")
         return False, error_msg
 
