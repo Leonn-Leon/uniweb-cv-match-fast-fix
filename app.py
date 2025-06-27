@@ -759,6 +759,28 @@ def process_candidate_for_whatsapp(candidate_key, candidate_ml_data):
         return False, msg
 
     pii_for_whatsapp = st.session_state.get(session_key_pii)
+    # Если это строка, пробуем распарсить как JSON
+    if isinstance(pii_for_whatsapp, str):
+        try:
+            parsed = json.loads(pii_for_whatsapp)
+            if isinstance(parsed, dict):
+                pii_for_whatsapp = parsed
+                st.session_state[session_key_pii] = parsed  # Сохраняем обратно, чтобы не парсить снова
+            else:
+                msg = f"Ошибка: данные кандидата для WhatsApp — строка, но не JSON-словарь: {pii_for_whatsapp}"
+                st.warning(msg)
+                logger.error(f"Chat2Desk: неверный формат pii_for_whatsapp для кандидата {candidate_key} - {pii_for_whatsapp}")
+                return False, msg
+        except Exception as e:
+            msg = f"Ошибка: данные кандидата для WhatsApp — строка, не удалось распарсить как JSON: {pii_for_whatsapp}"
+            st.warning(msg)
+            logger.error(f"Chat2Desk: не удалось распарсить pii_for_whatsapp для кандидата {candidate_key}: {e} - {pii_for_whatsapp}")
+            return False, msg
+    if not isinstance(pii_for_whatsapp, dict):
+        msg = f"Ошибка: данные кандидата для WhatsApp имеют неверный формат. {pii_for_whatsapp}"
+        st.warning(msg)
+        logger.error(f"Chat2Desk: неверный формат pii_for_whatsapp для кандидата {candidate_key} - {pii_for_whatsapp}")
+        return False, msg
     phone = pii_for_whatsapp.get("phone")
     if not phone:
         msg = "Не найден номер телефона кандидата."
