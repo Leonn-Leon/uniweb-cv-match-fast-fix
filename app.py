@@ -14,6 +14,7 @@ from urllib.parse import quote
 from src.utils.scraper_api import build_search_params, launch_pipeline, track_task_progress
 from typing import List
 from concurrent.futures import ThreadPoolExecutor, as_completed
+import os
 
 # Импорт ваших модулей
 from src.utils.utils import Mode, load_data, load_model, df2dict
@@ -797,9 +798,14 @@ def process_candidate_for_whatsapp(candidate_key, candidate_ml_data):
 
         vacancy_name_for_c2d = "Не указано"
         if current_hf_vacancy_id_for_c2d and st.session_state.get('huntflow_vacancies_details'):
-            selected_vac_details = st.session_state['huntflow_vacancies_details'].get(current_hf_vacancy_id_for_c2d)
-            if selected_vac_details:
-                vacancy_name_for_c2d = selected_vac_details.get("position", "Не указано")
+            vac_json_path = st.session_state['huntflow_vacancies_details'].get(current_hf_vacancy_id_for_c2d)
+            if vac_json_path and os.path.exists(vac_json_path):
+                try:
+                    with open(vac_json_path, "r", encoding="utf-8") as f:
+                        vac_json = json.load(f)
+                    vacancy_name_for_c2d = vac_json.get("position", "Не указано")
+                except Exception as e:
+                    logger.error(f"Ошибка чтения файла вакансии {vac_json_path}: {e}")
         
         success_c2d, msg_c2d = send_to_chat2desk_api(
             phone_number=phone,
@@ -820,7 +826,7 @@ def process_candidate_for_whatsapp(candidate_key, candidate_ml_data):
             return False, msg_c2d
 
     except Exception as e:
-        error_msg = f"Непредвиденная ошибка при отправке в WhatsApp: {e} \n pii_data - {pii_for_whatsapp}\n||| {type(pii_for_whatsapp)}\n {st.session_state.get('huntflow_vacancies_details')}"
+        error_msg = f"Непредвиденная ошибка при отправке в WhatsApp: {e}"
         logger.error(f"Кандидат {candidate_key}: {error_msg}")
         return False, error_msg
 
