@@ -819,7 +819,7 @@ def process_candidate_for_whatsapp(candidate_key, candidate_ml_data):
             return False, msg_c2d
 
     except Exception as e:
-        error_msg = f"Непредвиденная ошибка при отправке в WhatsApp: {e}"
+        error_msg = f"Непредвиденная ошибка при отправке в WhatsApp: {e} \n pii_data - {pii_for_whatsapp}" 
         logger.error(f"Кандидат {candidate_key}: {error_msg}")
         return False, error_msg
 
